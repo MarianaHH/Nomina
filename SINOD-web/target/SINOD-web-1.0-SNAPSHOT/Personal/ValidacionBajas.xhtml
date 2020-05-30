@@ -1,0 +1,182 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/template/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">   
+    <ui:define name="body">
+        <main>
+            <div class="container ">
+
+                <!--Barra de navegación-->
+                <div align="left">
+                    <p:outputLabel value="Nómina -> Validar bajas" style="font-weight: bold; color:black;" />    
+                    <p:separator style="width: 100%; height:5px" />
+                </div>
+                <center><h4>Validar bajas</h4></center>
+                <h:form id="validarBajasForm">
+
+                    <div class="#{messages['web.app.table.tabla2']}">
+                        <p:growl id="msgs" showDetail="true" />
+                        <center><h5>Bajas</h5></center>
+
+
+                        
+                        <p:dataTable id="tablaBajasAValidar" var="dtBajas" 
+                                     value="#{validacionBajasMB.listaBajasValidadas}"
+                                     emptyMessage="#{messages['web.app.table.noData']}"
+                                     reflow="true" rows="#{messages['web.app.table.initialRows']}" paginator="true" paginatorPosition="bottom" 
+                                     rowIndexVar="rowIndex" style="font-size: small" >
+
+
+                            <f:facet name="header">
+                                <p:spacer height="27"/>
+                                <p:commandButton action ="#{validacionBajasMB.dialogoValidarBajasAceptadas()}" 
+                                                 icon="#{messages['web.app.icon.aprobar']}" 
+                                                 title ="Aprobar todos"
+                                                 rendered="#{validacionBajasMB.listaBajasValidadas.size()>1?true:false}"
+                                                 style="display:inline; 
+                                                 float:right; 
+                                                 font-size: small;
+                                                 align-content: center"
+                                                 update="validarBajasForm:msgs,tablaBajasAValidar">
+                                </p:commandButton>
+                                <p:commandButton action ="#{validacionBajasMB.dialogoValidarBajasRechazadas()}" 
+                                                 icon="#{messages['web.app.icon.cancelar']}" 
+                                                 title ="Rechazar todos"
+                                                  rendered="#{validacionBajasMB.listaBajasValidadas.size()>1?true:false}"
+                                                 style="display:inline; 
+                                                 float:right; 
+                                                 font-size: small;
+                                                 align-content: center"
+                                                 update="validarBajasForm:msgs,validarBajasForm:tablaBajasAValidar">
+                                </p:commandButton>
+                                <p:spacer height="25"/>
+                            </f:facet>
+
+
+
+                            <p:column headerText="#{messages['web.app.table.empleado']}" width="12%" style="text-align:center" >
+                                <h:outputText value="#{dtBajas.nom_empleado}" />
+                            </p:column>
+                            <p:column headerText="#{messages['web.app.table.rfc']}" width="15%" style="text-align:center">
+                                <h:outputText value="#{dtBajas.cod_rfc}" />
+                            </p:column>
+                            <p:column headerText="#{messages['web.app.table.curp']}" width="15%" style="text-align:center">
+                                <h:outputText value="#{dtBajas.cod_curp}" />
+                            </p:column>
+                            <p:column headerText="#{messages['web.app.table.area']}" width="10%" style="text-align:center" >
+                                <h:outputText value="#{dtBajas.des_nbarea}" />
+                            </p:column>
+                            <p:column headerText="#{messages['web.app.table.puesto']}" width="12%" style="text-align:center">
+                                <h:outputText value="#{dtBajas.des_puesto}" />
+                            </p:column>
+                            <p:column headerText="#{messages['web.app.table.Finiquito']}" width="8%" style="text-align:center">
+                                <h:outputText value="" />
+                            </p:column>
+                            <p:column  headerText="#{messages['web.app.table.validar']}" width="10%" style="text-align:center" >
+                                <h:outputText id="txtValidar" value="#{dtBajas.validar==true?'RECHAZADA':
+                                                                       dtBajas.validar==false?'ACEPTADA':'Pendiente'}"  />
+
+                            </p:column>
+                            <p:column headerText="#{messages['web.app.table.acciones']}" width="10%" style="text-align:center" >
+                                
+                                <p:menuButton icon="fa fa-fw fa-chevron-circle-down">
+
+                                    
+                                    <p:menuitem value="#{messages['web.app.button.aceptar']}"  icon="fa fa-fw fa-check" 
+                                                action="#{validacionBajasMB.validarCadaBaja(0,dtBajas)}"
+                                                update="validarBajasForm:tablaBajasAValidar">
+                                    </p:menuitem>
+                                    <p:menuitem value="#{messages['web.app.button.rechazar']}"  icon="fa fa-fw fa-close"
+                                                action="#{validacionBajasMB.validarCadaBaja(1,dtBajas)}"
+                                                update="validarBajasForm:tablaBajasAValidar"/>
+                                </p:menuButton>
+                            </p:column>
+                        </p:dataTable>
+
+                        <div class="#{messages['web.app.table.tabla2']}" align="right">
+                            <p:commandButton value="#{messages['web.app.button.guardar']}" id="btnGuardar" 
+                                             immediate="true"
+                                             process="@this" 
+                                             update="validarBajasForm:msgs,validarBajasForm:tablaBajasAValidar"  
+                                             action="#{validacionBajasMB.dialogoGuardarValidaciones()}" 
+                                             disabled="#{validacionBajasMB.listaBajasValidadas.size()==0?true:false}"
+                                             style="margin-right:2%;" 
+                                             styleClass="ui-priority-primary" />
+                        </div> 
+                                                 
+                 
+                    </div>
+                    <!--                    </h:panelGrid>-->
+
+
+
+
+
+
+                </h:form>
+                            
+ 
+
+                <!-- dialogo para aceptar todas las bajas -->
+
+                <p:confirmDialog id="dialogValidarBajasAceptadas" widgetVar="dialogValidarBajasAceptadas" 
+                                 header="Aviso" closable="false"
+                                 message="#{messages['web.app.msj.adver.validarBajasAceptadas']}" 
+                                 showEffect="fade" hideEffect="fade" >
+                    <center>
+
+                        <p:commandButton value="#{messages['web.app.button.no']}" 
+                                         process="@this" 
+                                         onclick="PF('dialogValidarBajasAceptadas').hide();" />
+                        <p:commandButton value="#{messages['web.app.button.si']}" process="@this" 
+                                         action="#{validacionBajasMB.validarBajasAceptadas()}" 
+                                         update="dialogValidarBajasAceptadas,validarBajasForm:msgs,validarBajasForm:tablaBajasAValidar"/>
+                    </center>
+
+
+                </p:confirmDialog>
+
+                <!-- dialogo para rechazar todas las bajas-->
+
+                <p:confirmDialog id="dialogValidarBajasRechazadas" widgetVar="dialogValidarBajasRechazadas" 
+                                 header="Aviso" closable="false"
+                                 message="#{messages['web.app.msj.adver.validarBajasRechazadas']}" 
+                                 showEffect="fade" hideEffect="fade" >
+                    <center>
+
+                        <p:commandButton value="#{messages['web.app.button.no']}" 
+                                         process="@this" 
+                                         onclick="PF('dialogValidarBajasRechazadas').hide();" />
+                        <p:commandButton value="#{messages['web.app.button.si']}" process="@this" 
+                                         action="#{validacionBajasMB.validarBajasRechazadas()}" 
+                                         update="dialogValidarBajasRechazadas,validarBajasForm:msgs,validarBajasForm:tablaBajasAValidar"/>
+                    </center>
+                </p:confirmDialog>
+                
+                <!--dialogo para guardar todas las bajas-->
+                
+                <p:confirmDialog id="dialogGuardarBajas" widgetVar="dialogGuardarBajas" 
+                                 header="Aviso" closable="false"
+                                 message="#{messages['web.app.msj.adver.guardarValidacion']}" 
+                                 showEffect="fade" hideEffect="fade" >
+                    <center>
+
+                        <p:commandButton value="#{messages['web.app.button.no']}" 
+                                         process="@this" 
+                                         onclick="PF('dialogGuardarBajas').hide();" />
+                        <p:commandButton value="#{messages['web.app.button.si']}" process="@this" 
+                                         action="#{validacionBajasMB.guardarBajas()}" 
+                                         update="dialogGuardarBajas,validarBajasForm:msgs,validarBajasForm:tablaBajasAValidar"/>
+                    </center>
+
+
+                </p:confirmDialog>
+            </div> <!-- end container -->
+        </main>
+    </ui:define>
+</ui:composition>

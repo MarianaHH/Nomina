@@ -1,0 +1,256 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/template/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">   
+
+<ui:define name="body">
+    <main>
+    <div class="container ">
+    <!--Barra de navegación-->
+        <div align="left">
+            <p:outputLabel value="Nómina -> Historial incidencias" style="font-weight: bold; color: black;" />    
+            <p:separator style="width: 100%; height:5px" />
+        </div>
+        <center><h4>Historial de incidencias</h4></center>
+        <style>
+            td, th {
+                padding: 2px;
+            }
+        </style>
+        <h:form id="incidencias">
+            <p:growl id="mensajesHistorial" showDetail="true" sticky="false" />
+            <div class="ui-g-12 ui-md-12 ui-lg-6">
+                <p:outputLabel for="quincena" value="#{messages['web.app.table.quin']}:" /> <br></br> <br></br>
+                <p:selectOneMenu id="quincena" value="#{hstIncidenciasMB.quincenaSeleccionada}" style="width: 90%;" converter="omnifaces.SelectItemsConverter" >
+                    <f:selectItem itemLabel="Seleccione uno" itemValue="#{null}" noSelectionOption="true" />
+                    <f:selectItems value="#{hstIncidenciasMB.quincenas}" var="quincena" itemLabel="#{quincena.desQuincena}" itemValue="#{quincena}" />
+                    <p:ajax event="change" listener="#{hstIncidenciasMB.busquedaIncidenciasQuincena()}" update="tablaIncidencias mensajesHistorial"/>
+                </p:selectOneMenu>
+            </div>
+            <div class="ui-g-12 ui-md-12 ui-lg-12">
+                <p:dataTable id="tablaIncidencias" var="tblIncidencias"    
+                             emptyMessage="#{messages['web.app.table.noData']}"
+                             value="#{hstIncidenciasMB.listaIncidencias}"
+                             reflow="true" rows="#{messages['web.app.table.initialRows']}" paginatorPosition="bottom" paginator="true" rowIndexVar="numerador" style="font-size: small" >
+                    <f:facet name="header">
+                        <p:outputLabel value="QUINCENA ACTUAL: #{hstIncidenciasMB.desQuincenaSeleccionada}" />
+                        <p:spacer height="27"/>
+                        <h:commandLink
+                            id="reporteIncidencias"                                  
+                            title="Historial de incidencias"
+                            action="#{hstIncidenciasMB.reporteHistorialIncidencias()}"
+                            target="_blank"
+                            style="display:inline; 
+                            float:right; 
+                            font-size:x-small;
+                            padding: 2px;" >
+                            <h:graphicImage library="imagenes" name="pdf-icon.png" width="10%;" />
+                        </h:commandLink>
+                    </f:facet>
+                    <p:column headerText="#{messages['web.app.table.fecharegistro']}" 
+                              filterMatchMode="contains"
+                              filterStyle="background: #FFFFFF; width:90%; height:40%;"
+                              style="text-align:center" width="90">
+                        <h:outputText value="#{tblIncidencias.fechaalta}" >
+                            <f:convertDateTime pattern="#{messages['web.app.label.formatoFecha']}" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="#{messages['web.app.table.nombre']}" 
+                              filterBy="#{tblIncidencias.reportanb}"
+                              filterMatchMode="contains"
+                              filterStyle="background: #FFFFFF; width:90%; height:40%;"
+                              style="text-align:center" width="90">
+                        <h:outputText value="#{tblIncidencias.reportanb}" />
+                    </p:column>
+                    <p:column headerText="#{messages['web.app.table.clave']}" 
+                              filterBy="#{tblIncidencias.clave}"
+                              filterMatchMode="contains"
+                              filterStyle="background: #FFFFFF; width:90%; height:40%;"
+                              style="text-align:center" width="80">
+                        <h:outputText value="#{tblIncidencias.clave}" />
+                    </p:column>
+                    <p:column headerText="#{messages['web.app.table.incidencia']}" 
+                              filterBy="#{tblIncidencias.incidencia}"
+                              filterMatchMode="contains"
+                              filterStyle="background: #FFFFFF; width:90%; height:40%;"
+                              style="text-align:center" width="100">
+                        <h:outputText value="#{tblIncidencias.incidencia}" />
+                    </p:column>
+                    <p:column headerText="#{messages['web.app.table.perfil']}" 
+                              filterBy="#{tblIncidencias.perfil}"
+                              filterMatchMode="contains"
+                              filterStyle="background: #FFFFFF; width:90%; height:40%;"
+                              style="text-align:center" width="100">
+                        <h:outputText value="#{tblIncidencias.perfil}" />
+                    </p:column>
+                    <p:column headerText="#{messages['web.app.table.tipo']}" 
+                              filterBy="#{tblIncidencias.desctipo}"
+                              filterMatchMode="contains"
+                              filterStyle="background: #FFFFFF; width:90%; height:40%;"
+                              style="text-align:center" width="110" >
+                        <h:outputText value="#{tblIncidencias.desctipo}" />
+                    </p:column>
+                    <p:column headerText="#{messages['web.app.table.cantidad']}" filterMatchMode="contains"
+                              style="text-align:center" width="65">
+                        <h:outputText value="#{tblIncidencias.cantidad == '0'?' ':tblIncidencias.cantidad}" />
+                    </p:column>
+                    <!--Acciones incidencia-->
+                    <p:column headerText="#{messages['web.app.table.acciones']}" width="100" style="text-align:center" >
+                        <p:menuButton value="" icon="#{messages['web.app.icon.desplegar']}" >
+                            <p:menuitem value="#{messages['web.app.button.ver']}" action="#{hstIncidenciasMB.dialogoVer(tblIncidencias)}" process="@this" icon="#{messages['web.app.icon.ver']}" update="diagVerDetalleIncidencia" />
+                        </p:menuButton>
+                    </p:column>
+                </p:dataTable>
+            </div>
+    </h:form>
+    <!--DIALOGO VER DETALLE-->
+    <p:dialog id="diagVerDetalleIncidencia" resizable="false" closable ="false" styleClass="disable-scroll" 
+              draggable="false" header="Detalle incidencia" widgetVar="diagVerDetalleIncidencia" 
+              modal="true" height="35%" width="65%" style ="background: #FFFFFF;">
+        <h:form id="verDetalle">
+            <h:panelGrid columns="4">
+                <p:column>  
+                    <div class="#{messages['web.app.table.tabla2']}">
+                        <p:outputLabel value="#{messages['web.app.label.fechaalta']}:" style="color:black; padding: 0%;" />
+                        <p:inputText id="detIncidenciaFechaalta" readonly="true"
+                                     value = "#{hstIncidenciasMB.detIncidenciaSeleccionada.fechaalta}"
+                                     class="materialize-textarea">
+                            <f:convertDateTime pattern="#{messages['web.app.label.formatoFecha']}" />
+                        </p:inputText>
+                    </div>
+                </p:column>
+                <p:column>  
+                    <div class="#{messages['web.app.table.tabla2']}">
+                        <p:outputLabel value="#{messages['web.app.table.empleado']}:" style="color:black; padding: 0%;" />
+                        <p:inputText id="detIncidenciaEmpleado" readonly="true"
+                                     value = "#{hstIncidenciasMB.detIncidenciaSeleccionada.reportanb}"
+                                     class="materialize-textarea">
+                            <f:convertDateTime pattern="#{messages['web.app.label.formatoFecha']}" />
+                        </p:inputText>
+                    </div>
+                </p:column>
+                <p:column>  
+                    <div class="#{messages['web.app.table.tabla2']}">
+                        <p:outputLabel value="#{messages['web.app.table.clave']}:" style="color:black; padding: 0%;" />
+                        <p:inputText id="detIncidenciaClave" readonly="true"
+                                    value = "#{hstIncidenciasMB.detIncidenciaSeleccionada.clave}"
+                                    class="materialize-textarea"/>
+                    </div>
+                </p:column>
+                <p:column>
+                    <div class="#{messages['web.app.table.tabla2']}">
+                        <p:outputLabel value="#{messages['web.app.table.incidencia']}:" style="color:black;"/>
+                        <p:inputText id="detIncidenciaIncidencia" 
+                                    readonly="true"
+                                    value = "#{hstIncidenciasMB.detIncidenciaSeleccionada.incidencia}" 
+                                    class="materialize-textarea"/>
+                    </div>
+                </p:column>
+                <p:column>
+                    <div  class="#{messages['web.app.table.tabla2']}"  >
+                            <p:outputLabel value="#{messages['web.app.table.perfil']}:" style="color:black;"/>
+                            <p:inputText id="detIncidenciaPerfil"  
+                                        readonly="true"
+                                        value = "#{hstIncidenciasMB.detIncidenciaSeleccionada.perfil}" 
+                                        class="materialize-textarea"/>
+                    </div>
+                </p:column>
+                <p:column>
+                    <div class="#{messages['web.app.table.tabla2']}">
+                        <p:outputLabel value="#{messages['web.app.table.tipo']}:" style="color:black;"/>
+                        <p:inputText id="detIncidenciaTipo"
+                                    readonly="true"
+                                    value = "#{hstIncidenciasMB.detIncidenciaSeleccionada.desctipo}" 
+                                    class="materialize-textarea"/>
+                    </div>
+                </p:column>
+                <p:column>
+                    <div  class="#{messages['web.app.table.tabla2']}"  >
+                        <h:panelGrid id="panelCantidad" rendered="#{hstIncidenciasMB.detIncidenciaSeleccionada.idtipo == '1' || hstIncidenciasMB.detIncidenciaSeleccionada.idtipo == '2'?true:false}" >
+                            <p:outputLabel value="#{messages['web.app.table.cantidad']}:" style="color:black;"/>
+                            <p:inputText id="detIncidenciaCantidad"
+                                    readonly="true"
+                                    value = "#{hstIncidenciasMB.detIncidenciaSeleccionada.cantidad}" 
+                                    class="materialize-textarea"/>
+                        </h:panelGrid>
+                        <h:panelGrid id="panelActividad" rendered="#{hstIncidenciasMB.detIncidenciaSeleccionada.idtipo == '3'?true:false}" >
+                            <p:outputLabel value="#{messages['web.app.table.actividad']}:" style="color:black;"/>
+                            <p:inputText id="detIncidenciaActividad"
+                                    readonly="true"
+                                    value = "#{hstIncidenciasMB.detIncidenciaSeleccionada.actividad}" 
+                                    class="materialize-textarea"/>
+                        </h:panelGrid>
+                    </div>
+                </p:column>
+                <p:column>
+                    <div  class="#{messages['web.app.table.tabla2']}"  >
+                        <p:outputLabel value="#{messages['web.app.label.fechas']}:" />
+                        <p:inputTextarea id="detIncidenciaFechasxml" 
+                                         value="#{hstIncidenciasMB.detallefechasxml}"
+                                         autoResize="false"
+                                         readonly="true" 
+                                         style="resize: none;"
+                                         class="materialize-textarea">
+                        </p:inputTextarea>
+                    </div>
+                </p:column>
+                <p:column>
+                    <div  class="#{messages['web.app.table.tabla2']}"  >
+                        <p:outputLabel value="#{messages['web.app.table.comentarios']}:"/>
+                        <p:inputTextarea id="detIncidenciaComentarios"   
+                                    readonly="true"
+                                    value = "#{hstIncidenciasMB.detIncidenciaSeleccionada.comentarios}" 
+                                    class="materialize-textarea"
+                                    style="resize: none;"
+                                    autoResize="false">
+                        </p:inputTextarea>
+                    </div>
+                </p:column>
+                <p:column >
+                    <div  class="ui-g-12 ui-md-6 ui-lg-12"  >
+                        <p:outputLabel value="#{messages['web.app.table.validacion']} RH" 
+                                       style="color:black; padding: 0px; margin: 0px;"/>
+                        <p:inputText value="#{hstIncidenciasMB.detIncidenciaSeleccionada.validacion==true?'Validada':hstIncidenciasMB.detIncidenciaSeleccionada.validacion==false?'Rechazada':'Pendiente'}" 
+                                     style="color:black; padding: 0px; margin: 0px;"
+                                     readonly="true"/>
+                    </div>
+                </p:column>
+                <p:column >
+                    <div  class="ui-g-12 ui-md-6 ui-lg-12"  >
+                        <p:outputLabel value="#{messages['web.app.table.autorizacionLC']}" 
+                                       style="color:black; padding: 0px; margin: 0px;"/>
+                        <p:inputText value="#{hstIncidenciasMB.detIncidenciaSeleccionada.aceptacion==true?'Aceptada':hstIncidenciasMB.detIncidenciaSeleccionada.aceptacion==false?'Rechazada':'Pendiente'}" 
+                                     style="color:black; padding: 0px; margin: 0px;"
+                                     readonly="true"/>
+                    </div>
+                </p:column>
+                <p:column >
+                    <div  class="ui-g-12 ui-md-6 ui-lg-12"  >
+                        <p:outputLabel value="#{messages['web.app.table.autorizacionFN']}" 
+                                       style="color:black; padding: 0px; margin: 0px;"/>
+                        <p:inputText value="#{hstIncidenciasMB.detIncidenciaSeleccionada.autorizacion==true?'Pago autorizado':hstIncidenciasMB.detIncidenciaSeleccionada.autorizacion==false?'Pago rechazado':'Pendiente'}" 
+                                     style="color:black; padding: 0px; margin: 0px;"
+                                     readonly="true"/>
+                    </div>
+                </p:column>
+                <f:facet name = "footer">
+                    <div align="right"  class="#{messages['web.app.table.tabla']}" >
+                        <p:commandButton process="@this" style="display:inline;  font-size:medium; margin-left: 10px;"
+                                         value="#{messages['web.app.button.cerrar']}" 
+                                         action="#{hstIncidenciasMB.dialogoVerCerrar()}">
+                        </p:commandButton>
+                    </div>
+                </f:facet>
+            </h:panelGrid>
+        </h:form>
+    </p:dialog>
+    <!-- end container -->
+    </div>
+    </main>
+</ui:define>
+</ui:composition>

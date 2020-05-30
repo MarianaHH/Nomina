@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/template/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">  
+
+    <ui:define name="body">
+
+        <main>
+            <div class="container ">
+                <!--Barra de navejación-->
+                <div align="left">
+                    <p:outputLabel value="#{messages['web.app.table.pagos.confirmacion.menu']}" 
+                                   style="#{messages['web.app.style.menu']}" />    
+                    <p:separator style="width: 100%; height:5px" />
+                </div>
+
+                <center><h4>Confirmación de pago</h4></center>
+
+                <div>
+                    <h:form id="autorizacionEMP">
+                        <p:growl id="mensajesDetalle" showDetail="true" sticky="true" />  
+                        <!--Prueba para la caja de busqueda -->
+                        <div class="ui-g-12 ui-md-6 ui-lg-4"> 
+                            <p:outputLabel for="cabeceras" value="#{messages['web.app.table.quin']}" 
+                                           style="color: black;" /> 
+                            <br></br> 
+                            <p:selectOneMenu id="cabeceras" value="#{empleadoMB.cabeceraEmp}" 
+                                             style="width: 90%;" 
+                                             converter="omnifaces.SelectItemsConverter" >
+
+                                <f:selectItem itemLabel="Seleccione un periodo" 
+                                              itemValue="#{null}" 
+                                              noSelectionOption="true" />
+
+                                <f:selectItems value="#{empleadoMB.todasCabece}" 
+                                               var="cabeceras" itemLabel="#{cabeceras.codNbnomina}" 
+                                               itemValue="#{cabecera}" />
+
+                                <p:ajax event="change"  process="@this"
+                                        listener="#{empleadoMB.busquedas()}"
+                                        update="tablaPagosEmp"
+                                        />
+                            </p:selectOneMenu>
+                        </div>
+
+                        <br></br> 
+                        <br></br> 
+                        <br></br> 
+                        <br></br> 
+
+                        <!-- Fin de la caja de busqueda -->
+                        <div class="#{messages['web.app.table.tabla2']}">
+                            <p:dataTable id="tablaPagosEmp" var="EMP_Pago"  value="#{empleadoMB.empSelecionado}"
+                                         emptyMessage="No hay autorización de Recursos Finacieros" 
+                                         reflow="true" rows="10" paginatorPosition="bottom" paginator="true" 
+                                         rowIndexVar="numerador" 
+                                         style="font-size: small" >
+
+                                <f:facet name="header">
+                                    <p:spacer height="27"/>
+                                    <h:commandLink
+                                        id="reporteEmpDesglose"                                  
+                                        title="Recibo de nómina"
+                                        rendered="#{empleadoMB.empSelecionado.size()>0?true:false}"
+                                        action="#{empleadoMB.reporteReciboNomnia()}"
+                                        target="_blank"
+                                        style="display:inline; 
+                                        float:right; 
+                                        font-size:x-small;
+                                        padding: 2px;" >
+                                        <h:graphicImage library="imagenes" name="pdf-icon.png" width="20px" />
+                                    </h:commandLink>
+                                </f:facet>
+
+                                <p:column headerText="#{messages['web.app.table.empleado']}" width="auto" style="text-align:center">
+                                    <h:outputText value="#{EMP_Pago.nomcompleto}"/>
+                                </p:column>
+
+                                <p:column headerText="#{messages['web.app.table.idEmpleado']}"
+                                          filterMatchMode="contains" width="auto" style="text-align:center"> 
+                                    <h:outputText value="#{EMP_Pago.codempleado}"/>
+                                </p:column>
+
+                                <p:column headerText="#{messages['web.app.table.area']}"
+                                          filterMatchMode="contains" width="auto" style="text-align:center">
+                                    <h:outputText value="#{EMP_Pago.desnbarea}" />
+                                </p:column>
+
+                                <p:column headerText="#{messages['web.app.table.puesto']}" width="15%" style="text-align:center">
+                                    <h:outputText value="#{EMP_Pago.despuesto}" />
+                                </p:column>
+                                <p:column headerText="#{messages['web.app.table.monto']}" width="auto" style="text-align:center">
+                                    <h:outputText value="$ #{EMP_Pago.monto}"/>
+                                </p:column>
+                                <p:column headerText="Estaus RF" width="auto" style="text-align:center">
+                                    <h:outputText value="#{EMP_Pago.bol_pagofinanzas=='true'?'APROBADO':
+                                                           EMP_Pago.bol_pagofinanzas=='false'?'RECHAZADO':'PENDIENTE'}" />
+                                </p:column>
+                                <p:column headerText="Estaus RH" width="auto" style="text-align:center"> 
+                                    <h:outputText value="#{EMP_Pago.bol_pagofinanzas=='true'?'APROBADO':
+                                                           EMP_Pago.bol_pagofinanzas=='false'?'RECHAZADO':'PENDIENTE'}" />
+                                </p:column>
+                                <p:column headerText="#{messages['web.app.table.estatus']}" width="auto" style="text-align:center"> 
+                                    <h:outputText id="estatusEMP" 
+                                                  value="#{EMP_Pago.bol_pagoempleado=='true'?'APROBADO':
+                                                           EMP_Pago.bol_pagoempleado=='false'?'RECHAZADO':'PENDIENTE'}" />
+
+                                </p:column>
+
+                                <p:column headerText="Acciones" style="text-align:center">
+                                    <p:growl id="messages" showDetail="true"/>
+
+                                    <p:menuButton icon="#{messages['web.app.icon.desplegar']}" value="">
+                                        <p:menuitem value="#{messages['web.app.button.aprobar']}" 
+                                                    action="#{empleadoMB.autorizarEMP(EMP_Pago)}" 
+                                                    icon="#{messages['web.app.icon.aprobar']}"
+                                                    update="estatusEMP, tablaPagosEmp"/>
+
+                                        <p:menuitem value="#{messages['web.app.button.rechazar']}" 
+                                                    action="#{empleadoMB.rechazarEMP(EMP_Pago)}" 
+                                                    icon="#{messages['web.app.icon.cancelar']}"
+                                                    update="estatusEMP, tablaPagosEmp"/>
+                                    </p:menuButton>          
+                                </p:column>
+
+                                <!--                                <p:column headerText="Acciones" style="text-align:center" >
+                                                                    <p:growl id="messages" showDetail="true"/>
+                                
+                                                                    <p:menuButton icon="#{messages['web.app.icon.desplegar']}" value="">
+                                                                        <p:menuitem value="#{messages['web.app.button.aprobar']}" 
+                                                                                    action="#{empleadoMB.dialogAprobar()}" 
+                                                                                    icon="#{messages['web.app.icon.aprobar']}"
+                                                                                    update="estatusEMP, tablaPagosEmp"/>
+                                
+                                                                        <p:menuitem value="#{messages['web.app.button.rechazar']}" 
+                                                                                    action="#{empleadoMB.dialogRechazar()}" 
+                                                                                    icon="#{messages['web.app.icon.cancelar']}"
+                                                                                    update="estatusEMP, tablaPagosEmp"/>
+                                                                    </p:menuButton>          
+                                                                </p:column>-->
+
+
+                            </p:dataTable>
+                            <!--                            <div class="ui-g-12 ui-md-6 ui-lg-12" align="right">
+                                                            <p:commandButton value="#{messages['web.app.button.guardar']}" id="Guardar" 
+                                                                             immediate="true"
+                                                                             process="@this" 
+                                                                             update="tablaPagosEmp, mensajesDetalle"
+                                                                             disabled="#{empleadoMB.empSelecionado.size()>0?false:true}"
+                                                                             style="margin-right:2%;" 
+                                                                             styleClass="ui-priority-primary" />
+                                                        </div>-->
+                        </div>
+                    </h:form>
+                </div>
+
+                <!-- dialogo para aprobar todos los pagos -->
+                <p:confirmDialog id="aprobarPago" widgetVar="aprobarPago" 
+                                 header="Aprobar el pago" 
+                                 closable="false"
+                                 message="#{messages['web.app.msj.aprobarTodos']}" 
+                                 showEffect="fade" hideEffect="fade">
+                    <center>
+                        <div align="right">
+                            <p:commandButton value="#{messages['web.app.button.cancelar']}" 
+                                             process="@this"
+                                             onclick="PF('aprobarPago').hide();"/>
+                            <p:commandButton value="#{messages['web.app.button.aceptar']}" 
+                                             process="@this"
+                                             action="#{empleadoMB.autorizarEMP(EMP_Pago)}"
+                                             update="autorizacionEMP:tablaPagosEmp, 
+                                             autorizacionEMP:tablaPagosEmp:estatusEMP, 
+                                             autorizacionEMP:mensajesDetalle"/>
+                            <!--onclick="PF('confTodos').hide();"/>-->
+                        </div>
+                    </center>
+                </p:confirmDialog>
+
+                <!-- dialogo para rechazar todos los pagos-->
+                <p:confirmDialog id="rechazarPago" widgetVar="rechazarPago" 
+                                 header="Rechazar el pago" 
+                                 closable="false"
+                                 message="#{messages['web.app.msj.cancelarTodos']}" 
+                                 showEffect="fade" hideEffect="fade">
+                    <center>
+                        <div align="right">
+                            <p:commandButton value="#{messages['web.app.button.cancelar']}" process="@this" 
+                                             onclick="PF('rechazarPago').hide();"/>
+                            <p:commandButton value="#{messages['web.app.button.aceptar']}" 
+                                             process="@this"
+                                             action="#{empleadoMB.rechazarEMP(detalleEmp)}"
+                                             update="autorizacionEMP:tablaPagosEmp, 
+                                             autorizacionEMP:tablaPagosEmp:estatusEMP, 
+                                             autorizacionEMP:mensajesDetalle"/>
+                            <!--onclick="PF('confTodos').hide();"--> 
+
+                        </div>
+                    </center>
+                </p:confirmDialog>
+
+            </div> <!-- end container -->     
+        </main>
+
+    </ui:define>
+</ui:composition>
+

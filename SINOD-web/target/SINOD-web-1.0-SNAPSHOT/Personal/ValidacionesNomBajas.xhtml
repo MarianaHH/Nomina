@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/template/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"> 
+    <ui:define name="body">
+        <main>
+            <div class="container ">
+                <!--Barra de navejación-->
+                <div align="left">
+                    <p:outputLabel value="Personal -> Historial de Bajas Validadas" style="font-weight: bold;" />    
+                    <p:separator style="width: 100%; height:5px" />
+                </div>
+
+                <center><h4>Validaciones de Nómina</h4></center>
+                <br/>
+
+                <h:form id="detallePersonal">
+                    <center><h5>Bajas</h5></center>
+
+                    <div class="#{messages['web.app.table.tabla2']}">
+
+                        <p:dataTable  var="dtInfoBajas" value="#{validacionesNomBajasMB.listaBajasValidadas}" id="tablaBajasValidadas"
+                                      emptyMessage="#{messages['web.app.table.noData']}" 
+                                      reflow="true" rows="#{messages['web.app.table.initialRows']}" paginator="true"  rowIndexVar="numerador" style="font-size: small" paginatorPosition="bottom">
+                            <f:facet name="header">
+                                <p:spacer height="27"/>
+                                <h:commandLink
+                                    id="reporteNomBajas"                                  
+                                    title="Historial de bajas"
+                                    action="#{validacionesNomBajasMB.reporteHistorialBajas()}"
+                                    target="_blank"
+                                    style="display:inline; 
+                                    float:right; 
+                                    font-size:x-small;
+                                    padding: 2px;" >
+                                    <h:graphicImage library="imagenes" name="pdf-icon.png" width="20px" />
+                                </h:commandLink>
+                            </f:facet>
+
+                            <p:column headerText="#{messages['web.app.table.id']}" width="auto" style="text-align:center">
+                                <h:outputText value="#{dtInfoBajas.cod_empleadoid}" />
+                            </p:column>
+                            <p:column headerText="#{messages['web.app.table.empleado']}" width="auto" style="text-align:center">
+                                <h:outputText value="#{dtInfoBajas.nom_empleado}" />
+                            </p:column>
+                            <p:column headerText="#{messages['web.app.table.area']}" width="auto" style="text-align:center">
+                                <h:outputText value="#{dtInfoBajas.des_nbarea}" />
+                            </p:column>
+                            <p:column headerText="#{messages['web.app.table.puesto']}" width="auto" style="text-align:center">
+                                <h:outputText value="#{dtInfoBajas.des_puesto}" />
+                            </p:column>
+                            <p:column headerText="#{messages['web.app.table.Finiquito']}" width="12%" style="text-align:center">
+                                <h:outputText value="" />
+                            </p:column>
+                            <p:column headerText="#{messages['web.app.table.validacion']}" width="auto" style="text-align:center">
+                                <h:outputText id="txtValidar" value="#{dtInfoBajas.validar==true?'RECHAZADA':
+                                                                       dtInfoBajas.validar==false?'ACEPTADA':''}"  />
+                            </p:column>
+                            <p:column headerText="#{messages['web.app.table.FechaValidacion']}" width="auto" style="text-align:center">
+                                <h:outputText value="#{dtInfoBajas.fecha_validacion}" >
+                                    <f:convertDateTime pattern="#{messages['web.app.label.formatoFecha']}" />
+                                </h:outputText>    
+                            </p:column>
+
+
+                        </p:dataTable> <!-- end table -->
+
+                    </div>  
+                </h:form>
+
+            </div> <!-- end container -->
+        </main>
+    </ui:define> 
+</ui:composition>

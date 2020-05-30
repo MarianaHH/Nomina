@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+  <persistence-unit name="com.mbn.sinod_SINOD-model_jar_1.0-SNAPSHOTPU" transaction-type="RESOURCE_LOCAL">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <class>com.mbn.sinod.model.entidades.Tsgnomfuncion</class>
+    <class>com.mbn.sinod.model.entidades.Tsgnomconfpago</class>
+    <class>com.mbn.sinod.model.entidades.Tsgnomempquincena</class>
+    <class>com.mbn.sinod.model.entidades.Tsgnomestatusnom</class>
+    <class>com.mbn.sinod.model.entidades.Tsgnomformula</class>
+    <class>com.mbn.sinod.model.entidades.Tsgnomempquincenaht</class>
+    <class>com.mbn.sinod.model.entidades.Tsgnomcabecera</class>
+    <class>com.mbn.sinod.model.entidades.Tsgnomclasificador</class>
+    <class>com.mbn.sinod.model.entidades.Tsgnomcabeceraht</class>
+    <class>com.mbn.sinod.model.entidades.Tsgnomquincena</class>
+    <class>com.mbn.sinod.model.entidades.Tsgnomcncptoquinc</class>
+    <class>com.mbn.sinod.model.entidades.Tsgnomcncptoquincht</class>
+    <class>com.mbn.sinod.model.entidades.Tsgnomcatincidencia</class>
+    <class>com.mbn.sinod.model.entidades.Tsgnomtipoconcepto</class>
+    <class>com.mbn.sinod.model.entidades.Tsgnomconceptosat</class>
+    <class>com.mbn.sinod.model.entidades.Tsgnomempleados</class>
+    <class>com.mbn.sinod.model.entidades.Tsgnomargumento</class>
+    <class>com.mbn.sinod.model.entidades.Tsgnomejercicio</class>
+    <class>com.mbn.sinod.model.entidades.Tsgnombitacora</class>
+    <class>com.mbn.sinod.model.entidades.Tsgnomhisttabla</class>
+    <class>com.mbn.sinod.model.entidades.Tsgnomincidencia</class>
+    <class>com.mbn.sinod.model.entidades.Tsgnomalguinaldo</class>
+    <class>com.mbn.sinod.model.entidades.Tsgnommanterceros</class>
+    <class>com.mbn.sinod.model.entidades.Tsgnomcalculo</class>
+    <class>com.mbn.sinod.model.entidades.Tsgnomtiponomina</class>
+    <class>com.mbn.sinod.model.entidades.Tsgnomconcepto</class>
+    <class>com.mbn.sinod.model.entidades.Tsgrhempleados</class>
+    <class>com.mbn.sinod.model.entidades.Tsgrhpuestos</class>
+    <class>com.mbn.sinod.model.entidades.Tsgrhareas</class>
+    <class>com.mbn.sinod.model.entidades.Tsgrhroles</class>
+    <class>com.mbn.sinod.model.entidades.Tsgcosistemas</class>
+    <class>com.mbn.sinod.model.entidades.Tsgcotipousuario</class>
+    <class>com.mbn.sinod.model.entidades.Tsgcousuarios</class>
+    <properties>
+      <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/suite"/>
+      <property name="javax.persistence.jdbc.user" value="suite"/>
+      <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
+      <property name="javax.persistence.jdbc.password" value="suite"/>
+    </properties>
+  </persistence-unit>
+</persistence>

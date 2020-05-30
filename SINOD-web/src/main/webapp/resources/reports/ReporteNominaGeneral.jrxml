@@ -1,0 +1,919 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="ab2013ad-d919-47da-8338-6558dc0492b9">
+	<property name="ireport.zoom" value="1.000000000000003"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="39"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 3">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 3_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 3_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 3_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 4">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 4_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 4_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 4_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 5">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 5_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 5_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 5_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 6">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 6_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 6_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 6_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 7">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 7_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 7_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 7_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 8">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 8_TH" mode="Opaque" backcolor="#000080">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 8_CH" mode="Opaque" backcolor="#BFBFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 8_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 9">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 9_TH" mode="Opaque" backcolor="#0000CD">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 9_CH" mode="Opaque" backcolor="#BFBFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 9_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 10">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 10_TH" mode="Opaque" backcolor="#0000CD">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 10_CH" mode="Opaque" backcolor="#BFBFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 10_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 11">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 11_TH" mode="Opaque" backcolor="#0000CD">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 11_CH" mode="Opaque" backcolor="#BFBFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 11_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 12">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 12_TH" mode="Opaque" backcolor="#0000CD">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 12_CH" mode="Opaque" backcolor="#BFBFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 12_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 13">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 13_TH" mode="Opaque" backcolor="#0000CD">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 13_CH" mode="Opaque" backcolor="#BFBFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 13_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 14">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 14_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 14_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 14_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 15">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 15_TH" mode="Opaque" backcolor="#0000CD">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 15_CH" mode="Opaque" backcolor="#BFBFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 15_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 16">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 16_TH" mode="Opaque" backcolor="#0000CD">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 16_CH" mode="Opaque" backcolor="#BFBFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 16_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 17">
+		<box>
+			<pen lineWidth="1.0" lineColor="#FEFEFE"/>
+		</box>
+	</style>
+	<style name="table 17_TH" mode="Opaque" backcolor="#0000CD">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#FEFEFE"/>
+			<bottomPen lineWidth="0.5" lineColor="#FEFEFE"/>
+		</box>
+	</style>
+	<style name="table 17_CH" mode="Opaque" backcolor="#BFBFFF">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#FEFEFE"/>
+			<bottomPen lineWidth="0.5" lineColor="#FEFEFE"/>
+		</box>
+	</style>
+	<style name="table 17_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#FEFEFE"/>
+			<bottomPen lineWidth="0.5" lineColor="#FEFEFE"/>
+		</box>
+	</style>
+	<style name="table 18">
+		<box>
+			<topPen lineWidth="1.0" lineColor="#FEF7F7"/>
+			<bottomPen lineWidth="1.0" lineColor="#FEF7F7"/>
+		</box>
+	</style>
+	<style name="table 18_TH" mode="Opaque" backcolor="#0000CD">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#FEF7F7"/>
+			<bottomPen lineWidth="0.5" lineColor="#FEF7F7"/>
+		</box>
+	</style>
+	<style name="table 18_CH" mode="Opaque" backcolor="#BFBFFF">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#FEF7F7"/>
+			<bottomPen lineWidth="0.5" lineColor="#FEF7F7"/>
+		</box>
+	</style>
+	<style name="table 18_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#FEF7F7"/>
+			<bottomPen lineWidth="0.5" lineColor="#FEF7F7"/>
+		</box>
+	</style>
+	<style name="table 19">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 19_TH" mode="Opaque" backcolor="#0000CD">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 19_CH" mode="Opaque" backcolor="#BFBFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 19_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 20">
+		<box>
+			<topPen lineWidth="1.0" lineColor="#F6EAEA"/>
+			<bottomPen lineWidth="1.0" lineColor="#F6EAEA"/>
+		</box>
+	</style>
+	<style name="table 20_TH" mode="Opaque" backcolor="#0000CD">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#F6EAEA"/>
+			<bottomPen lineWidth="0.5" lineColor="#F6EAEA"/>
+		</box>
+	</style>
+	<style name="table 20_CH" mode="Opaque" backcolor="#BFBFFF">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#F6EAEA"/>
+			<bottomPen lineWidth="0.5" lineColor="#F6EAEA"/>
+		</box>
+	</style>
+	<style name="table 20_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#F6EAEA"/>
+			<bottomPen lineWidth="0.5" lineColor="#F6EAEA"/>
+		</box>
+	</style>
+	<style name="table 21">
+		<box>
+			<pen lineWidth="1.0" lineColor="#F9EFEF"/>
+		</box>
+	</style>
+	<style name="table 21_TH" mode="Opaque" backcolor="#0000CD">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#F9EFEF"/>
+			<bottomPen lineWidth="0.5" lineColor="#F9EFEF"/>
+		</box>
+	</style>
+	<style name="table 21_CH" mode="Opaque" backcolor="#BFBFFF">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#F9EFEF"/>
+			<bottomPen lineWidth="0.5" lineColor="#F9EFEF"/>
+		</box>
+	</style>
+	<style name="table 21_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#F9EFEF"/>
+			<bottomPen lineWidth="0.5" lineColor="#F9EFEF"/>
+		</box>
+	</style>
+	<style name="table 22">
+		<box>
+			<pen lineWidth="1.0" lineColor="#FEFEFE"/>
+		</box>
+	</style>
+	<style name="table 22_TH" mode="Opaque" backcolor="#0000CD">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#FEFEFE"/>
+			<bottomPen lineWidth="0.5" lineColor="#FEFEFE"/>
+		</box>
+	</style>
+	<style name="table 22_CH" mode="Opaque" backcolor="#BFBFFF">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#FEFEFE"/>
+			<bottomPen lineWidth="0.5" lineColor="#FEFEFE"/>
+		</box>
+	</style>
+	<style name="table 22_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#FEFEFE"/>
+			<bottomPen lineWidth="0.5" lineColor="#FEFEFE"/>
+		</box>
+	</style>
+	<style name="table 23">
+		<box>
+			<pen lineWidth="1.0" lineColor="#FEFEFE"/>
+		</box>
+	</style>
+	<style name="table 23_TH" mode="Opaque" backcolor="#0000CD">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#FEFEFE"/>
+			<bottomPen lineWidth="0.5" lineColor="#FEFEFE"/>
+		</box>
+	</style>
+	<style name="table 23_CH" mode="Opaque" backcolor="#BFBFFF">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#FEFEFE"/>
+			<bottomPen lineWidth="0.5" lineColor="#FEFEFE"/>
+		</box>
+	</style>
+	<style name="table 23_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#FEFEFE"/>
+			<bottomPen lineWidth="0.5" lineColor="#FEFEFE"/>
+		</box>
+	</style>
+	<style name="table 24">
+		<box>
+			<pen lineWidth="1.0" lineColor="#FEFEFE"/>
+		</box>
+	</style>
+	<style name="table 24_TH" mode="Opaque" backcolor="#0000CD">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#FEFEFE"/>
+			<bottomPen lineWidth="0.5" lineColor="#FEFEFE"/>
+		</box>
+	</style>
+	<style name="table 24_CH" mode="Opaque" backcolor="#BFBFFF">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#FEFEFE"/>
+			<bottomPen lineWidth="0.5" lineColor="#FEFEFE"/>
+		</box>
+	</style>
+	<style name="table 24_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#FEFEFE"/>
+			<bottomPen lineWidth="0.5" lineColor="#FEFEFE"/>
+		</box>
+	</style>
+	<style name="table 25">
+		<box>
+			<pen lineWidth="1.0" lineColor="#FEFEFE"/>
+		</box>
+	</style>
+	<style name="table 25_TH" mode="Opaque" backcolor="#0000CD">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#FEFEFE"/>
+			<bottomPen lineWidth="0.5" lineColor="#FEFEFE"/>
+		</box>
+	</style>
+	<style name="table 25_CH" mode="Opaque" backcolor="#BFBFFF">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#FEFEFE"/>
+			<bottomPen lineWidth="0.5" lineColor="#FEFEFE"/>
+		</box>
+	</style>
+	<style name="table 25_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#FEFEFE"/>
+			<bottomPen lineWidth="0.5" lineColor="#FEFEFE"/>
+		</box>
+	</style>
+	<style name="table 26">
+		<box>
+			<pen lineWidth="1.0" lineColor="#FEFEFE"/>
+		</box>
+	</style>
+	<style name="table 26_TH" mode="Opaque" backcolor="#0000CD">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#FEFEFE"/>
+			<bottomPen lineWidth="0.5" lineColor="#FEFEFE"/>
+		</box>
+	</style>
+	<style name="table 26_CH" mode="Opaque" backcolor="#BFBFFF">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#FEFEFE"/>
+			<bottomPen lineWidth="0.5" lineColor="#FEFEFE"/>
+		</box>
+	</style>
+	<style name="table 26_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#FEFEFE"/>
+			<bottomPen lineWidth="0.5" lineColor="#FEFEFE"/>
+		</box>
+	</style>
+	<style name="table 27">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 27_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 27_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 27_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 28">
+		<box>
+			<pen lineWidth="1.0" lineColor="#FEFEFE"/>
+		</box>
+	</style>
+	<style name="table 28_TH" mode="Opaque" backcolor="#0000CD">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#FEFEFE"/>
+			<bottomPen lineWidth="0.5" lineColor="#FEFEFE"/>
+		</box>
+	</style>
+	<style name="table 28_CH" mode="Opaque" backcolor="#BFBFFF">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#FEFEFE"/>
+			<bottomPen lineWidth="0.5" lineColor="#FEFEFE"/>
+		</box>
+	</style>
+	<style name="table 28_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#FEFEFE"/>
+			<bottomPen lineWidth="0.5" lineColor="#FEFEFE"/>
+		</box>
+	</style>
+	<style name="table 29">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 29_TH" mode="Opaque" backcolor="#0000CD">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 29_CH" mode="Opaque" backcolor="#BFBFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 29_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="detalleEmpleados" uuid="3ef0a771-df83-4ed5-a632-e4f32fb101e4">
+		<field name="nombre" class="java.lang.String"/>
+		<field name="puesto" class="java.lang.String"/>
+		<field name="area" class="java.lang.String"/>
+	</subDataset>
+	<subDataset name="detallePersepciones" uuid="b11fc519-a5aa-4fb5-8d8e-31e194ebf4fa">
+		<field name="clave" class="java.lang.String"/>
+		<field name="field1" class="java.lang.String"/>
+		<field name="field2" class="java.lang.String"/>
+	</subDataset>
+	<subDataset name="detalleDeducciones" uuid="43b25926-fe3f-4faf-bcc0-860136e187c0">
+		<field name="clave" class="java.lang.String"/>
+		<field name="nombreConcepto" class="java.lang.String"/>
+		<field name="importe" class="java.lang.String"/>
+	</subDataset>
+	<subDataset name="detalleTotal" uuid="20e3d0dc-fa3c-4405-b1fc-8fb23bae0eb5">
+		<field name="impTotpercepcion" class="java.math.BigDecimal"/>
+		<field name="impTotdeduccion" class="java.math.BigDecimal"/>
+		<field name="impTotalemp" class="java.math.BigDecimal"/>
+	</subDataset>
+	<parameter name="detalleDeduccion" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
+	<parameter name="urlHeaderImage" class="java.lang.String"/>
+	<parameter name="urlFooterImage" class="java.lang.String"/>
+	<parameter name="detalleEmpleados" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
+	<parameter name="detallePersepciones" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource" isForPrompting="false"/>
+	<parameter name="detalleDeducciones" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="detalleTotal" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
+	<parameter name="sueldoBruto" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
+	<parameter name="cabecera" class="java.lang.String">
+		<defaultValueExpression><![CDATA[$P{cabecera}]]></defaultValueExpression>
+	</parameter>
+	<parameter name="tipo" class="java.lang.String"/>
+	<parameter name="totalEmpleados" class="java.lang.Integer"/>
+	<parameter name="fechaInicio" class="java.util.Date"/>
+	<parameter name="fechaFin" class="java.util.Date" isForPrompting="false"/>
+	<parameter name="fechaPago" class="java.util.Date"/>
+	<parameter name="totalPerc" class="java.math.BigDecimal"/>
+	<parameter name="totalDeduc" class="java.math.BigDecimal"/>
+	<parameter name="importeTotal" class="java.math.BigDecimal"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["/home/eduardotorres/Escritorio/repositorio_SINOD/repositorio/4_Codigo/Version_001/SINOD/SINOD-web/src/main/webapp/resources/reports/"]]></defaultValueExpression>
+	</parameter>
+	<background>
+		<band height="678">
+			<image scaleImage="RetainShape" hAlign="Left" vAlign="Top">
+				<reportElement x="0" y="0" width="595" height="678" uuid="1079f752-fefb-4205-8729-eeaf61df1daa"/>
+				<imageExpression><![CDATA[$P{urlHeaderImage}]]></imageExpression>
+			</image>
+		</band>
+	</background>
+	<pageHeader>
+		<band height="214" splitType="Stretch">
+			<staticText>
+				<reportElement x="117" y="47" width="359" height="29" uuid="31dfdbf9-9312-4e0b-a29e-513063625323"/>
+				<textElement textAlignment="Center">
+					<font size="18" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DESGLOSE DE NÓMINA GENERAL]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="82" y="102" width="110" height="34" uuid="647aae7c-c4f8-41c6-a37b-3e4d31136227"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{cabecera}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="510" y="103" width="64" height="33" uuid="21b52ea7-2e99-4a9d-a3a2-3dd09957f553"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{totalEmpleados}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="309" y="102" width="90" height="34" uuid="12473a72-2173-4365-9190-715cdefe1280"/>
+				<textElement>
+					<font size="12" isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{tipo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="22" y="102" width="63" height="20" uuid="e2d8b733-25d4-43a9-941c-62fb93019e2a"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Nómina:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="207" y="102" width="102" height="34" uuid="38814410-95cc-4498-a3a8-1d259986d8d7"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Tipo de nómina:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="409" y="102" width="104" height="34" uuid="be7e13e8-84bd-4806-9f07-c7ce9fde8fc5"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Total de empleados:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="19" y="144" width="87" height="32" uuid="8e711be1-3c2e-49c4-86a2-a9390979aff4"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha inicio:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="102" y="144" width="96" height="32" uuid="820d56fd-9731-4957-91ab-15ac960dbb91"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new SimpleDateFormat("dd/MM/yyyy").format($P{fechaInicio})]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="207" y="144" width="64" height="32" uuid="b279242d-7b03-443d-87d1-73075348757e"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha fin:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="271" y="144" width="100" height="35" uuid="696f46b9-a83a-4198-b6d1-6acc714356f6"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new SimpleDateFormat("dd/MM/yyyy").format($P{fechaFin})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="486" y="144" width="83" height="32" uuid="4929d44a-d7d7-4ea6-85dc-a102352af578"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new SimpleDateFormat("dd/MM/yyyy").format($P{fechaPago}) ]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="410" y="144" width="76" height="32" uuid="85b89858-4ed2-442d-a146-14e1c973bfd6"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha pago:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="22" y="182" width="98" height="32" uuid="9a9acfed-5eba-482e-bbd3-47a557349bf1"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total Persepciones:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="209" y="182" width="91" height="32" uuid="c8468ac9-2eb2-4d89-abe7-b38a2a1195fe"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total deducciones::]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="409" y="181" width="64" height="32" uuid="f5803091-e04f-4621-a015-f959e84ae493"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Importe total:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="473" y="180" width="90" height="34" uuid="ffdbfeb9-eb0d-4831-b2b1-db5121d643b1"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{importeTotal}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="120" y="182" width="72" height="31" uuid="fc2a21c1-f018-4848-93b8-4342160cc058"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{totalPerc}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="299" y="182" width="100" height="31" uuid="9300f1ed-d4ff-439b-af4e-8e2bbfca1aa9"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{totalDeduc}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="432">
+			<rectangle>
+				<reportElement x="41" y="6" width="507" height="11" forecolor="#1128D9" backcolor="#1128D9" uuid="b377bd15-6693-4804-b71d-f5d9f696eb0e"/>
+			</rectangle>
+			<componentElement>
+				<reportElement key="table 29" style="table 29" x="126" y="48" width="360" height="50" uuid="9f57a549-cfc0-41a7-a3be-85c241e1be81"/>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="detalleEmpleados" uuid="424b9d96-e960-4d8a-9fb2-85bdb322e187">
+						<dataSourceExpression><![CDATA[$P{detalleEmpleados}]]></dataSourceExpression>
+					</datasetRun>
+					<jr:column width="130" uuid="bad24972-fd2a-4eb8-82c7-63359b64e94e">
+						<jr:columnHeader style="table 29_CH" height="32" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="130" height="30" uuid="fb26d21f-9fc4-4ff4-b0b0-637c948b748c"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="12"/>
+								</textElement>
+								<text><![CDATA[Nombre]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table 29_TD" height="40" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="130" height="40" uuid="33c3aac9-d454-405b-86d9-867941092115"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="10"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="122" uuid="94eef696-88f2-4d52-8869-25b3e94407ad">
+						<jr:columnHeader style="table 29_CH" height="32" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="122" height="30" uuid="99d388ff-8ef5-44d4-9728-20ecbb3cbfe3"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="12"/>
+								</textElement>
+								<text><![CDATA[Puesto]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table 29_TD" height="40" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="122" height="40" uuid="c552b50a-20ac-4d81-b9a0-8f9ff556344a"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="10"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{puesto}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="123" uuid="afd42842-52fc-42ff-b7ff-23394e9895a2">
+						<jr:columnHeader style="table 29_CH" height="32" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="123" height="30" uuid="6932ab4c-83dd-4697-9b45-8815b3449844"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="12"/>
+								</textElement>
+								<text><![CDATA[Área]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table 29_TD" height="40" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="123" height="40" uuid="7ba492d6-015b-468c-a5ed-10b6562bfdab"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="10"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{area}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+			<staticText>
+				<reportElement x="119" y="138" width="100" height="20" uuid="54c010c7-286b-41c8-8d84-6ce723791ba6"/>
+				<text><![CDATA[nombre]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="219" y="138" width="100" height="20" uuid="d036a87f-6d90-47cb-b78d-24571e0e17b8"/>
+				<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="122" splitType="Stretch">
+			<image scaleImage="RetainShape" hAlign="Left" vAlign="Top">
+				<reportElement mode="Transparent" x="0" y="33" width="595" height="89" forecolor="#000000" backcolor="#FFFFFF" uuid="edc1d99f-b8e1-4eeb-a557-2b0524838858"/>
+				<graphicElement fill="Solid"/>
+				<imageExpression><![CDATA[$P{urlFooterImage}]]></imageExpression>
+			</image>
+		</band>
+	</pageFooter>
+</jasperReport>

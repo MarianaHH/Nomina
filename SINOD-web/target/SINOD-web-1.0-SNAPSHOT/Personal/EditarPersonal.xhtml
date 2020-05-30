@@ -1,0 +1,488 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/template/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"> 
+    <ui:define name="body">
+        <main>
+            <div class="container ">
+                <!--Barra de navejación-->
+                <div align="left">
+                    <p:outputLabel value="Personal -> Editar personal" style="font-weight: bold;" />    
+                    <p:separator style="width: 100%; height:5px" />
+                </div>
+
+                <center><h4>Consultar personal</h4></center>
+
+                <style type="text/css">
+                    .ui-datatable .ui-datatable-header {
+                        text-align: right !important;
+                    }
+
+                    .ui-button-text-only .ui-button-text {
+                        padding: 0.3em 0.4em;
+                    }
+
+                    .ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-header .ui-chkbox {
+                        visibility: hidden;
+                    }
+
+                    .ui-filter-column .ui-column-customfilter .custom-filter {
+                        width: 100%;
+                        box-sizing: border-box;
+                    }
+
+                    .year-spinner input {
+                        width: 100%;
+                        box-sizing: border-box;
+                    }
+                    .value {
+                        font-weight: bold;
+                    }
+                    .ui-outputlabel{
+                        color: black;}
+                    .label {
+                        width:20%;
+                        padding:4px;
+                    }
+
+                    .value {
+                        width:80%;
+                        padding:4px;
+                    }
+
+                    .grid {
+                        width:100%;
+                    }
+
+                    .error {
+                        color: red;
+                    }
+
+                    .outputLabel {
+                        font-weight: bold;
+                    }
+
+                    .grid {
+                        width:33%;
+                        padding:4px;
+                    }
+                </style>
+
+                <h:form id="altaPersonal">
+                    <center><h5>Consultar personal</h5></center>
+                    <div class="ui-g-12 ui-md-6 ui-lg-12">
+                        <p:growl id="growl" sticky="true" showDetail="true"/>
+
+                        <p:wizard flowListener="#{empleadosNomMB.onFlowProcess}" backLabel="Atras" nextLabel="Siguiente">
+
+
+                            <p:tab id="datos" title="Datos Personales" >
+                                <p:panel header="Detalles del Personal" style="background: #FFFFFF;">
+                                    <p:messages />
+
+                                    <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
+
+                                        <p:column>
+
+                                            <div  class="ui-g-10 ui-md-6 ui-lg-10">
+                                                <div align="center">
+                                                    <h:outputText  value="#{messages['web.app.table.actualizacion']}:"/>
+                                                    <h:outputLabel value="#{empleadosNomMB.detalleSeleccionado.fec_modificacion}" style="color:black">
+                                                        <f:convertDateTime pattern="#{messages['web.app.label.formatoFecha']}" />
+                                                    </h:outputLabel>
+                                                </div>
+                                            </div >
+
+                                        </p:column> 
+                                    </h:panelGrid>
+                                    <h:panelGrid columns="3" id="detalleEmpleados" >
+
+
+                                        <p:column>  
+
+                                            <div  class="ui-g-12 ui-md-12 ui-lg-12" >
+                                                <h:outputText value="#{messages['web.app.table.nombre']}:" style="color:black"/>
+                                                <p:inputText id="NombreDOC"  class="materialize-textarea"  style="color:black;" readonly="true"
+                                                             value="#{empleadosNomMB.detalleSeleccionado.des_nombre}"/>
+
+                                            </div >
+
+                                        </p:column>
+
+                                        <p:column>
+
+
+                                            <div  class="ui-g-12 ui-md-12 ui-lg-12">
+                                                <h:outputText value="#{messages['web.app.table.aPaterno']}:" style="color:black"/>
+                                                <p:inputText id="ApellidoPDOC" class="materialize-textarea"  style="color:black;" readonly="true"
+                                                             value="#{empleadosNomMB.detalleSeleccionado.des_apepaterno}"/>
+                                            </div>
+
+                                        </p:column>
+                                        <p:column>
+
+                                            <div class="ui-g-12 ui-md-12 ui-lg-12" >
+                                                <p:outputLabel value="#{messages['web.app.table.aMaterno']}:" style="color:black"/>
+                                                <p:inputText id="ApellidoMDOC" class="materialize-textarea"  style="color:black;" readonly="true" 
+                                                             value="#{empleadosNomMB.detalleSeleccionado.des_apematerno}"/>
+                                            </div>
+
+                                        </p:column>
+                                        <p:column>  
+
+                                            <div  class="ui-g-8 ui-md-6 ui-lg-8">
+                                                <p:outputLabel value="#{messages['web.app.table.fIngreso']}:" style="color:black"/>
+                                                <p:inputText id="FechaDOC" class="materialize-textarea"  style="color:black;" readonly="true"
+                                                            value="#{empleadosNomMB.detalleSeleccionado.fec_ingreso}">
+                                                   <f:convertDateTime pattern="#{messages['web.app.label.formatoFecha']}" /> 
+                                                </p:inputText>
+                                            </div >
+
+                                        </p:column>
+                                        <p:column>
+
+                                            <div class="ui-g-12 ui-md-12 ui-lg-12"  >
+                                                <p:outputLabel value="#{messages['web.app.table.area']}:" style="color:black"/>
+                                                <p:inputText id="AreaDOC" class="materialize-textarea"  style="color:black;" readonly="true"
+                                                             value="#{empleadosNomMB.detalleSeleccionado.des_nbarea}"/>
+                                            </div>
+
+                                        </p:column>
+                                        <p:column>
+                                            <div class="ui-g-12 ui-md-12 ui-lg-12"  >
+                                                <p:outputLabel value="#{messages['web.app.table.puesto']}:" style="color:black"/>
+                                                <p:inputText id="PuestoDOC" class="materialize-textarea"  style="color:black;" readonly="true"
+                                                             value="#{empleadosNomMB.detalleSeleccionado.des_puesto}"/>
+                                            </div>
+                                        </p:column>
+                                        <p:column>
+                                            <div class="ui-g-12 ui-md-12 ui-lg-12" >
+                                                <p:outputLabel value="#{messages['web.app.table.curp']}:" style="color:black"/>
+                                                <p:inputText  id="CURPDOC" class="materialize-textarea"  style="color:black;" readonly="true" 
+                                                              value="#{empleadosNomMB.detalleSeleccionado.cod_curp}"/>
+                                            </div>
+                                        </p:column>
+                                        <p:column>
+                                            <div class="ui-g-12 ui-md-12 ui-lg-12"  >
+                                                <p:outputLabel value="#{messages['web.app.table.rol']}:" style="color:black"/>
+                                                <p:inputText id="RolDOC" class="materialize-textarea"  style="color:black;" readonly="true"
+                                                             value="#{empleadosNomMB.detalleSeleccionado.des_rol}" />
+                                            </div>
+
+                                        </p:column>
+                                        <p:column>
+                                            <div class="ui-g-12 ui-md-12 ui-lg-12"  >
+                                                <p:outputLabel value="#{messages['web.app.table.fNac']}:" style="color:black"/>
+                                                <p:inputText id="FechaNac" class="materialize-textarea"  style="color:black;" readonly="true"
+                                                             value="#{empleadosNomMB.detalleSeleccionado.fec_nacimiento}">
+                                                    <f:convertDateTime pattern="#{messages['web.app.label.formatoFecha']}" />
+                                                </p:inputText>
+                                            </div>
+                                        </p:column>
+                                        <p:column>
+                                            <div class="ui-g-12 ui-md-12 ui-lg-12" >
+                                                <p:outputLabel value="#{messages['web.app.table.rfc']}:" style="color:black"/>
+                                                <p:inputText  id="RFCDOC" class="materialize-textarea"  style="color:black;" readonly="true"
+                                                              value="#{empleadosNomMB.detalleSeleccionado.cod_rfc}"/>
+                                            </div>
+
+
+                                        </p:column>
+                                        <p:column>
+                                            <div class="ui-g-12 ui-md-12 ui-lg-12"  >
+                                                <p:outputLabel value="#{messages['web.app.table.direccion']}:" style="color:black"/>
+                                                <p:inputText  id="DireccionDOC" class="materialize-textarea"  style="color:black;" readonly="true"
+                                                              value="#{empleadosNomMB.detalleSeleccionado.des_direccion}" />
+                                            </div>
+
+
+                                        </p:column>
+
+                                        <p:column>
+                                            <div class="ui-g-12 ui-md-12 ui-lg-12"  >
+                                                <p:outputLabel value="#{messages['web.app.table.correoMBN']}:" style="color:black"/>
+                                                <p:inputText id="CorreoDOC" class="materialize-textarea"  style="color:black;" readonly="true" 
+                                                             value="#{empleadosNomMB.detalleSeleccionado.des_correo}"/>
+                                            </div>
+                                        </p:column>
+
+                                        <p:column>
+                                            <div class="ui-g-12 ui-md-12 ui-lg-12"  >
+                                                <p:outputLabel value="#{messages['web.app.table.nss']}:" style="color:black"/>
+                                                <p:inputText  id="NSS" class="materialize-textarea"  style="color:black;" readonly="true"
+                                                              value="#{empleadosNomMB.detalleSeleccionado.cod_nss}"/>
+                                            </div>
+
+                                        </p:column>
+                                        <p:column>
+                                            <div class="ui-g-12 ui-md-12 ui-lg-12"  >
+                                                <p:outputLabel value="#{messages['web.app.table.correopersonal']}:" style="color:black"/>
+                                                <p:inputText id="CorreopersonalDOC" class="materialize-textarea"  style="color:black;" readonly="true" 
+                                                             value="#{empleadosNomMB.detalleSeleccionado.correo_personal}"/>
+                                            </div>
+
+                                        </p:column>
+
+
+                                    </h:panelGrid>
+
+                                </p:panel>
+                            </p:tab>
+                            <p:tab  id="sueldo" title="Sueldo">
+                                <p:panel header="Detalles del Sueldo" style="background: #FFFFFF;">
+                                    <p:outputLabel value="#{messages['web.app.table.imss']}:" style="font-weight: bold;color:black" />    
+                                    <br/>
+                                    <h:panelGrid columns="2" id="imss">
+                                        <p:column>
+                                            <div class="ui-g-4 ui-md-4 ui-lg-4"  >
+                                                <h:outputText value="#{messages['web.app.table.importe']}:" style="color:black"/>
+                                                <p:inputNumber symbol="$" 
+                                                               decimalSeparator="." 
+                                                               thousandSeparator="," 
+                                                               id="importeImss" class="materialize-textarea" style="color:blue;" 
+                                                               value="#{empleadosNomMB.empleadosNom.impSueldoimss}" />
+                                            </div>
+                                        </p:column>
+
+
+                                        <p:column>
+                                            <div class="ui-g-4 ui-md-4 ui-lg-4"  >
+                                                <p:outputLabel style="color:black" value="#{messages['web.app.table.tipopago']}:"/><p:spacer width="100" height="10"/>
+                                                <p:selectOneMenu id="tipoPago" class="materialize-textarea" value="#{empleadosNomMB.empleadosNom.codTipoimss}"
+                                                                 required="true"
+                                                                 >
+                                                    <f:selectItem itemLabel="Selecciona" itemValue="#{null}"  noSelectionOption="true"/>
+                                                    <f:selectItem itemLabel="Transferencia" itemValue="1" />
+                                                    <f:selectItem itemLabel="Efectivo" itemValue="0" />
+                                                    <p:ajax event="change" 
+                                                            process="@this" update="imss"/>
+                                                </p:selectOneMenu>
+                                            </div>
+                                        </p:column>
+
+
+                                        <p:column rendered="#{empleadosNomMB.empleadosNom.codTipoimss=='1'?true:false}">
+                                            <div class="ui-g-6 ui-md-6 ui-lg-6" >
+                                                <p:outputLabel value="#{messages['web.app.table.banco']}:" style="color:black"/>
+                                                <p:inputText  id="BancoDOC" class="materialize-textarea" 
+                                                              value="#{empleadosNomMB.empleadosNom.codBanco}"/>
+                                            </div>
+                                        </p:column>
+
+                                        <p:column rendered="#{empleadosNomMB.empleadosNom.codTipoimss=='1'?true:false}">
+                                            <div class="ui-g-6 ui-md-6 ui-lg-6"  >
+                                                <p:outputLabel value="#{messages['web.app.table.sucursal']}:" style="color:black"/>
+                                                <p:inputText id="SucursalDOC" class="materialize-textarea"
+                                                             value="#{empleadosNomMB.empleadosNom.codSucursal}"/>
+                                            </div>  
+                                        </p:column>   
+
+
+                                        <p:column rendered="#{empleadosNomMB.empleadosNom.codTipoimss=='1'?true:false}">
+                                            <div class="ui-g-6 ui-md-6 ui-lg-6"  >
+                                                <p:outputLabel value="#{messages['web.app.table.cuenta']}:" style="color:black"/>
+                                                <p:inputText  id="CuentaDOC" class="materialize-textarea" 
+                                                              value="#{empleadosNomMB.empleadosNom.codCuenta}"/>
+                                            </div>
+
+                                        </p:column > 
+                                        <p:column rendered="#{empleadosNomMB.empleadosNom.codTipoimss=='1'?true:false}">
+                                            <div class="ui-g-6 ui-md-6 ui-lg-6"  >
+                                                <p:outputLabel value="#{messages['web.app.table.clabe']}:" style="color:black"/>
+                                                <p:inputText  id="CLABEDOC" class="materialize-textarea"  
+                                                              value="#{empleadosNomMB.empleadosNom.codClabe}"/>
+                                            </div>
+                                        </p:column>
+
+
+                                    </h:panelGrid>
+
+                                    <!--HONORARIOS-->
+
+                                    <p:outputLabel value="#{messages['web.app.table.honorarios']}:" style="font-weight: bold;color:black" />    
+                                    <br/>
+                                    <h:panelGrid columns="2" id="honorarios">
+                                        <p:column>
+                                            <div class="ui-g-4 ui-md-4 ui-lg-4"  >
+                                                <p:outputLabel value="#{messages['web.app.table.importe']}:" style="color:black"/>
+                                                <p:inputNumber  symbol="$" 
+                                                                decimalSeparator="." thousandSeparator="," id="importeHonorarios"
+                                                                class="materialize-textarea" disabled="false" style="color:blue;" 
+                                                                value="#{empleadosNomMB.empleadosNom.impHonorarios}"/>
+                                            </div>
+                                        </p:column>
+
+
+                                        <p:column>
+                                            <div class="ui-g-4 ui-md-4 ui-lg-4"  >
+                                                <p:outputLabel style="color:black" value="#{messages['web.app.table.tipopago']}:"/><p:spacer width="100" height="10"/>
+                                                <p:selectOneMenu id="tipoPago2" value="#{empleadosNomMB.empleadosNom.codTipohonorarios}">
+                                                    <f:selectItem itemLabel="Selecciona" itemValue="#{null}" />
+                                                    <f:selectItem itemLabel="Transferencia" itemValue="1" />
+                                                    <f:selectItem itemLabel="Efectivo" itemValue="0" />
+                                                    <p:ajax event="change" 
+                                                            process="@this" update="honorarios"/>
+                                                </p:selectOneMenu>
+                                            </div>
+                                        </p:column>
+
+
+                                        <p:column rendered="#{empleadosNomMB.empleadosNom.codTipohonorarios=='1'?true:false}" >
+                                            <div class="ui-g-6 ui-md-6 ui-lg-6" >
+                                                <p:outputLabel value="#{messages['web.app.table.banco']}:" style="color:black"/>
+                                                <p:inputText id="BancoHON" class="materialize-textarea" 
+                                                             value="#{empleadosNomMB.empleadosNom.codBancoh}"/>
+                                            </div>
+                                        </p:column>
+
+                                        <p:column  rendered="#{empleadosNomMB.empleadosNom.codTipohonorarios=='1'?true:false}">
+                                            <div class="ui-g-6 ui-md-6 ui-lg-6"  >
+                                                <p:outputLabel value="#{messages['web.app.table.sucursal']}:" style="color:black"/>
+                                                <p:inputText id="SucursalHON" class="materialize-textarea" 
+                                                             value="#{empleadosNomMB.empleadosNom.codSucursalh}"/>
+                                            </div>  
+                                        </p:column>   
+
+
+                                        <p:column rendered="#{empleadosNomMB.empleadosNom.codTipohonorarios=='1'?true:false}">
+                                            <div class="ui-g-6 ui-md-6 ui-lg-6"  >
+                                                <p:outputLabel value="#{messages['web.app.table.cuenta']}:" style="color:black"/>
+                                                <p:inputText  id="CuentaHON" class="materialize-textarea"
+                                                              value="#{empleadosNomMB.empleadosNom.codCuentah}"/>
+                                            </div>
+
+                                        </p:column> 
+                                        <p:column rendered="#{empleadosNomMB.empleadosNom.codTipohonorarios=='1'?true:false}">
+                                            <div class="ui-g-6 ui-md-6 ui-lg-6"  >
+                                                <p:outputLabel value="#{messages['web.app.table.clabe']}:" style="color:black"/>
+                                                <p:inputText  id="CLABEHON" class="materialize-textarea"  
+                                                              value="#{empleadosNomMB.empleadosNom.codClabeh}"/>
+                                            </div>
+                                        </p:column>
+
+                                    </h:panelGrid>
+
+
+
+                                </p:panel>
+                            </p:tab>
+
+                            <p:tab id="confirm" title="Confirmacion">
+                                <p:panel header="Confirmación" style="background: #FFFFFF;">
+                                    <h:panelGrid id="confirmacion" columns="2" columnClasses="grid,grid,grid">
+
+                                        <h:panelGrid columns="2" >
+                                            <h:outputText value="#{messages['web.app.table.nombre']}:" />
+                                            <h:outputText value="#{empleadosNomMB.detalleSeleccionado.des_nombre}" styleClass="outputLabel"/>
+
+                                            <h:outputText value="#{messages['web.app.table.aPaterno']}:" />
+                                            <h:outputText value="#{empleadosNomMB.detalleSeleccionado.des_apepaterno}" styleClass="outputLabel"/>
+
+                                            <h:outputText value="#{messages['web.app.table.aMaterno']}:"/>
+                                            <h:outputText value="#{empleadosNomMB.detalleSeleccionado.des_apematerno}" styleClass="outputLabel"/> 
+                                        </h:panelGrid>
+
+                                        <h:panelGrid columns="2" >
+                                            <h:outputText value="#{messages['web.app.table.fIngreso']}:" />   
+                                            <h:outputText value="#{empleadosNomMB.detalleSeleccionado.fec_ingreso}" styleClass="outputLabel">
+                                                <f:convertDateTime pattern="#{messages['web.app.label.formatoFecha']}" />
+                                            </h:outputText>
+
+                                            <h:outputText value="#{messages['web.app.table.area']}:" />
+                                            <h:outputText value="#{empleadosNomMB.detalleSeleccionado.des_nbarea}" styleClass="outputLabel"/>
+
+                                            <h:outputText value="#{messages['web.app.table.puesto']}:" />
+                                            <h:outputText value="#{empleadosNomMB.detalleSeleccionado.des_puesto}" styleClass="outputLabel"/>
+                                        </h:panelGrid>
+                                        <p:panel style="border-color: white">
+                                            
+                                            <h:panelGrid columns="1">
+                                                <p:column rendered="#{empleadosNomMB.empleadosNom.codTipoimss=='0'?true:false}">
+                                                    <h:outputText value="Tu tipo de pago es en efectivo" /> 
+                                                </p:column>
+                                                <p:column>
+                                                    <h:outputText value="#{messages['web.app.table.sueldoimss']}: " />
+                                                    <h:outputText value="$#{empleadosNomMB.empleadosNom.impSueldoimss}" styleClass="outputLabel"/>
+
+                                                </p:column>
+                                                    
+                                                
+                                            </h:panelGrid>
+                                            
+                                          
+                                          <p:column rendered="#{empleadosNomMB.empleadosNom.codTipoimss=='1'?true:false}">
+                                            <h:panelGrid columns="2">
+                                            
+                                            <h:outputText value="#{messages['web.app.table.banco']}:" />
+                                            <h:outputText value="#{empleadosNomMB.empleadosNom.codBanco}" styleClass="outputLabel"/>
+
+                                            <h:outputText value="#{messages['web.app.table.sucursal']}:" />
+                                            <h:outputText value="#{empleadosNomMB.empleadosNom.codSucursal}" styleClass="outputLabel"/>
+
+                                            <h:outputText value="#{messages['web.app.table.cuenta']}:" />
+                                            <h:outputText value="#{empleadosNomMB.empleadosNom.codCuenta}" styleClass="outputLabel"/>
+
+                                            <h:outputText value="#{messages['web.app.table.clabe']}:" />
+                                            <h:outputText value="#{empleadosNomMB.empleadosNom.codClabe}" styleClass="outputLabel"/>
+                                        </h:panelGrid>  
+                                          </p:column>
+                                     </p:panel>
+                                        
+                                        <p:panel style="border-color: white">
+                                            <h:panelGrid columns="1">
+                                                <p:column rendered="#{empleadosNomMB.empleadosNom.codTipohonorarios=='0'?true:false}">
+                                               <h:outputText value="Tu tipo de pago es en efectivo" /> 
+                                            </p:column>
+                                                <p:column>
+                                                    <h:outputText value="#{messages['web.app.table.sueldohon']}: " />
+                                                    <h:outputText value="$#{empleadosNomMB.empleadosNom.impHonorarios}" styleClass="outputLabel"/>
+                                                </p:column>    
+                                            
+                                            </h:panelGrid>
+
+                                            <p:column rendered="#{empleadosNomMB.empleadosNom.codTipohonorarios=='1'?true:false}">
+                                      <h:panelGrid columns="2" >
+                                            
+                                            <h:outputText value="#{messages['web.app.table.banco']}:"/>
+                                            <h:outputText value="#{empleadosNomMB.empleadosNom.codBancoh}" styleClass="outputLabel"/>
+
+                                            <h:outputText value="#{messages['web.app.table.sucursal']}:" />
+                                            <h:outputText value="#{empleadosNomMB.empleadosNom.codSucursalh}" styleClass="outputLabel"/>
+
+                                            <h:outputText value="#{messages['web.app.table.cuenta']}:"/>
+                                            <h:outputText value="#{empleadosNomMB.empleadosNom.codCuentah}" styleClass="outputLabel"/>
+
+                                            <h:outputText value="#{messages['web.app.table.clabe']}:" />
+                                            <h:outputText value="#{empleadosNomMB.empleadosNom.codClabeh}" styleClass="outputLabel"/>
+                                       </h:panelGrid>
+                                           </p:column>
+                                        </p:panel>  
+                                           
+                                        
+                                    
+                                        
+
+                                    </h:panelGrid>
+                                    <p:commandButton value="Guardar" action="#{empleadosNomMB.editar()}" update="growl" ajax="true"/>
+                                </p:panel>
+                            </p:tab>
+                        </p:wizard>  
+
+
+
+                    </div>
+                </h:form> 
+            </div> <!-- end container -->
+        </main>
+    </ui:define> 
+</ui:composition>

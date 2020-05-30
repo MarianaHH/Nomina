@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/template/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">   
+
+    <ui:define name="body">
+        <!--vista para pagos de recursos humanos-->
+        <main>
+            <div class="container ">
+                <!--Barra de navejación-->
+                <div align="left">
+                    <p:outputLabel value="#{messages['web.app.table.pagos.autorizacionRH.menu']}" 
+                                   style="#{messages['web.app.style.menu']}"/>    
+                    <p:separator style="width: 100%; height:5px" />
+                </div>
+
+                <center><h4>Autorización de Recursos Humanos</h4></center>
+                <div>
+                    <h:form id="autorizacionRH">                        
+                        <!--Prueba para la caja de busqueda -->
+                        <p:growl id="mensajesDetalle" showDetail="true" sticky="true" />  
+                        <div class="#{messages['web.app.table.tabla1']}">
+                            <p:outputLabel for="cabeceras" value="#{messages['web.app.table.quin']}" 
+                                           style="color: black;" /> 
+                            <br></br> 
+                            <p:selectOneMenu id="cabeceras" value="#{autopagosMB.cabeceraEmp}" 
+                                             style="width: 90%;" 
+                                             converter="omnifaces.SelectItemsConverter" >
+
+                                <f:selectItem itemLabel="Seleccione un periodo" 
+                                              itemValue="#{null}" 
+                                              noSelectionOption="true" />
+
+                                <f:selectItems value="#{autopagosMB.todasCabece}" 
+                                               var="cabeceras" itemLabel="#{cabeceras.codNbnomina}" 
+                                               itemValue="#{cabecera}" />
+
+                                <p:ajax event="change"  process="@this"
+                                        listener="#{autopagosMB.busquedas()}"
+                                        update="tablaPagosRH, Guardar"
+                                        />
+                            </p:selectOneMenu>
+                        </div>
+                        <br></br>
+                        <br></br>
+                        <br></br>
+
+                        <!-- Fin de la caja de busqueda -->
+
+                        <p:dataTable id="tablaPagosRH" var="pagos"  value ="#{autopagosMB.todosEmp}"
+                                     emptyMessage="No hay autorización de Recursos Finacieros" 
+                                     reflow="true" rows="#{messages['web.app.table.initialRows']}" paginatorPosition="bottom" paginator="true" 
+                                     rowIndexVar="numerador" 
+                                     style="font-size: small" >
+
+                            <f:facet name="header">
+
+                                <p:commandButton action ="#{autopagosMB.dialogAprobarTodos()}" 
+                                                 icon="#{messages['web.app.icon.aprobar']}"
+                                                 title ="Aprobar todos"
+                                                 process="@this"
+                                                 rendered="#{autopagosMB.todosEmp.size()>0?true:false}"
+                                                 style="display:inline; 
+                                                 float:right; 
+                                                 font-size: small;
+                                                 align-content: center"
+                                                 update="tablaPagosRH,confTodos">
+                                </p:commandButton>
+                                <p:commandButton action ="#{autopagosMB.dialogCancelarTodos()}" 
+                                                 icon="#{messages['web.app.icon.cancelar']}" 
+                                                 process="@this" 
+                                                 title ="Cancelar todos"
+                                                 rendered="#{autopagosMB.todosEmp.size()>0?true:false}"
+                                                 style="display:inline; 
+                                                 float:right; 
+                                                 font-size: small;
+                                                 align-content: center"
+                                                 update="tablaPagosRH,confTodos">
+                                </p:commandButton>
+                                <p:spacer height="27"/>
+                            </f:facet>
+
+                            <p:column headerText="#{messages['web.app.table.idEmpleado']}" 
+                                      width="auto" style="text-align:center"> 
+                                <h:outputText value="#{pagos.codempleado}" />
+                            </p:column>    
+
+                            <p:column filterBy="#{pagos.nomcompleto}"
+                                      headerText="#{messages['web.app.table.empleado']}"
+                                      filterMatchMode="contains"
+                                      filterStyle="background: #FFFFFF; height:4%" 
+                                      width="auto" style="text-align:center"> 
+                                <h:outputText value="#{pagos.nomcompleto}" style="font-size: small;"/>
+                            </p:column>
+
+                            <p:column filterBy="#{pagos.desnbarea}" 
+                                      headerText="#{messages['web.app.table.area']}"
+                                      filterMatchMode="contains" 
+                                      filterStyle="background: #FFFFFF; height:4%"
+                                      width="137" style="text-align:center"> 
+                                <h:outputText value="#{pagos.desnbarea}" />
+                            </p:column>
+
+                            <p:column headerText="#{messages['web.app.table.puesto']}" 
+                                      width="17%" style="text-align:center"> 
+                                <h:outputText value="#{pagos.despuesto}" />
+                            </p:column>
+                            <p:column headerText="#{messages['web.app.table.monto']}"
+                                      width="auto" style="text-align:center"> 
+                                <h:outputText value="$ #{pagos.monto}" />
+                            </p:column>
+                            <p:column headerText="Estaus RF" width="auto" style="text-align:center"> 
+                                <h:outputText value="#{pagos.bol_pagofinanzas=='true'?'APROBADO':
+                                                       pagos.bol_pagofinanzas=='false'?'RECHAZADO':'PENDIENTE'}"/>
+                            </p:column>
+                            <p:column headerText="#{messages['web.app.table.estatus']}" 
+                                      width="auto" style="text-align:center"> 
+                                <h:outputText id="estatusRH" 
+                                              value="#{pagos.bol_pagorh=='true'?'APROBADO':
+                                                       pagos.bol_pagorh=='false'?'RECHAZADO':'PENDIENTE'}"/>
+                            </p:column>
+
+                            <p:column headerText="Acciones" style="text-align:center" >
+                                <p:growl id="messages" showDetail="true"/>
+
+                                <p:menuButton icon="#{messages['web.app.icon.desplegar']}">
+                                    <p:menuitem value="#{messages['web.app.button.aprobar']}" 
+                                                action="#{autopagosMB.autlrizaRH(pagos)}" icon="#{messages['web.app.icon.aprobar']}" 
+                                                update="estatusRH, tablaPagosRH" />
+
+                                    <p:menuitem value="#{messages['web.app.button.rechazar']}" 
+                                                action="#{autopagosMB.rechazarRH(pagos)}" icon="#{messages['web.app.icon.cancelar']}" 
+                                                update="estatusRH, tablaPagosRH"/>
+                                </p:menuButton>          
+                            </p:column>
+
+                        </p:dataTable>
+                        <div class="ui-g-12 ui-md-6 ui-lg-12" align="right">
+                            <p:commandButton value="#{messages['web.app.button.guardar']}" id="Guardar" 
+                                             immediate="true"
+                                             process="@this" 
+                                             update="tablaPagosRH, mensajesDetalle"
+                                             disabled="#{autopagosMB.todosEmp.size()>0?false:true}"
+                                             action="#{autopagosMB.guardarRH()}"
+                                             style="margin-right:2%;" 
+                                             styleClass="ui-priority-primary" />
+                        </div>
+                    </h:form>
+                </div>
+
+                <!-- dialogo para aprobar todos los pagos -->
+                <p:confirmDialog id="confTodos" widgetVar="confTodos" 
+                                 header="Aprobar todos los pagos" 
+                                 closable="false"
+                                 message="#{messages['web.app.msj.aprobarTodos']}" 
+                                 showEffect="fade" hideEffect="fade">
+                    <center>
+                        <div align="right">
+                            <p:commandButton value="#{messages['web.app.button.cancelar']}" 
+                                             process="@this"
+                                             onclick="PF('confTodos').hide();"/>
+                            <p:commandButton value="#{messages['web.app.button.aceptar']}" 
+                                             process="@this"
+                                             action="#{autopagosMB.validarTodasRH()}"
+                                             update="autorizacionRH:tablaPagosRH, autorizacionRH:tablaPagosRH:estatusRH, 
+                                             autorizacionRH:mensajesDetalle"/>
+                            <!--onclick="PF('confTodos').hide();"/>-->
+                        </div>
+                    </center>
+                </p:confirmDialog>
+                
+                <!-- dialogo para rechazar todos los pagos-->
+                <p:confirmDialog id="cancelarTodos" widgetVar="cancelarTodos" 
+                                 header="Rechazar todos los pagos" 
+                                 closable="false"
+                                 message="#{messages['web.app.msj.cancelarTodos']}" 
+                                 showEffect="fade" hideEffect="fade">
+                    <center>
+                        <div align="right">
+                            <p:commandButton value="#{messages['web.app.button.cancelar']}" process="@this" 
+                                             onclick="PF('cancelarTodos').hide();"/>
+                            <p:commandButton value="#{messages['web.app.button.aceptar']}" 
+                                             process="@this"
+                                             action="#{autopagosMB.rechazarTodasRH()}"
+                                             update="autorizacionRH:tablaPagosRH, autorizacionRH:tablaPagosRH:estatusRH, 
+                                             autorizacionRH:mensajesDetalle"/>
+                            <!--onclick="PF('confTodos').hide();"--> 
+
+                        </div>
+                    </center>
+                </p:confirmDialog>
+
+
+            </div> <!-- end container -->     
+        </main>
+
+    </ui:define>
+</ui:composition>

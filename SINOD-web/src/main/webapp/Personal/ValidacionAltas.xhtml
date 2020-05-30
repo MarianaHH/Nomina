@@ -1,0 +1,181 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/template/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">   
+    <ui:define name="body">
+        <main>
+            <div class="container ">
+
+                <!--Barra de navegación-->
+                <div align="left">
+                    <p:outputLabel value="#{messages['web.app.table.nomina.valAltas.menu']}" style="#{messages['web.app.style.menu']}" />    
+                    <p:separator style="width: 100%; height:5px" />
+                </div>
+                <center><h4>Validar altas</h4></center>
+                <h:form id="validarAltasForm">
+                    
+                    <div class="#{messages['web.app.table.tabla2']}">
+                        <p:growl id="msgs" showDetail="true" />
+                        <center><h5>Altas</h5></center>
+
+
+
+                        <p:dataTable id="tablaAltasAValidar" var="dtAltas" 
+                                     value="#{validacionAltasMB.listaAltasValidadas}"
+                                     emptyMessage="#{messages['web.app.table.noData']}"
+                                     reflow="true" rows="#{messages['web.app.table.initialRows']}" paginator="true" paginatorPosition="bottom" 
+                                     rowIndexVar="rowIndex" style="font-size: small" >
+
+
+                            <f:facet name="header">
+                                <p:spacer height="27"/>
+                                <p:commandButton action ="#{validacionAltasMB.dialogoValidarAltasAceptadas()}" 
+                                                 icon="#{messages['web.app.icon.aprobar']}" 
+                                                 title ="Aprobar todos"
+                                                 rendered="#{validacionAltasMB.listaAltasValidadas.size()>1?true:false}"
+                                                 style="display:inline; 
+                                                 float:right; 
+                                                 font-size: small;
+                                                 align-content: center"
+                                                 update="validarAltasForm:msgs,tablaAltasAValidar">
+                                </p:commandButton>
+                                <p:commandButton action ="#{validacionAltasMB.dialogoValidarAltasRechazadas()}" 
+                                                 icon="#{messages['web.app.icon.cancelar']}" 
+                                                 title ="Rechazar todos"
+                                                 rendered="#{validacionAltasMB.listaAltasValidadas.size()>1?true:false}"
+                                                 style="display:inline; 
+                                                 float:right; 
+                                                 font-size: small;
+                                                 align-content: center"
+                                                 update="validarAltasForm:msgs,validarAltasForm:tablaAltasAValidar">
+                                </p:commandButton>
+                                <p:spacer height="25"/>
+                            </f:facet>
+
+
+
+                            
+                            <p:column headerText="#{messages['web.app.table.empleado']}" width="12%" style="text-align:center" >
+                                <h:outputText value="#{dtAltas.nom_empleado}" />
+                            </p:column>
+                            <p:column headerText="#{messages['web.app.table.rfc']}" width="12%" style="text-align:center">
+                                <h:outputText value="#{dtAltas.cod_rfc}" />
+                            </p:column>
+                            <p:column headerText="#{messages['web.app.table.curp']}" width="12%" style="text-align:center">
+                                <h:outputText value="#{dtAltas.cod_curp}" />
+                            </p:column>
+                            <p:column headerText="#{messages['web.app.table.area']}" width="12%" style="text-align:center" >
+                                <h:outputText value="#{dtAltas.des_nbarea}" />
+                            </p:column>
+                            <p:column headerText="#{messages['web.app.table.puesto']}" width="12%" style="text-align:center">
+                                <h:outputText value="#{dtAltas.des_puesto}" />
+                            </p:column>
+                            <p:column  headerText="#{messages['web.app.table.validar']}" width="10%" style="text-align:center" >
+                                <h:outputText id="txtValidar" value="#{dtAltas.validar==true?'ACEPTADA':
+                                                                       dtAltas.validar==false?'RECHAZADA':'Pendiente'}"  />
+
+                                
+                            </p:column>
+                            <p:column headerText="#{messages['web.app.table.acciones']}" width="10%" style="text-align:center" >
+                                
+                                <p:menuButton icon="#{messages['web.app.icon.desplegar']}">
+
+                                    
+                                    <p:menuitem value="#{messages['web.app.button.aceptar']}"  icon="#{messages['web.app.icon.aprobar']}" 
+                                                action="#{validacionAltasMB.validarCadaAlta(0,dtAltas)}"
+                                                update="validarAltasForm:tablaAltasAValidar">
+                                    </p:menuitem>
+                                    <p:menuitem value="#{messages['web.app.button.rechazar']}"  icon="#{messages['web.app.icon.cerrar']}"
+                                                action="#{validacionAltasMB.validarCadaAlta(1,dtAltas)}"
+                                                update="validarAltasForm:tablaAltasAValidar"/>
+                                   
+                                </p:menuButton>
+                            </p:column>
+                        </p:dataTable>
+
+                        <div class="#{messages['web.app.table.tabla2']}" align="right">
+                            <p:commandButton value="#{messages['web.app.button.guardar']}" id="btnGuardar" 
+                                             immediate="true"
+                                             ajax="true"
+                                             process="@this" 
+                                             update="validarAltasForm:msgs,validarAltasForm:tablaAltasAValidar"  
+                                             action="#{validacionAltasMB.dialogoGuardarValidaciones()}" 
+                                             disabled="#{validacionAltasMB.listaAltasValidadas.size()==0?true:false}"
+                                             style="margin-right:2%;" 
+                                             styleClass="ui-priority-primary">
+                            </p:commandButton>
+                        </div>   
+                    </div>
+              <!-- </h:panelGrid>-->
+
+
+                </h:form>
+                            
+ 
+
+                <!-- dialogo para validar todas las altas -->
+
+                <p:confirmDialog id="dialogValidarAltasAceptadas" widgetVar="dialogValidarAltasAceptadas" 
+                                 header="Aviso" closable="false"
+                                 message="#{messages['web.app.msj.adver.validarAltasAceptadas']}" 
+                                 showEffect="fade" hideEffect="fade" >
+                    <center>
+
+                        <p:commandButton value="#{messages['web.app.button.no']}" 
+                                         process="@this" 
+                                         onclick="PF('dialogValidarAltasAceptadas').hide();" />
+                        <p:commandButton value="#{messages['web.app.button.si']}" process="@this" 
+                                         action="#{validacionAltasMB.validarAltasAceptadas()}" 
+                                         update="dialogValidarAltasAceptadas,validarAltasForm:msgs,validarAltasForm:tablaAltasAValidar"/>
+                    </center>
+
+
+                </p:confirmDialog>
+
+                <!-- dialogo para rechazar todas las altas-->
+
+                <p:confirmDialog id="dialogValidarAltasRechazadas" widgetVar="dialogValidarAltasRechazadas" 
+                                 header="Aviso" closable="false"
+                                 message="#{messages['web.app.msj.adver.validarAltasRechazadas']}" 
+                                 showEffect="fade" hideEffect="fade" >
+                    <center>
+
+                        <p:commandButton value="#{messages['web.app.button.no']}" 
+                                         process="@this" 
+                                         onclick="PF('dialogValidarAltasRechazadas').hide();" />
+                        <p:commandButton value="#{messages['web.app.button.si']}" process="@this" 
+                                         action="#{validacionAltasMB.validarAltasRechazadas()}" 
+                                         update="dialogValidarAltasRechazadas,validarAltasForm:msgs,validarAltasForm:tablaAltasAValidar"/>
+                    </center>
+                </p:confirmDialog>
+                
+                <!--dialogo para guardar todas las altas-->
+                
+                <p:confirmDialog id="dialogGuardarAltas" widgetVar="dialogGuardarAltas" 
+                                 header="Aviso" closable="false"
+                                 message="#{messages['web.app.msj.adver.guardarValidacion']}" 
+                                 showEffect="fade" hideEffect="fade" >
+                    <center>
+
+                        <p:commandButton value="#{messages['web.app.button.no']}" 
+                                         process="@this" 
+                                         onclick="PF('dialogGuardarAltas').hide();" />
+                        <p:commandButton value="#{messages['web.app.button.si']}" process="@this" 
+                                         action="#{validacionAltasMB.guardarAltas()}" 
+                                         update="dialogGuardarAltas,validarAltasForm:msgs,validarAltasForm:tablaAltasAValidar"/>
+                    </center>
+
+
+                </p:confirmDialog>
+                
+                
+                
+            </div> <!-- end container -->
+        </main>
+    </ui:define>
+</ui:composition>

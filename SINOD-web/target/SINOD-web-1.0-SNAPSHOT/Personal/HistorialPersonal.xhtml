@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/template/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"> 
+    <ui:define name="body">
+        <main>
+            <div class="container ">
+                <!--Barra de navejación-->
+                <div align="left">
+                    <p:outputLabel value="#{messages['web.app.table.personal.historia.menu']}" style="#{messages['web.app.style.menu']}" />    
+                    <p:separator style="width: 100%; height:5px" />
+                </div>
+
+                <center><h4>Historial de personal</h4></center>
+                <br/>
+
+                    <h:form id="detallePersonal">
+                    <!--<center><h5>Datos de personal</h5></center>-->
+
+                    <div class="ui-g-12 ui-md-6 ui-lg-12">
+                        <h:panelGrid columns="2" >
+                            <p:column>
+
+                                <div  class="ui-g-16 ui-md-6 ui-lg-6">
+                                    <div align="center">
+                                        <h:outputText value="#{messages['web.app.table.fIngreso']}: "/>
+                                        <h:outputLabel value="#{verInformacionDePersonalMB.detalleSeleccionado.fec_ingreso}" style="color:black">
+                                            <f:convertDateTime pattern="#{messages['web.app.label.formatoFecha']}" />
+                                        </h:outputLabel>
+                                    </div>
+                                </div>
+
+                            </p:column> 
+                            <p:column>
+
+                                <div  class="ui-g-10 ui-md-6 ui-lg-10">
+                                    <div align="center">
+                                        <h:outputText value="#{messages['web.app.table.empleado']}: "/>
+                                        <h:outputLabel value="#{verInformacionDePersonalMB.detalleSeleccionado.des_nombre} 
+                                                       #{verInformacionDePersonalMB.detalleSeleccionado.des_apepaterno}
+                                                       #{verInformacionDePersonalMB.detalleSeleccionado.des_apematerno}" style="color:black">
+                                        </h:outputLabel>
+                                    </div>
+                                </div >
+
+                            </p:column> 
+                        </h:panelGrid>
+
+                    </div>
+
+
+                    <div class="ui-g-12 ui-md-6 ui-lg-12">
+
+
+                        <p:dataTable  var="dtInfoHistorial" 
+                                      value="#{historialEmpleadosRhMB.historialEmpleadosRh}" 
+                                      id="tablaHistorialDatos"
+                                      emptyMessage="#{messages['web.app.table.noData']}" 
+                                      rows="#{messages['web.app.table.initialRows']}" 
+                                      paginator="true"
+                                      style="font-size: small" 
+                                      paginatorPosition="bottom">
+                           <f:facet name="header">
+                                <p:outputPanel>
+                                    <div align="center">
+                                        <h:outputText value="#{messages['web.app.table.quincena']}" />
+                                    </div>
+                                </p:outputPanel>
+                            </f:facet>
+                            <p:ajax event="rowToggle" listener="#{historialEmpleadosRhMB.detallesConceptos(dtInfoHistorial.quincena)}" />
+                            <p:column headerText="Detalles" width="5%">
+                                <!--h:outputText value="{datosNomTab.mostrarDetalles}" /-->
+                                <p:rowToggler />
+                            </p:column>
+
+                            <p:column headerText="#{messages['web.app.table.area']}" width="auto" style="text-align:center">
+                                <h:outputText value="#{dtInfoHistorial.des_nbarea}" />
+                            </p:column>
+                            <p:column headerText="#{messages['web.app.table.puesto']}" width="auto" style="text-align:center">
+                                <h:outputText value="#{dtInfoHistorial.des_puesto}" />
+                            </p:column>
+                            <p:column headerText="#{messages['web.app.table.quin']}" width="auto" style="text-align:center">
+                                <h:outputText value="#{dtInfoHistorial.des_quincena}" />
+                            </p:column>
+                            <p:column headerText="#{messages['web.app.table.fechaInicio']}" width="auto" style="text-align:center">
+                                <h:outputText value="#{dtInfoHistorial.fec_inicio}">
+                                    <f:convertDateTime pattern="#{messages['web.app.label.formatoFecha']}" />
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="#{messages['web.app.table.fechaFin']}" width="auto" style="text-align:center">
+                                <h:outputText value="#{dtInfoHistorial.fec_fin}">
+                                    <f:convertDateTime pattern="#{messages['web.app.label.formatoFecha']}" />
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="#{messages['web.app.table.fechaPago']}" width="auto" style="text-align:center">
+                                <h:outputText value="#{dtInfoHistorial.fec_pago}">
+                                    <f:convertDateTime pattern="#{messages['web.app.label.formatoFecha']}" />
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="#{messages['web.app.table.monto']}" width="auto" style="text-align:center">
+                                <h:outputText value="$#{dtInfoHistorial.imp_concepto}" />
+                            </p:column>
+                            <p:rowExpansion>
+                                <p:panelGrid  columns="1" columnClasses="label,value" 
+                                    style="width:100%; border: none; background: #FFFFFF;">
+                                       <p:dataTable id="tablaDetallesQuincena" value="#{historialEmpleadosRhMB.listaDdxmldto}"
+                                         emptyMessage="No existe historial para este empleado" 
+                                         var="datosNomTab"
+                                         style="width:100%;">
+                                         <f:facet name="header">  
+                                             <div align="center">
+                                                <h:outputText value="#{messages['web.app.table.sueldo']}"></h:outputText>  
+                                             </div>
+                                        </f:facet>
+                                <p:column headerText="#{messages['web.app.table.diasmes']}" style="text-align:center">
+                                    <h:outputText value="#{datosNomTab.valorMes}" />
+                                </p:column>
+                                <p:column headerText="#{messages['web.app.table.diaslab']}" style="text-align:center">
+                                    <h:outputText value="#{datosNomTab.valorLab}" />
+                                </p:column>
+                                <p:column headerText="#{messages['web.app.table.sueldobase']}" style="text-align:center">
+                                    <h:outputText value="$#{datosNomTab.valorConcepto}" />
+                                </p:column>
+                                <p:column headerText="#{messages['web.app.table.sueldoquincena']}" style="text-align:center">
+                                    <h:outputText value="$#{datosNomTab.importe}" />
+                                </p:column>
+                               
+                                <p:column headerText="#{messages['web.app.table.bonopuntualidad']}" style="text-align:center">
+                                    <h:outputText value="0" />
+                                </p:column> 
+                            </p:dataTable> <!-- end table sueldo--> 
+                            <p:dataTable id="dias" var="dias" 
+                                                 emptyMessage="No existen datos para esta consulta."
+                                                 value="" 
+                                                 style="width:100%; "> 
+                                <f:facet name="header">  
+                                    <div align="center">
+                                        <h:outputText value="#{messages['web.app.table.detalledias']}"></h:outputText>
+                                    </div>      
+                                </f:facet>
+                                 
+                                <p:column headerText="#{messages['web.app.table.dVacaciones']}" style="text-align:center">
+                                    <h:outputText value="0" />
+                                </p:column>
+                                <p:column headerText="#{messages['web.app.table.diasincapacitados']}" style="text-align:center">
+                                    <h:outputText value="0" />
+                                </p:column> 
+                                <p:column headerText="#{messages['web.app.table.faltas']}" style="text-align:center">
+                                    <h:outputText value="0" />
+                                </p:column> 
+                                </p:dataTable>
+                                <p:dataTable id="aguinaldo" var="aguinaldo" 
+                                                 emptyMessage="No existen datos para esta consulta."
+                                                 value="" 
+                                                 style="width:100%; "> 
+                                <f:facet name="header">  
+                                    <div align="center">
+                                        <h:outputText value="#{messages['web.app.table.aguinaldo']}"></h:outputText>
+                                    </div>      
+                                </f:facet>
+                                    <p:column headerText="#{messages['web.app.table.tAguinaldo']}" style="text-align:center">
+                                    <h:outputText value="0" />
+                                </p:column>
+                                    <p:column headerText="#{messages['web.app.table.dAguinaldo']}" style="text-align:center">
+                                    <h:outputText value="0" />
+                                </p:column>
+                                    <p:column headerText="#{messages['web.app.table.importe']}" style="text-align:center">
+                                    <h:outputText value="$0" />
+                                </p:column>
+                                    </p:dataTable>
+                                </p:panelGrid>
+                            </p:rowExpansion>
+
+
+                        </p:dataTable> <!-- end table -->
+                         
+                    </div>  
+                </h:form>
+            </div> <!-- end container -->
+        </main>
+    </ui:define> 
+</ui:composition>

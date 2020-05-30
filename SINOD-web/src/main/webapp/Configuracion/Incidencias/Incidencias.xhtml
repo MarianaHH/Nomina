@@ -1,0 +1,175 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/template/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">   
+    <ui:define name="body">
+        <main>
+            <div class="container ">
+                <!--Barra de navejación-->
+                <div align="left">
+                    <p:outputLabel value="#{messages['web.app.table.configuracion.incidencia.menu']}" style="#{messages['web.app.style.menu']}" />    
+                    <p:separator style="width: 100%; height:5px" />
+                </div>
+                <center><h4>Configuración de incidencias</h4></center>
+                <h:form id="confIncidencia">
+                    <p:growl id="mensajesDetalle" showDetail="true" sticky="true"/>
+                    <div class="#{messages['web.app.table.tabla']}">
+                        <p:dataTable id="tablaDetalleInicidencia" var="detIncidencia" 
+                                     emptyMessage="#{messages['web.app.table.noData']}" 
+                                     value="#{confIncidenciaMB.listaCatIncidencias}" 
+                                     reflow="true" rows="#{messages['web.app.table.initialRows']}" paginatorPosition="bottom" paginator="true" 
+                                     rowIndexVar="numerador" 
+                                     sortBy="#{detIncidencia.codCatincidenciaid}"
+                                     sortOrder="DESCENDING"
+                                     style="font-size: small" >
+                            <f:facet name="header">
+                                <p:spacer height="27"/>
+                                <p:commandButton icon="#{messages['web.app.icon.agregar']}"  
+                                                 style="display:inline; float:right; font-size:small;">
+                                    <p:ajax process="@this" update="detalleConfIncidencia,detalleIncidenciaForm:panel" 
+                                            listener="#{confIncidenciaMB.dialogoCrearConfig()}" resetValues="true" />
+                                </p:commandButton>
+                            </f:facet>
+                            <p:column filterBy="#{detIncidencia.codClaveincidencia}" 
+                                      filterMatchMode="contains" 
+                                      filterStyle="background: #FFFFFF; width:90%; height:40%;"  
+                                      headerText="#{messages['web.app.table.clave']}" width="10%"> 
+                                <h:outputText value="#{detIncidencia.codClaveincidencia}" />
+                            </p:column>
+                            <p:column filterBy="#{detIncidencia.codNbincidencia}" 
+                                      filterMatchMode="contains" 
+                                      filterStyle="background: #FFFFFF; width:90%; height:40%;"  
+                                      headerText="#{messages['web.app.table.nombre']}" width="20%">
+                                <h:outputText value="#{detIncidencia.codNbincidencia}" />
+                            </p:column>
+                            <p:column headerText="#{messages['web.app.table.tipo']}" width="20%">
+                                <h:outputText value="#{detIncidencia.codTipoincidencia=='1'?'Horas':
+                                                       detIncidencia.codTipoincidencia=='2'?'Dias':
+                                                       detIncidencia.codTipoincidencia=='3'?'Actividad':''}" />
+                            </p:column>
+                            <p:column filterBy="#{detIncidencia.codPerfilincidencia}" 
+                                      filterMatchMode="contains" 
+                                      filterStyle="background: #FFFFFF; width:90%; height:40%;" 
+                                      headerText="#{messages['web.app.table.perfil']}" width="20%">
+                                <h:outputText value="#{detIncidencia.codPerfilincidencia}" />
+                            </p:column>
+                            <p:column headerText="#{messages['web.app.table.monto']}" width="20%">
+                                <h:outputText value="#{detIncidencia.impMonto}" />
+                            </p:column>
+                            <p:column headerText="#{messages['web.app.table.acciones']}" style="text-align:center" width="10%"> 
+                                <p:menuButton value="" icon="#{messages['web.app.icon.desplegar']}">
+                                    <p:menuitem value="#{messages['web.app.button.editar']}" action="#{confIncidenciaMB.dialogoEditarConfig(detIncidencia)}" 
+                                                icon="#{messages['web.app.icon.editar']}"
+                                                update="detalleConfIncidencia"/>
+                                    <p:menuitem value="#{messages['web.app.button.eliminar']}" action="#{confIncidenciaMB.dialogoEliminar(detIncidencia)}" 
+                                                icon="#{messages['web.app.icon.eliminar']}"/>
+                                </p:menuButton>
+                            </p:column>          
+                        </p:dataTable>
+                    </div>
+                </h:form>
+                               
+                <p:dialog id="detalleConfIncidencia" resizable="false" 
+                          header="#{confIncidenciaMB.titulo} configuración de incidencia" 
+                          widgetVar="detalleConfIncidencia" modal="true" height="32%" width="55%" closable="false"
+                          draggable="false" >
+                    <h:form id="detalleIncidenciaForm">
+                        <h:panelGrid columns="1" id="panel">  
+                            <p:growl id="mensajeGuardar" showDetail="true" sticky="false" />  
+                            <p:column>  
+                                <div class="ui-g-12 ui-md-4 ui-lg-4">
+                                    <p:outputLabel value="#{messages['web.app.table.clave']}:"/>
+                                    <p:inputText id="claveincidencia" maxlength="4" size="4"
+                                                 value="#{confIncidenciaMB.catIncidenciaSeleccionado.codClaveincidencia}" 
+                                                 class="materialize-textarea" 
+                                                 disabled="#{confIncidenciaMB.claveEditar}">
+                                        <p:ajax process="@this" listener="#{confIncidenciaMB.comparar()}" 
+                                                update="confIncidencia:mensajesDetalle,btnGuardar"/>
+                                    </p:inputText>
+                                </div>
+                                <div class="ui-g-12 ui-md-4 ui-lg-4">
+                                    <p:outputLabel value="#{messages['web.app.table.nomina.consultar.nombre']}:"/>
+                                    <p:inputText id="nombreIncidencia" maxlength="30" 
+                                                 value = "#{confIncidenciaMB.catIncidenciaSeleccionado.codNbincidencia}" 
+                                                 class="materialize-textarea" 
+                                                 size="20" />
+                                </div>
+                                <div class="ui-g-12 ui-md-4 ui-lg-4">
+                                    <p:outputLabel value="#{messages['web.app.table.importe']}:"/>
+                                    <br></br> 
+                                    <p:inputNumber id="importe" 
+                                                   value = "#{confIncidenciaMB.catIncidenciaSeleccionado.impMonto}" 
+                                                   class="materialize-textarea" />
+                                </div>
+                            </p:column>
+                            <p:column> 
+                                <div  class="ui-g-12 ui-md-4 ui-lg-4"  >
+                                    <p:outputLabel for="TipoIncidencia" value="#{messages['web.app.table.tipo']}:"/>
+                                    <br></br> 
+                                    <p:selectOneMenu id="TipoIncidencia" style="width: 80%; margin-top: 20px" 
+                                                     value="#{confIncidenciaMB.catIncidenciaSeleccionado.codTipoincidencia}" 
+                                                     styleClass="anchoTipo" >
+                                        <f:selectItem itemLabel="Seleccionar" itemValue="#{null}" />
+                                        <f:selectItem itemLabel="Hora" itemValue="1" />
+                                        <f:selectItem itemLabel="Dias" itemValue="2" />
+                                        <f:selectItem itemLabel="#{messages['web.app.table.actividad']}" itemValue="3" />
+                                    </p:selectOneMenu> 
+                                </div>
+                                <div class="ui-g-12 ui-md-4 ui-lg-4">
+                                    <p:outputLabel value="#{messages['web.app.table.perfil']}:"/>
+                                    <p:inputText id="perfil" 
+                                                 value = "#{confIncidenciaMB.catIncidenciaSeleccionado.codPerfilincidencia}" 
+                                                 class="materialize-textarea" />
+                                </div>
+                            </p:column>
+                            <f:facet name = "footer">
+                                <div align="right">
+                                    <p:commandButton value="#{messages['web.app.button.cancelar']}" id="btnCancelarGuardar" 
+                                                     style="margin-right:20px;" styleClass="ui-priority-primary" 
+                                                     action="#{confIncidenciaMB.cerrarDialogo()}"
+                                                     update="detalleIncidenciaForm:claveincidencia,
+                                                            detalleIncidenciaForm:nombreIncidencia,
+                                                            detalleIncidenciaForm:importe,
+                                                            detalleIncidenciaForm:TipoIncidencia,
+                                                            detalleIncidenciaForm:perfil,
+                                                            confIncidencia:tablaDetalleInicidencia">
+                                    </p:commandButton>
+                                    <p:commandButton value="#{messages['web.app.button.guardar']}" id="btnGuardar"  
+                                                     style="margin-right:2%;" styleClass="ui-priority-primary"
+                                                     action="#{confIncidenciaMB.guardar()}" 
+                                                     disabled="#{confIncidenciaMB.disable}"
+                                                     update="detalleIncidenciaForm,
+                                                     mensajeGuardar,
+                                                     confIncidencia:tablaDetalleInicidencia">
+                                        <f:setPropertyActionListener value="#{confIncidenciaMB.active}" target="#{confIncidenciaMB.disable}"/>
+                                    </p:commandButton>
+                                </div>
+                            </f:facet>
+                        </h:panelGrid>
+                    </h:form>
+                </p:dialog>
+                              
+                <p:confirmDialog id="eliminarConfIncidencia" widgetVar="eliminarConfIncidencia" 
+                                 header="#{messages['web.app.title.eliminar']}" closable="false"
+                                 message="¿Desea eliminar la incidencia?" showEffect="fade" hideEffect="fade">
+                    <center>
+                        <p:commandButton value="#{messages['web.app.button.no']}" 
+                                         process="@this" 
+                                         onclick="PF('eliminarConfIncidencia').hide();" />
+                        <p:commandButton value="#{messages['web.app.button.si']}" 
+                                         process="@this" 
+                                         action="#{confIncidenciaMB.eliminar()}" 
+                                         update="eliminarConfIncidencia,
+                                         confIncidencia:tablaDetalleInicidencia
+                                         confIncidencia:mensajesDetalle"/>
+                    </center>
+                </p:confirmDialog>
+            </div> <!-- end container -->
+        </main>
+    </ui:define>
+</ui:composition>

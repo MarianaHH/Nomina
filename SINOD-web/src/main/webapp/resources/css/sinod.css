@@ -1,0 +1,207 @@
+#agregarNominaDialogo {
+    background: #FFFFFF !important;
+    top: 25% !important;
+}
+
+#ArgumentoDialogo { 
+    top: 10% !important;
+
+} 
+
+#cancelarTodos { 
+    top: 30% !important;
+    background: #FFFFFF !important;
+
+}
+
+#confirmacion  { 
+    top: 30% !important;
+    bottom: 30%;
+    background:#FFFFFF !important;
+}
+
+#confTodos { 
+    top: 30% !important;
+    background: #fff !important;
+}
+
+#detalleConfIncidencia  { 
+    top: 20% !important;
+    background:#FFFFFF !important;
+}
+
+#detalleIncidencia  { 
+    top: 10% !important;
+    background:#FFFFFF !important;
+}
+
+#diagEliminarIncidencia  { 
+    background: #FFFFFF !important;
+    top: 30% !important;
+}
+
+#diagVerDetalleIncidencia { 
+    top: 5% !important;
+} 
+
+#dialogEliminar { 
+    background: #FFFFFF !important;
+    top: 30% !important;
+}
+
+#dialogRechazarIncidencias { 
+    background: #FFFFFF !important;
+    top: 25% !important;
+}
+
+#dialogValidarAltasAceptadas { 
+    background: #FFFFFF !important;
+    top: 25% !important;
+}
+
+#dialogValidarAltasRechazadas { 
+    background: #FFFFFF !important;
+    top: 25% !important;
+}
+
+#dialogValidarBajasAceptadas { 
+    background: #FFFFFF !important;
+    top: 25% !important;
+}
+
+#dialogValidarBajasRechazadas { 
+    background: #FFFFFF !important;
+    top: 25% !important;
+}
+
+#dialogValidarIncidencias { 
+    background: #FFFFFF !important;
+    top: 25% !important;
+}
+
+#dlgCalc { 
+    top: 30% !important;
+    background:#FFFFFF !important;
+}
+
+#dlgCerrar { 
+    top: 30% !important;
+    background:#FFFFFF !important;
+}
+
+#dlgVal { 
+    top: 30% !important;
+    background:#FFFFFF !important;
+}
+
+#eliminarConfConcepto  { 
+    top: 30% !important;
+    background:#FFFFFF !important;
+}
+
+#eliminarConfIncidencia  { 
+    top: 30% !important;
+    background:#FFFFFF !important;
+}
+
+/* Clases */
+.anchoFuncion  { 
+    width: 83% !important 
+}
+
+.anchoTipo  { 
+    width: 63% !important 
+}
+
+.custom-filter .ui-column-customfilter .ui-filter-column { 
+    width: 100%;
+    box-sizing: border-box;
+
+}
+
+.dateTimeField { 
+    color: black !important;
+    opacity: 100 !important;
+}
+
+.disable-scroll { 
+    overflow: hidden !important;
+} 
+
+.test div { 
+    border-bottom: solid 2px red;
+    width: 100%;
+    height: 5%;
+}
+
+.ui-button-text .ui-button-text-only { 
+    padding: 0.3em 0.4em;
+}
+
+.ui-chkbox .ui-selectcheckboxmenu-header .ui-selectcheckboxmenu-panel { 
+    visibility: hidden;
+} 
+
+.ui-confirm-dialog .ui-corner-all .ui-dialog .ui-hidden-container .ui-shadow .ui-widget .ui-widget-content { 
+    position: 'center top';
+    background: #FFFFFF !important;
+} 
+
+.ui-widget-content {
+    position: 'center top';
+    background: #FFFFFF !important;
+}
+
+.ui-datatable .ui-datatable-header  { 
+    text-align: right ;
+}
+
+.ui-datatable thead th, .ui-datatable tbody td, .ui-datatable tfoot td, .ui-datatable tfoot th { 
+    padding: 15px 10px !important;
+} 
+
+.ui-datatable-tablewrapper { 
+    overflow-x: hidden !important;
+} 
+
+.ui-dialog .ui-dialog-buttonpane { 
+    background: #FFFFFF !important;
+} 
+
+.ui-dialog-content > .ui-icon { 
+    display: none;
+} 
+
+.ui-outputlabel { 
+    color: black;
+} 
+
+.ui-panel .ui-panel-footer { 
+    padding: 0;
+    border: #FFFFFF;
+}
+
+.ui-panel .ui-panel-titlebar .ui-panel-content { 
+    padding: 0px;
+} 
+
+.ui-panelgrid .ui-panelgrid-cell { 
+    border: none;
+    padding: 0px;
+}
+
+.ui-widget-header { 
+    background: #FFFFFF;
+    text-align: center;
+}
+
+.value  { 
+font-weight: bold;
+
+} 
+
+.year-spinner input  { 
+width: 100%;
+box-sizing: border-box;
+
+}

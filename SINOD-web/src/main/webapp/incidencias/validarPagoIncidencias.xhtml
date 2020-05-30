@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/template/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">   
+<ui:define name="body">
+    <main>
+        <div class="container ">
+                <!--Barra de navegación-->
+                <div align="left">
+                    <p:outputLabel value="#{messages['web.app.table.nomina.valPagoInc.menu']}" style="#{messages['web.app.style.menu']}" />    
+                    <p:separator style="width: 100%; height:5px" />
+                </div>
+                <center><h4><p:outputLabel value="#{messages['web.app.label.validarPagoIncidencias']}" /></h4></center>
+                <style>
+                    td, th {
+                        padding: 0px;
+                    }
+                    #dialogoPosponerPago {
+                        top: 30% !important;
+                    }
+                </style>
+                <h:form id="validarPagoForm">
+                    <div class="#{messages['web.app.table.tabla2']}">
+                        <p:growl id="msgs" showDetail="true" />
+                        <p:dataTable id="tablaIncidenciasQuincena" var="detIncidenciasQuincena" 
+                                     value="#{validarpagoincidenciasMB.listaIncidenciasQuincena}"
+                                     reflow="true" rows="#{messages['web.app.table.initialRows']}" paginator="true" paginatorPosition="bottom" 
+                                     rowIndexVar="rowIndex" style="font-size: small" >
+
+                            <f:facet name="header">
+                                <p:outputLabel value="QUINCENA ACTUAL: #{validarpagoincidenciasMB.desQuincenaActual}" />
+                                <p:spacer height="27"/>
+                                <p:commandButton action ="#{validarpagoincidenciasMB.dialogAutorizarPagos()}" 
+                                                 icon="#{messages['web.app.icon.aprobar']}" 
+                                                 title ="Autorizar todos"
+                                                 style="display:inline; 
+                                                 float:right; 
+                                                 font-size: small;
+                                                 align-content: center"
+                                                 disabled="#{validarpagoincidenciasMB.listaIncidenciasQuincena.size()==0?true:false}" 
+                                                 update="validarPagoForm:msgs,tablaIncidenciasQuincena">
+                                </p:commandButton>
+                                <p:commandButton action ="#{validarpagoincidenciasMB.dialogRechazarPagos()}" 
+                                                 icon="#{messages['web.app.icon.cancelar']}" 
+                                                 disabled="#{validarpagoincidenciasMB.listaIncidenciasQuincena.size()==0?true:false}" 
+                                                 title ="Denegar todos"
+                                                 style="display:inline; 
+                                                 float:right; 
+                                                 font-size: small;
+                                                 align-content: center"
+                                                 update="validarPagoForm:msgs,validarPagoForm:tablaIncidenciasQuincena">
+                                </p:commandButton>
+                                <p:spacer height="25"/>
+                            </f:facet>
+
+                            <p:column headerText="#{messages['web.app.table.nombre']}" width="15%" style="text-align:center" >
+                                <h:outputText value="#{detIncidenciasQuincena.nombre}" />
+                            </p:column>
+                            <p:column headerText="#{messages['web.app.table.clave']}" width="10%" style="text-align:center" >
+                                <h:outputText value="#{detIncidenciasQuincena.clave}" />
+                            </p:column>
+                            <p:column headerText="#{messages['web.app.table.incidencia']}" width="10%" style="text-align:center" >
+                                <h:outputText value="#{detIncidenciasQuincena.incidencia}" />
+                            </p:column>
+                            <p:column headerText="#{messages['web.app.table.tipo']}" width="10%" style="text-align:center" >
+                                <h:outputText value="#{detIncidenciasQuincena.desctipo}" /> 
+                            </p:column>
+                            <p:column headerText="#{messages['web.app.table.importe']}" width="10%" style="text-align:center" >
+                                <h:outputText value="#{detIncidenciasQuincena.importe}" /> 
+                            </p:column>
+                            <p:column headerText="#{messages['web.app.table.autorizacionLC']}" width="10%" style="text-align:center" >
+                                <h:outputText id="txtAceptar" value="#{detIncidenciasQuincena.aceptacion==true?'AUTORIZADA':
+                                                                       detIncidenciasQuincena.aceptacion==false?'DENEGADA':'Pendiente'}"  />
+                            </p:column>
+                            <p:column  headerText="#{messages['web.app.table.validacionRH']}" width="10%" style="text-align:center" >
+                                <h:outputText id="txtValidar" value="#{detIncidenciasQuincena.validacion==true?'VALIDADA':
+                                                                       detIncidenciasQuincena.validacion==false?'RECHAZADA':'Pendiente'}"  />
+                            </p:column>
+                            <p:column  headerText="#{messages['web.app.table.autorizarpago']}" width="10%" style="text-align:center" >
+                                <h:outputText id="txtAutorizar" value="#{detIncidenciasQuincena.autpago==true?'AUTORIZADO':
+                                                                         detIncidenciasQuincena.autpago==false?'DENEGADO':'Pendiente'}"  />
+                            </p:column>
+                            <!--ACCIONES-->
+                            <p:column headerText="#{messages['web.app.table.acciones']}" width="10%" style="text-align:center" >
+                                <p:menuButton icon="#{messages['web.app.icon.desplegar']}">
+                                    <p:menuitem value="#{messages['web.app.table.autorizar']}"  icon="#{messages['web.app.icon.aprobar']}"
+                                                action="#{validarpagoincidenciasMB.autorizarPagoIncidencia(true,rowIndex)}"
+                                                update="validarPagoForm:tablaIncidenciasQuincena validarPagoForm:msgs">
+                                    </p:menuitem>
+                                    <p:menuitem value="#{messages['web.app.label.denegar']}"  icon="#{messages['web.app.icon.cancelar']}"
+                                                action="#{validarpagoincidenciasMB.autorizarPagoIncidencia(false,rowIndex)}"
+                                                update="validarPagoForm:tablaIncidenciasQuincena">
+                                    </p:menuitem>
+                                    <p:menuitem value="#{messages['web.app.button.posponer']}"  icon="#{messages['web.app.icon.posponer']}"
+                                                action="#{validarpagoincidenciasMB.dialogoPosponerPago(detIncidenciasQuincena)}"
+                                                update="dialogoPosponerPago">
+                                    </p:menuitem>
+                                </p:menuButton>
+                            </p:column>
+                        </p:dataTable>
+                        <!-- -->
+                        <div class="#{messages['web.app.table.tabla2']}" align="right">
+                            <p:commandButton value="#{messages['web.app.button.guardar']}" id="btnGuardar" 
+                                             immediate="true"
+                                             process="@this" 
+                                             update="validarPagoForm:msgs, validarPagoForm:tablaIncidenciasQuincena"  
+                                             action="#{validarpagoincidenciasMB.autorizarPagosIncidencias()}" 
+                                             style="margin-right:2%;" 
+                                             disabled="#{validarpagoincidenciasMB.listaIncidenciasQuincena.size()==0?true:false}" 
+                                             styleClass="ui-priority-primary" />
+                        </div>  
+                    </div>
+                </h:form>
+                <!--DIALOGO POSPONER PAGO DE INCIDENCIA-->
+                <p:dialog id="dialogoPosponerPago" resizable="false" closable ='false' styleClass="disable-scroll" 
+                          draggable="false" header="Posponer pago de incidencia" widgetVar="dialogoPosponerPago" 
+                          modal="true" height="35%" width="30%" style ="background: #FFFFFF;">
+                    <h:form id="comentarioPorsponerForm">
+                        <h:panelGrid columns="1"> 
+                            <p:column>  
+                                <div class="ui-g-12 ui-md-6 ui-lg-12">
+                                    <center>
+                                    <p:outputLabel for="comentariosPosponer" value="#{messages['web.app.label.motivoPosponerPago']}:"/>
+                                    <p:inputTextarea id="comentariosPosponer"  value="#{validarpagoincidenciasMB.comentarios}" 
+                                                     counter="comentariosDisplay" maxlength="200" 
+                                                     counterTemplate="{0} caracteres." 
+                                                     autoResize="false"
+                                                     style="resize: none;"
+                                                     class="materialize-textarea">
+                                        <p:ajax process="@this" />
+                                    </p:inputTextarea>
+                                    <h:outputText id="comentariosDisplay" />
+                                    </center>
+                                </div>
+                                <div align="right"  class="#{messages['web.app.table.tabla']}">
+                                    <center>
+                                        <p:commandButton process="@this" style="font-size:medium; margin-left: 10px;"
+                                                         onclick="PF('dialogoPosponerPago').hide();"
+                                                         value="#{messages['web.app.button.cancelar']}" >
+                                        </p:commandButton>
+                                        <p:commandButton style="font-size:medium; margin-left: 10px;"
+                                                         value="#{messages['web.app.button.posponer']}" 
+                                                         action="#{validarpagoincidenciasMB.posponerPagoIncidencia()}"
+                                                         update="validarPagoForm:tablaIncidenciasQuincena validarPagoForm:msgs">
+                                        </p:commandButton>
+                                    </center>
+                                </div>
+                            </p:column>
+                        </h:panelGrid>
+                    </h:form>
+                </p:dialog>
+                
+                <!-- dialogo para validar el pago de todas las incidencias -->
+                <p:confirmDialog id="dialogAutorizarPagos" widgetVar="dialogAutorizarPagos" 
+                                 header="Aviso" closable="false"
+                                 message="#{messages['web.app.msj.adver.autorizarPagoIncidencias']}" 
+                                 showEffect="fade" hideEffect="fade" >
+                    <center>
+                        <p:commandButton value="#{messages['web.app.button.no']}" 
+                                         process="@this" 
+                                         onclick="PF('dialogAutorizarPagos').hide();" />
+                        <p:commandButton value="#{messages['web.app.button.si']}" 
+                                         process="@this" 
+                                         action="#{validarpagoincidenciasMB.aprobarPagos()}" 
+                                         update="dialogAutorizarPagos,validarPagoForm:msgs,validarPagoForm:tablaIncidenciasQuincena"/>
+                    </center>
+                </p:confirmDialog>
+                <!-- dialogo para denegar el pago de todas las incidencias-->
+                <p:confirmDialog id="dialogRechazarPagos" widgetVar="dialogRechazarPagos" 
+                                 header="Aviso" closable="false"
+                                 message="#{messages['web.app.msj.adver.denegarPagoIncidencias']}" 
+                                 showEffect="fade" hideEffect="fade" >
+                    <center>
+                        <p:commandButton value="#{messages['web.app.button.no']}" 
+                                         process="@this" 
+                                         onclick="PF('dialogRechazarPagos').hide();" />
+                        <p:commandButton value="#{messages['web.app.button.si']}" 
+                                         process="@this" 
+                                         action="#{validarpagoincidenciasMB.denegarPagos()}" 
+                                         update="dialogRechazarPagos,validarPagoForm:msgs,validarPagoForm:tablaIncidenciasQuincena"/>
+                    </center>
+                </p:confirmDialog>
+                
+        </div> <!-- end container -->
+    </main>
+</ui:define>
+</ui:composition>

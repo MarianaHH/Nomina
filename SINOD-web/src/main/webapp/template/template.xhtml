@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+
+    <f:view contentType="text/html;charset=utf-8"  encoding="UTF-8">
+
+        <h:head>
+            <title><ui:insert name="pageTitleText">#{messages['web.app.title']}</ui:insert></title>
+
+            <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+
+            <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+
+            <h:outputStylesheet library="css" name="sinod.css" />
+            <h:outputStylesheet library="css" name="materialize.min.css" />
+            
+ 
+            <style>
+                body { 
+                    display: flex;
+                    min-height: 100vh;
+                    flex-direction: column;
+                }
+                main { flex: 1 0 auto; }
+                *, *:before, *:after{
+                    -webkit-box-sizing: content-box;
+                    box-sizing: content-box;
+                }
+            </style>           
+
+            <f:metadata>
+                <f:event type="preRenderView" listener="#{iniciarSesionMB.verificarSesion()}"/>
+            </f:metadata>
+        </h:head>      
+        <h:body>         
+            <ui:include src="panelProcesando.xhtml"/>
+            <ui:include src="doHeader.xhtml" /> 
+
+
+            <ui:insert name="body"/>      
+            <br></br>
+
+            <ui:include src="footer.xhtml" />
+
+
+            <h:outputScript library="primefaces" name="jquery/jquery.js" />
+            <h:outputScript library="js" name="materialize.min.js"/>
+            <script>
+                $(document).ready(function () {
+                    // Activate the side menu 
+                    $(".button-collapse").sideNav({
+                        edge: 'right'
+                    });
+                    $('.slider').slider({
+                        full_Width: true
+                    });
+
+                });
+            </script> 
+            <script>
+
+
+                PrimeFaces.locales['es'] = {
+                    closeText: 'Cerrar',
+                    prevText: 'Anterior',
+                    nextText: 'Siguiente',
+                    monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                    monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                    dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+                    dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+                    dayNamesMin: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
+                    weekHeader: 'Semana',
+                    firstDay: 1,
+                    isRTL: false,
+                    showMonthAfterYear: false,
+                    yearSuffix: '',
+                    timeOnlyTitle: 'Sólo hora',
+                    timeText: 'Tiempo',
+                    hourText: 'Hora',
+                    minuteText: 'Minuto',
+                    secondText: 'Segundo',
+                    currentText: 'Fecha actual',
+                    ampm: false,
+                    month: 'Mes',
+                    week: 'Semana',
+                    day: 'Día',
+                    allDayText: 'Todo el día'
+                };
+
+
+                PrimeFacesExt.locales.TimePicker['es'] = {
+                    hourText: 'Hora',
+                    minuteText: 'Minutos',
+                    amPmText: ['AM', 'PM'],
+                    closeButtonText: 'Hecho',
+                    nowButtonText: 'Ahora',
+                    deselectButtonText: 'Deseleccionar'
+                };
+            </script>
+        </h:body>
+    </f:view>
+</html>

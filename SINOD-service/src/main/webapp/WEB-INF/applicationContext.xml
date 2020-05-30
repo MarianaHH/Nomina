@@ -1,0 +1,350 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:oauth="http://www.springframework.org/schema/security/oauth2"
+       xmlns:sec="http://www.springframework.org/schema/security" xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/security/oauth2 http://www.springframework.org/schema/security/spring-security-oauth2-1.0.xsd
+        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.2.xsd
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd">
+    
+    <!-- Archivo de configuracion xml en el que se declaran las clases DAOImpl y serviceImpl -->    
+    
+
+    <import resource="dataSource.xml"></import>
+   
+    <!--DAO Declaration-->
+    
+    <bean id="usuarioDAO" class="com.mbn.sinod.model.dao.UsuarioDAOImpl">
+        <property name="sessionFactory" ref="SessionFactory" />
+    </bean>
+    
+    <bean id="catalogosDAO" class="com.mbn.sinod.model.dao.CatalogosDAOImpl">
+        <property name="sessionFactory" ref="SessionFactory" />
+    </bean>	
+    
+    <bean id="empleadoDAO" class="com.mbn.sinod.model.dao.EmpleadoDAOImpl">
+        <property name="sessionFactory" ref="SessionFactory" />
+    </bean>	
+    
+    <bean id="areasDAO" class="com.mbn.sinod.model.dao.AreasDAOImpl">
+        <property name="sessionFactory" ref="SessionFactory" />
+    </bean>
+    
+    <bean id="catIncidenciaDAO" class="com.mbn.sinod.model.dao.CatIncidenciaDAOImpl">
+        <property name="sessionFactory" ref="SessionFactory" />
+    </bean>
+    
+    <bean id="catClasificadorDAO" class="com.mbn.sinod.model.dao.CatClasificadorDAOImpl">
+        <property name="sessionFactory" ref="SessionFactory" />
+    </bean>
+    
+    <bean id="catConceptosSATDAO" class="com.mbn.sinod.model.dao.CatConceptosSATDAOImpl">
+        <property name="sessionFactory" ref="SessionFactory" />
+    </bean>
+    
+    <bean id="formulaDAO" class="com.mbn.sinod.model.dao.FormulaDAOImpl">
+        <property name="sessionFactory" ref="SessionFactory" />
+    </bean>
+    
+    <bean id="tipoCalculoDAO" class="com.mbn.sinod.model.dao.TipoCalculoDAOImpl">
+        <property name="sessionFactory" ref="SessionFactory" />
+    </bean>
+    
+    <bean id="tipoConceptoDAO" class="com.mbn.sinod.model.dao.TipoConceptoDAOImpl">
+        <property name="sessionFactory" ref="SessionFactory" />
+    </bean>
+    
+    <bean id="cabeceraDAO" class="com.mbn.sinod.model.dao.CabeceraDAOImpl">
+        <property name="sessionFactory" ref="SessionFactory" />
+    </bean>
+    
+    <bean id="conceptoDAO" class="com.mbn.sinod.model.dao.ConceptoDAOImpl">
+        <property name="sessionFactory" ref="SessionFactory" />
+    </bean>
+    
+    <bean id="concepQuincDAO" class="com.mbn.sinod.model.dao.ConcepQuincDAOImpl">
+        <property name="sessionFactory" ref="SessionFactory" />
+    </bean>
+    
+    <bean id="quincenasDAO" class="com.mbn.sinod.model.dao.QuincenasDAOImpl">
+        <property name="sessionFactory" ref="SessionFactory" />
+    </bean>
+    
+    <bean id="argumentoDAO" class="com.mbn.sinod.model.dao.ArgumentoDAOImpl">
+        <property name="sessionFactory" ref="SessionFactory" />
+    </bean>
+    
+    <bean id="empQuincenaDAO" class="com.mbn.sinod.model.dao.EmpQuincenaDAOImpl">
+        <property name="sessionFactory" ref="SessionFactory" />
+    </bean>
+    
+    <bean id="funcionDAO" class="com.mbn.sinod.model.dao.FuncionDAOImpl">
+        <property name="sessionFactory" ref="SessionFactory" />
+    </bean>
+
+    <bean id="tipoNominaDAO" class="com.mbn.sinod.model.dao.TipoNominaDAOImpl">
+        <property name="sessionFactory" ref="SessionFactory" />
+    </bean>
+    
+    <bean id="estatusNominaDAO" class="com.mbn.sinod.model.dao.EstatusNominaDAOImpl">
+        <property name="sessionFactory" ref="SessionFactory" />
+    </bean>
+        
+    <bean id="empQuincenasDAO" class="com.mbn.sinod.model.dao.EmpQuincenasDAOImpl">
+        <property name="sessionFactory" ref="SessionFactory" />
+    </bean>
+    
+    <bean id="detalleIncidenciasEmpleadoDAO" class="com.mbn.sinod.model.dao.DetalleIncidenciasEmpleadoDAOImpl">
+        <property name="sessionFactory" ref="SessionFactory" />
+    </bean>
+    
+    <bean id="incidenciasDAO" class="com.mbn.sinod.model.dao.IncidenciasDAOImpl">
+        <property name="sessionFactory" ref="SessionFactory" />
+    </bean>
+    
+    <bean id="IncidenciasQuincenaDAO" class="com.mbn.sinod.model.dao.IncidenciasQuincenaDAOImpl">
+        <property name="sessionFactory" ref="SessionFactory" />
+    </bean>
+           
+    <bean id="detalleEmpDAO" class="com.mbn.sinod.model.dao.DetalleEmpDAOImpl">
+        <property name="sessionFactory" ref="SessionFactory" />
+    </bean>
+
+    <bean id="detalleDesgloseDAO" class="com.mbn.sinod.model.dao.DetalleDesgloseDAOImpl">
+        <property name="sessionFactory" ref="SessionFactory" />
+    </bean>
+
+    <bean id="puestosDAO" class="com.mbn.sinod.model.dao.PuestosDAOImpl">
+        <property name="sessionFactory" ref="SessionFactory" />
+    </bean>      
+
+    <bean id="detalleEmpleadosDAO" class="com.mbn.sinod.model.dao.DetalleEmpleadosDAOImpl">
+        <property name="sessionFactory" ref="SessionFactory" />
+    </bean>
+    
+    <bean id="historialEmpleadosRhDAO" class="com.mbn.sinod.model.dao.HistorialEmpleadosRhDAOImpl">
+        <property name="sessionFactory" ref="SessionFactory" />
+    </bean>
+    
+    <bean id="verInformacionDePersonalDAO" class="com.mbn.sinod.model.dao.VerInformacionDePersonalDAOImpl">
+        <property name="sessionFactory" ref="SessionFactory" />
+    </bean>
+    
+    <bean id="detalleDesglosePercepcionDAO" class="com.mbn.sinod.model.dao.DetalleDesglosePercepcionDAOImpl">
+        <property name="sessionFactory" ref="SessionFactory" />
+    </bean>
+    
+    <bean id="validarAltasDAO" class="com.mbn.sinod.model.dao.ValidarAltasDAOImpl">
+        <property name="sessionFactory" ref="SessionFactory" />
+    </bean>
+    
+    <bean id="validarBajasDAO" class="com.mbn.sinod.model.dao.ValidarBajasDAOImpl">
+        <property name="sessionFactory" ref="SessionFactory" />
+    </bean>
+    
+    <bean id="empleadosNomDAO" class="com.mbn.sinod.model.dao.EmpleadosNomDAOImpl">
+        <property name="sessionFactory" ref="SessionFactory" />
+    </bean>
+    
+    <bean id="validacionesNominaDAO" class="com.mbn.sinod.model.dao.ValidacionesNominaDAOImpl">
+        <property name="sessionFactory" ref="SessionFactory" />
+    </bean>
+    
+    <bean id="validacionesNomBajasDAO" class="com.mbn.sinod.model.dao.ValidacionesNomBajasDAOImpl">
+        <property name="sessionFactory" ref="SessionFactory" />
+    </bean>
+
+    <bean id="sumaDesgloseDAO" class="com.mbn.sinod.model.dao.SumaDesgloseDAOImpl">
+        <property name="sessionFactory" ref="SessionFactory" />
+    </bean>
+    
+    <bean id="EnviarCorreoDAO" class="com.mbn.sinod.model.dao.EnviarCorreoDAOImpl">
+        <property name="sessionFactory" ref="SessionFactory" />
+    </bean>
+    
+    <bean id="EjercicioFiscalDAO" class="com.mbn.sinod.model.dao.EjercicioFiscalDAOImpl">
+        <property name="sessionFactory" ref="SessionFactory" />
+    </bean>
+    
+    <bean id="confPagoDAO" class="com.mbn.sinod.model.dao.ConfPagoDAOImpl">
+        <property name="sessionFactory" ref="SessionFactory" />
+    </bean>
+    
+    <bean id="confirmaEmpleadoDAO" class="com.mbn.sinod.model.dao.ConfirmaEmpleadoDAOImpl">
+        <property name="sessionFactory" ref="SessionFactory" />
+    </bean>
+    
+
+    <!--Service Declaration-->
+    
+    <bean id="usuarioService" class="com.mbn.sinod.model.negocio.UsuarioServiceImpl">
+        <property name="genericDAO" ref="usuarioDAO"/>        
+    </bean>
+   
+    <bean id="catalogosService" class="com.mbn.sinod.model.negocio.CatalogosServiceImpl">
+        <property name="catalogosDAO" ref="catalogosDAO" />
+    </bean>
+    
+    <bean id="empleadoService" class="com.mbn.sinod.model.negocio.EmpleadoServiceImpl">
+        <property name="empleadoDAO" ref="empleadoDAO" />
+    </bean>    
+     
+    <bean id="AreasService" class="com.mbn.sinod.model.negocio.AreasServiceImpl">
+        <property name="areasDAO" ref="areasDAO" />
+    </bean>
+   
+    <bean id="cabeceraService" class="com.mbn.sinod.model.negocio.CabeceraServiceImpl">
+        <property name="genericDAO" ref="cabeceraDAO" />
+    </bean>
+   
+    <bean id="quincenasService" class="com.mbn.sinod.model.negocio.QuincenasServiceImpl">
+        <property name="genericDAO" ref="quincenasDAO" />
+    </bean>
+   
+    <bean id="empQuincenaService" class="com.mbn.sinod.model.negocio.EmpQuincenaServiceImpl">
+        <property name="genericDAO" ref="empQuincenaDAO" />
+    </bean>
+      
+    <bean id="catIncidenciaService" class="com.mbn.sinod.model.negocio.CatIncidenciaServiceImpl">
+        <property name="genericDAO" ref="catIncidenciaDAO" />
+    </bean>
+   
+    <bean id="catClasificadorService" class="com.mbn.sinod.model.negocio.CatClasificadorServiceImpl">
+        <property name="genericDAO" ref="catClasificadorDAO" />
+    </bean>
+   
+    <bean id="catConceptosSATService" class="com.mbn.sinod.model.negocio.CatConceptosSATServiceImpl">
+        <property name="genericDAO" ref="catConceptosSATDAO" />
+    </bean>
+   
+    <bean id="formulaService" class="com.mbn.sinod.model.negocio.FormulaServiceImpl">
+        <property name="genericDAO" ref="formulaDAO" />
+    </bean>
+   
+    <bean id="tipoCalculoService" class="com.mbn.sinod.model.negocio.TipoCalculoServiceImpl">
+        <property name="genericDAO" ref="tipoCalculoDAO" />
+    </bean>
+   
+    <bean id="tipoConceptoService" class="com.mbn.sinod.model.negocio.TipoConceptoServiceImpl">
+        <property name="genericDAO" ref="tipoConceptoDAO" />
+    </bean>
+   
+    <bean id="conceptoService" class="com.mbn.sinod.model.negocio.ConceptoServiceImpl">
+        <property name="genericDAO" ref="conceptoDAO" />
+    </bean>
+   
+    <bean id="concepQuincService" class="com.mbn.sinod.model.negocio.ConcepQuincServiceImpl">
+        <property name="genericDAO" ref="concepQuincDAO" />
+    </bean>
+    
+    <bean id="argumentoService" class="com.mbn.sinod.model.negocio.ArgumentoServiceImpl">
+        <property name="genericDAO" ref="argumentoDAO" />
+    </bean>
+    
+    <bean id="funcionService" class="com.mbn.sinod.model.negocio.FuncionServiceImpl">
+        <property name="genericDAO" ref="funcionDAO" />
+    </bean>
+    
+    <bean id="tipoNominaService" class="com.mbn.sinod.model.negocio.TipoNominaServiceImpl">
+        <property name="genericDAO" ref="tipoNominaDAO" />
+    </bean>
+    
+    <bean id="estatusNominaService" class="com.mbn.sinod.model.negocio.EstatusNominaServiceImpl">
+        <property name="genericDAO" ref="estatusNominaDAO" />
+    </bean>
+    
+    <bean id="empQuincenasService" class="com.mbn.sinod.model.negocio.EmpQuincenasServiceImpl">
+        <property name="genericDAO" ref="empQuincenasDAO" />
+    </bean>
+    
+    <bean id="detalleIncidenciasEmpleadoService" class="com.mbn.sinod.model.negocio.DetalleIncidenciasEmpleadoServiceImpl">
+        <property name="detalleIncidenciasEmpleadoDAO" ref="detalleIncidenciasEmpleadoDAO" />
+    </bean>
+    
+    <bean id="incidenciasService" class="com.mbn.sinod.model.negocio.IncidenciasServiceImpl">
+        <property name="incidenciasDAO" ref="incidenciasDAO" />
+    </bean>    
+    
+    <bean id="IncidenciasQuincenaService" class="com.mbn.sinod.model.negocio.IncidenciasQuincenaServiceImpl">
+        <property name="genericDAO" ref="IncidenciasQuincenaDAO" />
+    </bean>
+    
+    <bean id="DetalleEmpService" class="com.mbn.sinod.model.negocio.DetalleEmpServiceImpl">
+        <property name="detalleEmpDAO" ref="detalleEmpDAO" />
+    </bean>
+    
+    <bean id="CabeceraService" class="com.mbn.sinod.model.negocio.CabeceraServiceImpl">
+        <property name="cabeceraDAO" ref="cabeceraDAO" />
+    </bean>
+    
+    <bean id="DetalleDesgloseService" class="com.mbn.sinod.model.negocio.DetalleDesgloseServiceImpl">
+        <property name="detalleDesgloseDAO" ref="detalleDesgloseDAO" />
+    </bean>
+    
+    <bean id="PuestosService" class="com.mbn.sinod.model.negocio.PuestosServiceImpl">
+        <property name="puestosDAO" ref="puestosDAO" />
+    </bean> 
+
+    <bean id="detalleEmpleadosService" class="com.mbn.sinod.model.negocio.DetalleEmpleadosServiceImpl">
+        <property name="detalleEmpleadosDAO" ref="detalleEmpleadosDAO" />
+    </bean>
+    
+    <bean id="historialEmpleadosRhService" class="com.mbn.sinod.model.negocio.HistorialEmpleadosRhServiceImpl">
+        <property name="historialEmpleadosRhDAO" ref="historialEmpleadosRhDAO" />
+    </bean>
+    
+    <bean id="verInformacionDePersonalService" class="com.mbn.sinod.model.negocio.VerInformacionDePersonalServiceImpl">
+        <property name="verInformacionDePersonalDAO" ref="verInformacionDePersonalDAO" />
+    </bean>
+    
+    <bean id="detalleDesglosePercepcionService" class="com.mbn.sinod.model.negocio.DetalleDesglosePercepcionServiceImpl">
+        <property name="detalleDesglosePercepcionDAO" ref="detalleDesglosePercepcionDAO" />
+    </bean>
+
+    <bean id="validarAltasService" class="com.mbn.sinod.model.negocio.ValidarAltasServiceImpl">
+        <property name="genericDAO" ref="validarAltasDAO" />
+    </bean>
+    
+    <bean id="validarBajasService" class="com.mbn.sinod.model.negocio.ValidarBajasServiceImpl">
+        <property name="genericDAO" ref="validarBajasDAO" />
+    </bean>
+    
+    <bean id="empleadosNomService" class="com.mbn.sinod.model.negocio.EmpleadosNomServiceImpl">
+        <property name="genericDAO" ref="empleadosNomDAO" />
+    </bean>
+    
+    <bean id="validacionesNominaService" class="com.mbn.sinod.model.negocio.ValidacionesNominaServiceImpl">
+        <property name="validacionesNominaDAO" ref="validacionesNominaDAO" />
+    </bean>
+    
+    <bean id="validacionesNomBajasService" class="com.mbn.sinod.model.negocio.ValidacionesNomBajasServiceImpl">
+        <property name="validacionesNomBajasDAO" ref="validacionesNomBajasDAO" />
+    </bean>
+    
+    <bean id="sumaDesgloseService" class="com.mbn.sinod.model.negocio.SumaDesgloseServiceImpl">
+        <property name="genericDAO" ref="sumaDesgloseDAO" />
+    </bean>
+    
+    <bean id="EnviarCorreoService" class="com.mbn.sinod.model.negocio.EnviarCorreoServiceImpl">
+        <property name="genericDAO" ref="EnviarCorreoDAO" />
+    </bean>
+    
+    <bean id="EjercicioFiscalService" class="com.mbn.sinod.model.negocio.EjercicioFiscalServiceImpl">
+        <property name="genericDAO" ref="EjercicioFiscalDAO" />
+    </bean>
+    
+    <bean id="confPagoService" class="com.mbn.sinod.model.negocio.ConfPagoServiceImpl">
+        <property name="genericDAO" ref="confPagoDAO" />
+    </bean>
+    
+    <bean id="confirmaEmpleadoService" class="com.mbn.sinod.model.negocio.ConfirmaEmpleadoServiceImpl">
+        <property name="genericDAO" ref="confirmaEmpleadoDAO" />
+    </bean>
+    
+    <bean name="handler_Mapping" class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping" />
+    
+    <!-- Web Services classes-->
+    
+</beans>

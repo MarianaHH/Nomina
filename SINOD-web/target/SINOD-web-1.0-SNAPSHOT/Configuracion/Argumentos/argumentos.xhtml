@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/template/template.xhtml">   
+
+    <ui:define name="body">
+        <main>
+            <div class="container ">
+                <style>
+                    td, th {
+                        padding: 0px 0px !important; 
+                    }
+                </style>
+                <!--Barra de navegación-->
+                <div align="left">
+                    <p:outputLabel value="#{messages['web.app.table.configuracion.menu']}" style="#{messages['web.app.style.menu']}"/>
+                    <p:separator style="width: 100%; height:5px" />
+                </div>
+                <center><h4>#{messages['web.app.table.configuracion.titulo']}</h4></center>
+                <h:form id="Argumentos">
+                    <p:growl id="mensaje" showDetail="true" sticky="true" />
+                    <div class="#{messages['web.app.table.tabla2']}">
+                        <p:dataTable id="tablaArgumento" var="detArgumento" 
+                                     emptyMessage="#{messages['web.app.table.configuracion.empty']}" 
+                                     value="#{confArgumentosMB.listaArgumentos}" 
+                                     sortBy="#{detArgumento.codArgumentoid}"
+                                     sortOrder="DESCENDING"
+                                     reflow="true" rows="#{messages['web.app.table.initialRows']}" 
+                                     paginator="true" paginatorPosition="bottom" 
+                                     rowIndexVar="numerador" style="font-size: small" >
+                            <f:facet name="header">
+                                <p:spacer height="27"/>   
+                                <p:commandButton icon="#{messages['web.app.icon.agregar']}" 
+                                                 style="display:inline; float:right; font-size:x-small;">
+                                    <p:ajax process="@this" update="ArgumentoDialogo,ArgumentoForm:panel" 
+                                            listener="#{confArgumentosMB.dialogoCrear()}" resetValues="true" />
+                                </p:commandButton>
+                            </f:facet>
+                            <p:column filterBy="#{detArgumento.codClavearg}" headerText="#{messages['web.app.table.clave']}" 
+                                      filterMatchMode="contains" filterStyle="background: #FFFFFF; height: 3%; width:100%;">
+                                <h:outputText value="#{detArgumento.codClavearg}"/>
+                            </p:column>
+                            <p:column filterBy="#{detArgumento.codNbargumento}" headerText="#{messages['web.app.table.nombre']}" 
+                                      filterMatchMode="contains" filterStyle="background: #FFFFFF; height: 3%; width:100%;">
+                                <h:outputText value="#{detArgumento.codNbargumento}"/>
+                            </p:column>
+                            <p:column filterBy="#{detArgumento.txtDescripcion}" headerText="#{messages['web.app.table.descripcion']}" 
+                                      filterMatchMode="contains" filterStyle="background: #FFFFFF; height: 3%; width:100%;">
+                                <h:outputText value="#{detArgumento.txtDescripcion}" />
+                            </p:column>
+                            <p:column  headerText="#{messages['web.app.table.tArgumento']}" >                               
+                                <h:outputText value="#{detArgumento.codTipoargumento=='0'?'Variable':
+                                                       detArgumento.codTipoargumento=='1'?'Constante':''}" />
+                            </p:column>
+                            <p:column headerText="#{messages['web.app.table.constante']}" >
+                                <h:outputText  value="#{detArgumento.impValorconst}"/>
+                            </p:column>
+                            <p:column headerText="#{messages['web.app.table.funcion']}" >
+                                <h:outputText value="#{detArgumento.desFuncionbd}" />
+                            </p:column>
+                            <p:column headerText="Acciones" width="100" style="text-align:center" >
+                                <p:menuButton value="" icon="#{messages['web.app.icon.desplegar']}" >
+                                    <p:menuitem value="#{messages['web.app.button.editar']}" action="#{confArgumentosMB.dialogoEditar(detArgumento)}" 
+                                                icon="#{messages['web.app.icon.editar']}" update="ArgumentoDialogo"/>
+                                    <p:menuitem value="#{messages['web.app.button.eliminar']}" action="#{confArgumentosMB.dialogoEliminar(detArgumento)}"  
+                                                icon="#{messages['web.app.icon.eliminar']}">
+                                    </p:menuitem>
+                                </p:menuButton>
+                            </p:column>
+                        </p:dataTable>
+                    </div>
+                </h:form>
+                
+                <p:dialog id="ArgumentoDialogo" resizable="false" closable ='false' styleClass="disable-scroll" draggable="false" header="#{confArgumentosMB.titulo}" widgetVar="ArgumentoDialogo" position="center center" modal="true" height="4%" width="50%" style ="background: #FFFFFF;" >
+                    <h:form id="ArgumentoForm">
+                        <h:panelGrid columns="1" id="panel">                              
+                            <p:column> 
+                                <div class="ui-g-12 ui-md-6 ui-lg-6">
+                                    <p:outputLabel value="#{messages['web.app.table.clave']}:" style="color:black;"/>
+                                    <p:inputText id="claveArgumento" maxlength="5" 
+                                                 value = "#{confArgumentosMB.argumentoSeleccionado.codClavearg}" 
+                                                 class="materialize-textarea"
+                                                 disabled="#{confArgumentosMB.claveEditar}">
+                                        <p:ajax process="@this" listener="#{confArgumentosMB.comparar()}" 
+                                                update="Argumentos:mensaje,btnGuardar"/>
+                                    </p:inputText>
+                                </div>
+                                <div class="ui-g-12 ui-md-6 ui-lg-6">
+                                    <p:outputLabel value="#{messages['web.app.table.nombre']}:" style="color:black;" />
+                                    <p:inputText id="nombreArgumento"  maxlength="15" 
+                                                 value = "#{confArgumentosMB.argumentoSeleccionado.codNbargumento}"
+                                                 class="materialize-textarea"  >
+                                        <p:ajax process="@this" listener="#{confArgumentosMB.compararNombre()}" 
+                                                update="Argumentos:mensaje,btnGuardar"/>
+                                    </p:inputText>
+                                </div>
+                                <div class="#{messages['web.app.table.tabla2']}">
+                                    <p:outputLabel value="#{messages['web.app.table.descripcion']}:" style="color:black;"/>
+                                    <p:inputText id="descripcionArgumento" 
+                                                 maxlength="30" 
+                                                 value = "#{confArgumentosMB.argumentoSeleccionado.txtDescripcion}" 
+                                                 class="materialize-textarea"  />
+                                </div>
+                                <div class="ui-g-12 ui-md-6 ui-lg-6">
+                                    <p:outputLabel for="TipoArgumento" style="color:black;" 
+                                                   value="#{messages['web.app.table.tArgumento']}:"/><br></br> 
+                                    <p:selectOneMenu id="TipoArgumento" 
+                                                     value="#{confArgumentosMB.argumentoSeleccionado.codTipoargumento}" 
+                                                     styleClass="anchoTipo" >
+                                        <f:selectItem itemLabel="Seleccionar" itemValue="#{null}" />
+                                        <f:selectItem itemLabel="#{messages['web.app.table.argumentos.variable']}" itemValue="0"  />
+                                        <f:selectItem itemLabel="#{messages['web.app.table.argumentos.constante']}" itemValue="1"/>
+                                        <p:ajax event="change"  
+                                                process="@this" 
+                                                update="ArgumentoForm:TiposArgumento"/>
+                                    </p:selectOneMenu>
+                                    <br></br><br></br> 
+                                </div>
+                                <div class="ui-g-12 ui-md-6 ui-lg-6">
+                                    <h:panelGrid columns="2" id="TiposArgumento" >  
+                                        <p:column rendered="#{confArgumentosMB.argumentoSeleccionado.codTipoargumento=='0'?true:false}">
+                                            <p:outputLabel for="funcion" style="color:black;" value="#{messages['web.app.table.funcion']}:" /><br></br>
+                                            <p:selectOneMenu id="funcion" 
+                                                             value="#{confArgumentosMB.argumentoSeleccionado.desFuncionbd}" 
+                                                             styleClass="anchoFuncion" converter="omnifaces.SelectItemsConverter" 
+                                                             >
+                                                <f:selectItem itemLabel="#{messages['web.app.table.selec']}" itemValue="#{null}" noSelectionOption="true" />
+
+                                                <f:selectItems  value="#{confArgumentosMB.listaFunciones}"
+                                                                var="funcion"
+                                                                itemLabel="#{funcion.codNbfuncion}" itemValue="#{funcion.codNbfuncion}" />
+                                            </p:selectOneMenu>
+                                        </p:column>
+                                        <p:column rendered="#{confArgumentosMB.argumentoSeleccionado.codTipoargumento=='1'?true:false}">
+                                            <p:outputLabel  value="Valor #{messages['web.app.table.argumentos.constante']}:" style="color:black;"/>
+                                            <p:inputNumber  id="valorConstante" maxlength="5" value = "#{confArgumentosMB.argumentoSeleccionado.impValorconst}" 
+                                                            converterMessage="Por favor solo ingrese números" 
+                                                            class="materialize-textarea"  />
+                                        </p:column>
+                                    </h:panelGrid>
+                                </div>
+                            </p:column>
+                            <f:facet name = "footer">
+                                <div style="padding-left: 60%">
+                                    <p:commandButton  value="#{messages['web.app.button.cancelar']}" 
+                                                     
+                                                      action ="#{confArgumentosMB.cerrarDialogo()}" 
+                                                      id="btnCancelarGuardar" style="margin-right:2%;" 
+                                                      styleClass="ui-priority-primary"
+                                                      update="Argumentos:tablaArgumento"/>   
+                                    
+                                    <p:commandButton value="#{messages['web.app.button.guardar']}" 
+                                                     id="btnGuardar" 
+                                                     ajax="true" 
+                                                     update="ArgumentoForm,Argumentos:tablaArgumento,Argumentos:mensaje"  
+                                                     action="#{confArgumentosMB.guardar()}" style="margin-right:2%;" 
+                                                     disabled="#{confArgumentosMB.disable}"
+                                                     styleClass="ui-priority-primary" >
+                                        <f:setPropertyActionListener value="#{confArgumentosMB.active}" target="#{confArgumentosMB.disable}"/>
+                                    </p:commandButton>
+                                </div>
+                            </f:facet>
+                        </h:panelGrid>
+                    </h:form>
+                </p:dialog>  
+                <p:confirmDialog id="dialogEliminar" widgetVar="dialogEliminar" 
+                                 header="Eliminar" closable="false"
+                                 message="¿Desea eliminar  el argumento?" 
+                                 showEffect="fade" hideEffect="fade" >
+                    <center>
+                        <p:commandButton value="#{messages['web.app.button.no']}" 
+                                         process="@this" 
+                                         onclick="PF('dialogEliminar').hide();" />
+                        <p:commandButton value="#{messages['web.app.button.si']}" process="@this" 
+                                         action="#{confArgumentosMB.eliminarArgumento()}" 
+                                         update="dialogEliminar,Argumentos:tablaArgumento,Argumentos:mensaje
+                                         ArgumentoForm"/>
+                    </center>
+                </p:confirmDialog>
+            </div> <!-- end container -->       
+        </main>
+    </ui:define>
+</ui:composition>

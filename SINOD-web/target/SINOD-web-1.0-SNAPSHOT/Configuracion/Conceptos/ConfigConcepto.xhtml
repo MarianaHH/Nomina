@@ -1,0 +1,498 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/template/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">   
+    <ui:define name="body">
+        <main>
+            <div class="container ">
+                <!--Barra de navegación-->
+                <div align="left">
+                    <p:outputLabel value="#{messages['web.app.table.configuracion.concepto.menu']}" style="#{messages['web.app.style.menu']}" />    
+                    <p:separator style="width: 100%; height:5px" />
+                </div>
+                <center><h4>#{messages['web.app.table.configuracion.concepto.titulo']}</h4></center>
+                <h:form id="detalleConfConcepto">
+                    <p:growl id="mensajesDetalle" showDetail="true" sticky="true" />  
+                    <div class="#{messages['web.app.table.tabla']}">
+                        <p:dataTable id="tablaDetalleConcepto" var="detConcepto" 
+                                     rendered="#{confConceptoMB.visible==1?true:false}"
+                                     emptyMessage="#{messages['web.app.table.concepto.empty']}" value="#{confConceptoMB.listaConceptos}" 
+                                     reflow="true" rows="#{messages['web.app.table.initialRows']}" paginatorPosition="bottom" 
+                                     sortBy="#{detConcepto.codConceptoid}"
+                                     sortOrder="DESCENDING"
+                                     paginator="true" rowIndexVar="numerador" style="font-size: small" 
+                                     >
+                            <f:facet name="header">
+                                <p:spacer height="27"/>
+                                <p:commandButton icon="#{messages['web.app.icon.agregar']}" process="@this" 
+                                                 style="display:inline; float:right; font-size:small;"
+                                                 action="#{confConceptoMB.dialogoCrear()}"
+                                                 update="detalleConfConcepto,detalleCrearConceptoForm">
+                                </p:commandButton>
+                            </f:facet>
+                            <p:column filterBy="#{detConcepto.codClaveconcepto}" 
+                                      filterStyle="background: #FFFFFF; width:90%; height:40%;"
+                                      filterMatchMode="contains"
+                                      headerText="#{messages['web.app.table.clave']}" >
+                                <h:outputText value="#{detConcepto.codClaveconcepto}" />
+                            </p:column>
+                            <p:column filterBy="#{detConcepto.codNbconcepto}" 
+                                      filterStyle="background: #FFFFFF; width:90%; height:40%;"
+                                      filterMatchMode="contains"
+                                      headerText="#{messages['web.app.table.nombre']}">
+                                <h:outputText value="#{detConcepto.codNbconcepto}" />
+                            </p:column>
+                            <p:column headerText="#{messages['web.app.table.tipoConcepto']}">
+                                <h:outputText value="#{detConcepto.codTipoconceptoidFk.codTipoconcepto}" />
+                            </p:column>
+                            <p:column headerText="#{messages['web.app.table.tipoCalculo']}">
+                                <h:outputText value="#{detConcepto.codCalculoidFk.codTpcalculo}" />
+                            </p:column>
+                            <p:column headerText="#{messages['web.app.table.tipoNomina']}">
+                                <h:outputText value="#{detConcepto.codTiponominaidFk.codNomina}" />
+                            </p:column>
+                            <p:column filterBy="#{detConcepto.codNbconcepto}" 
+                                      filterStyle="background: #FFFFFF; width:90%; height:40%;"
+                                      filterMatchMode="contains"
+                                      headerText="#{messages['web.app.table.partida']}">
+                                <h:outputText value="#{detConcepto.codPartidaprep}" />
+                            </p:column>
+                            <p:column headerText="Acciones" style="text-align:center" >
+                                <p:menuButton value="" icon="#{messages['web.app.icon.desplegar']}"> 
+                                    <p:menuitem value="#{messages['web.app.button.prioridad']}" action="#{confConceptoMB.editarPrioridad(detConcepto)}" icon="#{messages['web.app.icon.prioridad']}"
+                                                update="detalleConfConcepto,prioridadCalculoForm"/>
+                                    <p:menuitem value="#{messages['web.app.button.editar']}" action="#{confConceptoMB.dialogoEditar(detConcepto)}" icon="#{messages['web.app.icon.editar']}"
+                                                update="detalleConfConcepto,detalleCrearConceptoForm,guests"/>
+                                    <p:menuitem value="#{messages['web.app.button.eliminar']}" action="#{confConceptoMB.dialogoEliminar(detConcepto)}" icon="#{messages['web.app.icon.eliminar']}"
+                                                update="eliminarConfConcepto"/>
+                                </p:menuButton>
+                            </p:column>
+                        </p:dataTable>
+                    </div>
+                </h:form>
+                <h:form id="detalleCrearConceptoForm">
+                    <p:panel class="#{messages['web.app.table.tabla']}" rendered="#{confConceptoMB.visible==2?true:false}"
+                             style="background: #FFFFFF; border: none;" id="detallePane">
+                        <div class="ui-g-5 ui-md-4 ui-lg-5" >
+                            <div class="row">
+                                <p:outputLabel value="#{messages['web.app.table.clave']}:" />
+                                <p:inputText id="ClaveDOC" maxlength="4" size="4"
+                                             value="#{confConceptoMB.conceptoSeleccionado.codClaveconcepto}" 
+                                             class="materialize-textarea"
+                                             disabled="#{confConceptoMB.claveEditar}">
+                                    <p:ajax process="@this" listener="#{confConceptoMB.comparar()}" 
+                                            update="detalleConfConcepto:mensajesDetalle"/>
+                                </p:inputText>
+                            </div>
+                            <div class="row">
+                                <p:outputLabel value="#{messages['web.app.table.nombre']}:"/>
+                                <p:inputText id="NombreDOC"
+                                             value = "#{confConceptoMB.conceptoSeleccionado.codNbconcepto}"
+                                             class="materialize-textarea">
+                                    <p:ajax process="@this"/>
+                                </p:inputText>
+                            </div>
+                            <div class="row">
+                                <p:outputLabel value="#{messages['web.app.table.cuentaCont']}:"/>
+                                <p:inputText id="cuentaContable" class="materialize-textarea" 
+                                             maxlength="18" size="18" 
+                                             value="#{confConceptoMB.conceptoSeleccionado.cnuCuentacontable}" >
+                                    <p:ajax process="@this"/>
+                                </p:inputText>
+                            </div>
+                            <div class="row">
+                                <p:outputLabel value="#{messages['web.app.table.tipoCalculo']}:" />
+                                <p:selectOneMenu id="TipoCalculoDOC" class="materialize-textarea" 
+                                                 value="#{confConceptoMB.conceptoSeleccionado.codCalculoidFk}" style="width: 90%;"
+                                                 converter="omnifaces.SelectItemsConverter">
+                                    <f:selectItem itemLabel="#{messages['web.app.table.uno']}" itemValue="#{null}" noSelectionOption="true" />
+                                    <f:selectItems value="#{confConceptoMB.listatipocalculo}" var="tipocalculo" 
+                                                   itemLabel="#{tipocalculo.codTpcalculo}" itemValue="#{tipocalculo}"  />
+                                    <p:ajax event="change" process="@this" listener="#{confConceptoMB.tipoCalculo()}"
+                                            update="detalleCrearConceptoForm:detallePane,
+                                            detalleCrearConceptoForm:DefFormula,guests,guardar"/>
+                                </p:selectOneMenu> 
+                            </div>
+                            <div class="row">
+                                <p:outputLabel value="#{messages['web.app.table.tipoClasificador']}:" />
+                                <p:selectOneMenu id="TipoClasificadorDOC" class="materialize-textarea"  
+                                                 value="#{confConceptoMB.conceptoSeleccionado.codClasificadoridFk}" 
+                                                 style="width: 90%;"
+                                                 converter="omnifaces.SelectItemsConverter">
+                                    <f:selectItem itemLabel="#{messages['web.app.table.uno']}" itemValue="#{null}" noSelectionOption="true" />
+                                    <f:selectItems value="#{confConceptoMB.listaclasificadores}" var="clasificador" 
+                                                   itemLabel="#{clasificador.codTpclasificador}" itemValue="#{clasificador}"  />
+                                    <p:ajax process="@this" />
+                                </p:selectOneMenu>
+                            </div>
+                            <div class="row">
+                                <p:outputLabel value="#{messages['web.app.table.frecPago']}:"/>
+                                <p:selectOneMenu id="FrecuenciaPagoDOC" class="materialize-textarea" 
+                                                 value="#{confConceptoMB.conceptoSeleccionado.codFrecuenciapago}" style="width: 90%;">
+                                    <f:selectItem itemLabel="#{messages['web.app.table.uno']}" itemValue="#{null}" noSelectionOption="true" />
+                                    <f:selectItem itemLabel="#{messages['web.app.table.frecPago.quin']}" itemValue="Q"/>
+                                    <f:selectItem itemLabel="#{messages['web.app.table.frecPago.mes']}" itemValue="M"/>
+                                    <f:selectItem itemLabel="#{messages['web.app.table.frecPago.sem']}" itemValue="S"/>
+                                    <f:selectItem itemLabel="#{messages['web.app.table.frecPago.anual']}" itemValue="A"/>
+                                    <p:ajax process="@this" />
+                                </p:selectOneMenu>
+                            </div>
+                            <div class="row">
+                                <p:outputLabel value="#{messages['web.app.table.tipoConcepto']}:"/>
+                                <p:selectOneMenu id="TipoConceptoDOC" class="materialize-textarea"  
+                                                 value="#{confConceptoMB.conceptoSeleccionado.codTipoconceptoidFk}" style="width: 90%;"
+                                                 converter="omnifaces.SelectItemsConverter">
+                                    <f:selectItem itemLabel="#{messages['web.app.table.uno']}" itemValue="#{null}" noSelectionOption="true" />
+                                    <f:selectItems value="#{confConceptoMB.listaTipoConcepto}" var="tipoconcepto" 
+                                                   itemLabel="#{tipoconcepto.codTipoconcepto}" itemValue="#{tipoconcepto}"  />
+                                    <p:ajax process="@this" />
+                                </p:selectOneMenu>
+                            </div>
+                        </div>
+                        <div class="ui-g-2 ui-md-3 ui-lg-2"  >
+                        </div>
+                        <div class="ui-g-5 ui-md-4 ui-lg-5 "  >
+                            <div class="row">
+                                <p:outputLabel value="#{messages['web.app.table.partida']}:"/>
+                                <p:inputNumber decimalPlaces="0" id="partidaPresupuestal" class="materialize-textarea" 
+                                               value="#{confConceptoMB.conceptoSeleccionado.codPartidaprep}">
+                                    <p:ajax process="@this"/>
+                                </p:inputNumber>
+                            </div>
+                            <div class="row">
+                                <p:outputLabel value="#{messages['web.app.table.fundLegal']}:"/>
+                                <p:inputNumber decimalPlaces="0" id="FunLegalDOC" class="materialize-textarea"
+                                               maxValue="999" 
+                                               value="#{confConceptoMB.conceptoSeleccionado.cnuArticulo}">
+                                    <p:ajax process="@this"/>
+                                </p:inputNumber>
+                            </div>
+                            <div class="row">
+                                <p:outputLabel value="#{messages['web.app.table.isn']}:"/>
+                                <p:selectOneMenu id="ISNDOC" class="materialize-textarea"  
+                                                 value="#{confConceptoMB.conceptoSeleccionado.bolAplicaisn}" style="width: 90%;">
+                                    <f:selectItem itemLabel="#{messages['web.app.table.uno']}" itemValue="#{null}" />
+                                    <f:selectItem itemLabel="#{messages['web.app.button.si']}" itemValue="true"/>
+                                    <f:selectItem itemLabel="#{messages['web.app.button.no']}" itemValue="false"/>
+                                    <p:ajax process="@this" event="change"
+                                            update="detalleCrearConceptoForm:detallePane,detalleCrearConceptoForm:Exencion,detalleCrearConceptoForm:blanco"/>
+                                </p:selectOneMenu>
+                            </div>
+                            <div class="row" >
+                                <p:panel id="Exencion" rendered="#{confConceptoMB.conceptoSeleccionado.bolAplicaisn}"
+                                         style="background: #FFFFFF; border: none;">
+                                    <p:outputLabel value="#{messages['web.app.table.excencion']}" />
+                                    <p:inputNumber decimalPlaces="0" id="TopeExencionDOC" class="materialize-textarea" 
+                                                   value="#{confConceptoMB.conceptoSeleccionado.cnuTopeex}">
+                                        <p:ajax process="@this"/>
+                                    </p:inputNumber>
+                                </p:panel>
+                            </div>
+                            <div class="row">
+                                <p:outputLabel value="#{messages['web.app.table.sat']}:"/>
+                                <p:selectOneMenu id="ConceptoSATDOC" class="materialize-textarea"  
+                                                 value="#{confConceptoMB.conceptoSeleccionado.codConceptosatidFk}" style="width: 90%;"
+                                                 converter="omnifaces.SelectItemsConverter">
+                                    <f:selectItem itemLabel="#{messages['web.app.table.uno']}" itemValue="#{null}" noSelectionOption="true" />
+                                    <f:selectItems value="#{confConceptoMB.listaconceptosat}" var="conceptosat" 
+                                                   itemLabel="#{conceptosat.desConceptosat}" itemValue="#{conceptosat}"  />
+                                    <p:ajax process="@this" />
+                                </p:selectOneMenu>
+                            </div>
+                            <div class="row">
+                                <p:outputLabel value="#{messages['web.app.table.tipoNomina']}:"/>
+                                <p:selectOneMenu id="TipoNominaDOC" class="materialize-textarea"  
+                                                 value="#{confConceptoMB.conceptoSeleccionado.codTiponominaidFk}" style="width: 90%;"
+                                                 converter="omnifaces.SelectItemsConverter">
+                                    <f:selectItem itemLabel="#{messages['web.app.table.uno']}" itemValue="#{null}" noSelectionOption="true" />
+                                    <f:selectItems value="#{confConceptoMB.listaTipoNomina}" var="tiponomina" 
+                                                   itemLabel="#{tiponomina.codNomina}" itemValue="#{tiponomina}"  />
+                                    <p:ajax process="@this" />
+                                </p:selectOneMenu>
+                            </div>
+                            <div class="row">
+                                <p:outputLabel value="#{messages['web.app.table.retro']}:"/>
+                                <p:selectOneMenu id="RetroactividadDOC" class="materialize-textarea" 
+                                                 value="#{confConceptoMB.conceptoSeleccionado.bolRetroactividad}" style="width: 90%;">
+                                    <f:selectItem itemLabel="#{messages['web.app.table.uno']}" itemValue="#{null}" />
+                                    <f:selectItem itemLabel="#{messages['web.app.button.si']}" itemValue="true"/>
+                                    <f:selectItem itemLabel="#{messages['web.app.button.no']}" itemValue="false"/>
+                                    <p:ajax event="change" process="@this"
+                                            update="detalleCrearConceptoForm:detallePane,detalleCrearConceptoForm:RetroActSi"/>
+                                </p:selectOneMenu> 
+                            </div>
+                            <div class="row">
+                                <p:outputLabel rendered="#{confConceptoMB.conceptoSeleccionado.codCalculoidFk.codCalculoid==1?true:false}"
+                                               value="#{messages['web.app.table.monto']}:"/>
+                                <p:inputNumber rendered="#{confConceptoMB.conceptoSeleccionado.codCalculoidFk.codCalculoid==1?true:false}"
+                                               value="#{confConceptoMB.conceptoSeleccionado.impMonto}" 
+                                               maxlength="7" size="7" 
+                                               maxValue="999999.99" decimalPlaces="2" >
+                                    <p:ajax process="@this"  />
+                                </p:inputNumber>
+                            </div>
+                            <div class="row">
+                                <p:panel id="blanco" rendered="#{!confConceptoMB.conceptoSeleccionado.bolAplicaisn}"
+                                         style="background: #FFFFFF; border: none;">
+                                    <br></br>
+                                    <br></br>
+                                </p:panel>
+                            </div>
+                        </div> 
+                        <h:panelGrid columns="2" id="RetroActSi" rendered="#{confConceptoMB.conceptoSeleccionado.bolRetroactividad}">  
+                            <p:column>
+                                <div class="ui-g-9 ui-md-7 ui-lg-5"  >
+                                    <p:selectOneRadio id="RetroAct" value="#{confConceptoMB.conceptoSeleccionado.codExcento}" >
+                                        <f:selectItem itemLabel="Gravado" itemValue="1" />
+                                        <f:selectItem itemLabel="Exento" itemValue="2" />
+                                        <p:ajax event="change" process="@this" 
+                                                update="detalleCrearConceptoForm:SiGravado,detalleCrearConceptoForm:RetroActSi"/>
+                                    </p:selectOneRadio>
+                                    <p:selectOneRadio id="SiGravado" value="#{confConceptoMB.conceptoSeleccionado.codGravado}" 
+                                                      rendered="#{confConceptoMB.conceptoSeleccionado.codExcento=='1'?true:false}">
+                                        <f:selectItem itemLabel="Dias" itemValue="1" />
+                                        <f:selectItem itemLabel="Porcentaje" itemValue="2" />
+                                        <f:selectItem itemLabel="No aplica" itemValue="3" />
+                                        <p:ajax process="@this" />
+                                    </p:selectOneRadio>
+                                </div >
+                            </p:column>
+                        </h:panelGrid>
+                        <!--guardar por importeeeeeeeee-->
+                        <p:panel  rendered="#{confConceptoMB.guardar==1?true:false}" style="border:none">
+                            <div class="{messages['web.app.table.tabla']} ui-corner-all">
+                                <p:commandButton value="#{messages['web.app.button.guardar']}" process="@this" 
+                                                 style="display:inline; float:right;" 
+                                                 actionListener="#{confConceptoMB.guardarConcepto()}"
+                                                 disabled="#{confConceptoMB.disable}"
+                                                 id="guardarXimporte" 
+                                                 update="detalleConfConcepto,
+                                                 detalleCrearConceptoForm:DefFormula,
+                                                 detalleCrearConceptoForm,
+                                                 prioridadCalculoForm:prioridadCalculoDialogo,
+                                                 prioridadCalculoForm,                                                                                                                                                                                                                                                                                                              
+                                                 guests">
+                                    <f:setPropertyActionListener value="#{confConceptoMB.active}" target="#{confConceptoMB.disable}"/>
+                                </p:commandButton>
+                                <p:commandButton value="#{messages['web.app.button.cancelar']}"  
+                                                 style="display:inline; float:right;" >
+                                    <p:ajax listener="#{confConceptoMB.cancelar()}" process="@this"
+                                            update="detalleConfConcepto,
+                                            detalleCrearConceptoForm,
+                                            guests"/>
+                                </p:commandButton>
+                            </div>
+                        </p:panel>
+                        <!--</p:panel>-->
+                        <p:panel id="DefFormula"  
+                                 rendered="#{confConceptoMB.conceptoSeleccionado.codCalculoidFk.codCalculoid==2?true:false}"
+                                 style="background: #FFFFFF; border: none;">
+                            <h4>Definición de fórmula</h4>
+                            <div class="ui-g-4 ui-md-4 ui-lg-4">
+                                <p:outputLabel value="#{messages['web.app.table.nomForm']}:"/>
+                                <p:inputText id="NomFomulaDOC" class="materialize-textarea" 
+                                             value="#{confConceptoMB.formulaSelecionada.desNbformula}"> 
+                                    <p:ajax process="@this" listener="#{confConceptoMB.compararFormula()}"/>
+                                </p:inputText>
+                            </div>
+                            <div class="#{messages['web.app.table.tabla']}"  >
+                                <p:outputLabel value="#{messages['web.app.table.formula']}"/>
+                                <p:inputTextarea rows="4" cols="70" queryDelay="750" minQueryLength="4" 
+                                                 id="FormulaDOC" class="materialize-textarea"
+                                                 value="#{confConceptoMB.formulaDOC}"                      
+                                                 readonly="true">
+                                    <p:ajax process="@this" />
+                                </p:inputTextarea>
+                            </div>
+                            <h:panelGrid columns="3">
+                                <p:column> 
+                                    <div class="ui-g-8 ui-md-6 ui-lg-10"  >
+                                        <p:outputLabel value="#{messages['web.app.table.argumentos.constante']}s"/>
+                                        <p:selectOneMenu id="ConstantesDOC" class="materialize-textarea"  
+                                                         value="#{confConceptoMB.constantesDOC}" style="width: 90%;">
+                                            <f:selectItem itemLabel="#{messages['web.app.table.uno']}" itemValue="#{null}" noSelectionOption="true" />
+                                            <f:selectItems value="#{confConceptoMB.listaargumentosconstantes}" var="constantes" 
+                                                           itemLabel="#{constantes.codNbargumento}" itemValue="#{constantes.codNbargumento}"  />
+
+                                            <p:ajax event="change" listener="#{confConceptoMB.constantes()}" 
+                                                    update="FormulaDOC,ConstantesDOC,guests,PruebaDOC"/>
+                                        </p:selectOneMenu>
+                                    </div>
+                                </p:column> 
+                                <p:column> 
+                                    <div class="ui-g-8 ui-md-6 ui-lg-10"  >
+                                        <p:outputLabel value="#{messages['web.app.table.operador']}:"/>
+                                        <p:selectOneMenu id="OperadoresDOC" class="materialize-textarea"  
+                                                         value="#{confConceptoMB.operadoresDOC}" style="width: 90%;">
+                                            <f:selectItem itemLabel="#{messages['web.app.table.uno']}" itemValue="#{null}" noSelectionOption="true" />
+                                            <f:selectItem itemLabel="*" itemValue="*"/>
+                                            <f:selectItem itemLabel="/" itemValue="/"/>
+                                            <f:selectItem itemLabel="-" itemValue="-"/>
+                                            <f:selectItem itemLabel="+" itemValue="+"/>
+                                            <f:selectItem itemLabel="(" itemValue="("/>
+                                            <f:selectItem itemLabel=")" itemValue=")"/>
+                                            <p:ajax event="change" listener="#{confConceptoMB.operadores()}" 
+                                                    update="FormulaDOC,OperadoresDOC,guests"/>
+                                        </p:selectOneMenu>
+                                    </div>
+                                </p:column> 
+                                <p:column> 
+                                    <div class="ui-g-8 ui-md-6 ui-lg-10"  >
+                                        <p:outputLabel value="#{messages['web.app.table.funcion']}es :"/>
+                                        <p:selectOneMenu id="FuncionesDOC" class="materialize-textarea"  
+                                                         value="#{confConceptoMB.funcionesDOC}" style="width: 90%;">
+                                            <f:selectItem itemLabel="#{messages['web.app.table.uno']}" itemValue="#{null}" noSelectionOption="true" />
+                                            <f:selectItems value="#{confConceptoMB.listaargumentosvariables}" var="variables" 
+                                                           itemLabel="#{variables.codNbargumento}" itemValue="#{variables.codNbargumento}"  />
+
+                                            <p:ajax event="change" listener="#{confConceptoMB.funciones()}" 
+                                                    update="FormulaDOC,FuncionesDOC,guests,PruebaDOC"/>
+                                        </p:selectOneMenu>
+                                    </div>
+                                </p:column> 
+                            </h:panelGrid>
+                            <p:commandButton value="#{messages['web.app.table.limpiaForm']}" process="@this" 
+                                             style="display:inline; float:center;"
+                                             action="#{confConceptoMB.limpiarFormula()}"
+                                             update="FormulaDOC,guests,guardar">
+                            </p:commandButton>
+                        </p:panel>
+                    </p:panel>
+                </h:form>
+                <h:panelGrid columns="2" id="guests">
+                    <p:column rendered="#{confConceptoMB.partes.size()>0?true:false}">
+                        <div class="ui-g-8 ui-md-8 ui-lg-8"  >
+                            <p:outputLabel value="#{messages['web.app.table.valores']}:"/>
+                            <br></br>
+                            <br></br>
+                            <h:panelGroup >
+                                <h:form >
+                                    <ui:repeat value="#{confConceptoMB.partes}" var="valoresFormula" varStatus="loop">
+                                        <h:outputText value="#{confConceptoMB.partes.get(loop.index)}" />
+                                        <p:inputNumber value="#{confConceptoMB.valor}" maxlength="7" size="7" 
+                                                       maxValue="9999999.99" decimalPlaces="2" >
+                                            <p:ajax process="@this"  
+                                                    listener="#{confConceptoMB.agregarValores(loop.index)}"/>
+                                        </p:inputNumber>
+                                    </ui:repeat>
+                                </h:form>
+                            </h:panelGroup>
+                        </div>
+                    </p:column>
+                    <p:column rendered="#{confConceptoMB.partes.size()>0?true:false}">
+                        <div class="ui-g-8 ui-md-8 ui-lg-8"  >
+                            <p:outputLabel value="Prueba "/>
+                            <p:inputNumber decimalPlaces="2" id="PruebaDOC" class="materialize-textarea" 
+                                           value="#{confConceptoMB.resultado}"/>
+                        </div>
+                        <div class="ui-g-8 ui-md-8 ui-lg-8"  >
+                            <p:commandButton value="#{messages['web.app.table.test']}" process="@this" 
+                                             style="display:inline; float:right;" 
+                                             action="#{confConceptoMB.calcularFormula()}"
+                                             update="detalleConfConcepto,detalleCrearConceptoForm,PruebaDOC,guardar">
+                            </p:commandButton>
+                        </div>
+                    </p:column>
+                    <p:column>
+                    </p:column>
+                    <p:column>
+                        <p:panel id="guardarCalculo" rendered="#{confConceptoMB.guardar==2?true:false}" style="border:none">
+                            <!--guardarXcalculo" -->
+                            <div class="{messages['web.app.table.tabla']} ui-corner-all">
+                                <p:commandButton value="#{messages['web.app.button.guardar']}" process="@this" 
+                                                 style="display:inline; float:right;" 
+                                                 actionListener="#{confConceptoMB.guardarConcepto()}"
+                                                 disabled="#{confConceptoMB.disable}"
+                                                 id="guardar" 
+                                                 update="detalleConfConcepto,
+                                                 detalleCrearConceptoForm:DefFormula,
+                                                 detalleCrearConceptoForm,
+                                                 prioridadCalculoForm:prioridadCalculoDialogo,
+                                                 prioridadCalculoForm,
+                                                 guests,
+                                                 guardarCalculo">
+                                    <f:setPropertyActionListener value="#{confConceptoMB.active}" target="#{confConceptoMB.disable}"/>
+                                </p:commandButton>
+                                <p:commandButton value="#{messages['web.app.button.cancelar']}"  
+                                                 style="display:inline; float:right;" >
+                                    <p:ajax listener="#{confConceptoMB.cancelar()}" process="@this"
+                                            update="detalleConfConcepto,
+                                            detalleCrearConceptoForm,
+                                            guests"/>
+                                </p:commandButton>
+                            </div>
+                            <!--/p:panel-->
+                        </p:panel>
+                    </p:column>
+                </h:panelGrid>              
+                <p:confirmDialog id="eliminarConfConcepto" widgetVar="eliminarConfConcepto" 
+                                 header="#{messages['web.app.title.eliminar']}" closable="false"
+                                 message="¿Desea eliminar el concepto?" showEffect="fade" hideEffect="fade">
+                    <center>
+                        <p:commandButton value="#{messages['web.app.button.no']}" process="@this" 
+                                         onclick="PF('eliminarConfConcepto').hide();" />
+                        <p:commandButton value="#{messages['web.app.button.si']}" immediate="true"
+                                         styleClass="ui-confirmdialog-yes"  
+                                         action="#{confConceptoMB.eliminarConcepto()}" 
+                                         update="detalleConfConcepto,eliminarConfConcepto,
+                                         detalleConfConcepto:mensajesDetalle" />
+                    </center>
+                </p:confirmDialog>
+                <!--inicio de dialogo para asignar prioridad de calculo-->
+                <h:form id="prioridadCalculoForm">                
+                    <p:panel id="prioridadCalculoDialogo"
+                             rendered="#{confConceptoMB.visible==3?true:false}" 
+                             style ="background: #FFFFFF;" >
+                        <p:growl id="msgs" showDetail="true" />
+                        <div class="row" >
+                            <p:dataTable var="detprioridadCalculo" value="#{confConceptoMB.listaConceptosDestino}" 
+                                         draggableRows="true" id="tabpri">
+                                <p:ajax event="rowReorder" listener="#{confConceptoMB.onRowReorder}" 
+                                        update=":prioridadCalculoForm:msgs,prioridadCalculoForm:tabpri" />
+                                <f:facet name="header">
+                                    Prioridad de cálculo
+                                </f:facet>
+                                <p:column headerText="#{messages['web.app.table.clave']}" width="30%">
+                                    <h:outputText value="#{detprioridadCalculo.codClaveconcepto}" />
+                                </p:column>
+                                <p:column headerText="#{messages['web.app.table.nombre']}" width="30%">
+                                    <h:outputText value="#{detprioridadCalculo.codNbconcepto}" />
+                                </p:column>
+                                <p:column id="pri" headerText="#{messages['web.app.table.prioridadCalculo']}" width="30%">
+                                    <h:outputText value="#{detprioridadCalculo.cnuPrioricalculo}" />
+                                </p:column>
+                            </p:dataTable>
+                        </div>
+                        <div class="row" style="align-content: center">
+                            <p:commandButton value="#{messages['web.app.button.aceptar']}" 
+                                             id="btnAceptar" 
+                                             update="prioridadCalculoForm,
+                                             detalleConfConcepto:tablaDetalleConcepto,
+                                             detalleConfConcepto,
+                                             detalleCrearConceptoForm,
+                                             prioridadCalculoForm:prioridadCalculoDialogo,
+                                             prioridadCalculoForm"  
+                                             action="#{confConceptoMB.guardarPrioridad()}" style="margin-right:2%; display:inline; float:right;" 
+                                             styleClass="ui-priority-primary" />
+                            <p:commandButton value="#{messages['web.app.button.cancelar']}" 
+                                             action="#{confConceptoMB.setVisible(1)}"
+                                             rendered="#{confConceptoMB.prioridad}"
+                                             update="detalleConfConcepto,
+                                             detalleCrearConceptoForm,
+                                             prioridadCalculoForm:prioridadCalculoDialogo,
+                                             prioridadCalculoForm"
+                                             id="btnCancelarPrioridadCalculo" 
+                                             style="margin-right:2%; display:inline; float:right;" 
+                                             styleClass="ui-priority-primary" />
+                        </div>
+                    </p:panel>  <!--fin dialogo prioridad calculo-->
+                </h:form>
+            </div> <!-- end container -->
+        </main>
+    </ui:define>
+</ui:composition>

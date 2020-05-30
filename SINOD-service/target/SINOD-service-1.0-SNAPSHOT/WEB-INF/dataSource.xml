@@ -1,0 +1,108 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+        http://www.springframework.org/schema/tx 
+	http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
+	http://www.springframework.org/schema/context 
+	http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+    
+    <!-- archivo que contiene la conexion a la base de datos y en el que se declaran todas la entidades a utilizar  -->
+    <context:property-placeholder location="classpath:configuration.properties" />
+
+    <!-- Data Source Declaration -->
+    <bean id="DataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+        <property name="driverClass" value="org.postgresql.Driver" />
+        <property name="jdbcUrl" value="jdbc:postgresql://localhost:5432/suite"/>
+        <property name="user" value="suite"/>
+        <property name="password" value="suite" />
+       
+        <!-- pool sizing -->
+        <!--property name="initialPoolSize" value="3" /-->  <!-- Número de conexiones que se intentarán adquirir al iniciar -->
+        <property name="initialPoolSize" value="1" />
+        <!--property name="minPoolSize" value="6" /-->  <!--Indica el número mínimo de conexiones que podrá tener en cualquier momento el pool -->
+        <property name="minPoolSize" value="2" />
+        <!--property name="maxPoolSize" value="25" /-->  <!--indica el número máximo de conexiones que podrá tener en cualquier momento el pool.  -->
+        <property name="maxPoolSize" value="3" />
+        <!--property name="acquireIncrement" value="3" /-->  <!--Determina cuantas conexiones intentará adquirir C3P0 cuando se saturen las conexiones del pool -->
+        <property name="acquireIncrement" value="1" />
+        <property name="maxStatements" value="0" />  <!-- indica el tamaño del caché de PreparedStatements que guardará C3P0. Un cero indica que el caché está deshabilitado.-->
+        <!-- retries -->
+        <!--property name="acquireRetryAttempts" value="30" /-->  <!--Define cuántas veces c3p0 intentará adquirir una nueva conexión de la base de datos antes de darse por vencido. Si este valor es menor o igual que cero, c3p0 continuará tratando de buscar una conexión indefinidamente.-->
+        <property name="acquireRetryAttempts" value="3" /> 
+        <property name="acquireRetryDelay" value="1000" />  <!-- 1s -->
+        <property name="breakAfterAcquireFailure" value="false" /> 
+        <!-- refreshing connections -->
+        <property name="maxIdleTime" value="180" />  <!-- 3min -->
+        <property name="maxConnectionAge" value="10" />  <!-- 1h -->
+        <!-- timeouts and testing -->
+        <!--C3P0 hará una prueba en todas las conexiones que estén dormidas pero sigan en el pool cada X segundos para permitir que sigan activas -->
+        <property name="checkoutTimeout" value="5000" />  <!-- 5s -->
+        <property name="idleConnectionTestPeriod" value="60" />  <!-- 60 -->
+        <property name="testConnectionOnCheckout" value="true" /> 
+        <property name="preferredTestQuery" value="SELECT 1" /> 
+        <property name="testConnectionOnCheckin" value="true" />
+        
+    </bean>
+    
+    <!-- Session Factory Declaration -->
+    <bean id="SessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+        <property name="dataSource" ref="DataSource" />
+        <property name="annotatedClasses">
+        
+            <list>
+            
+                <!-- Declaration Entities -->
+                <value>com.mbn.sinod.model.entidades.Tsgnomalguinaldo</value>
+                <value>com.mbn.sinod.model.entidades.Tsgnomargumento</value>
+                <value>com.mbn.sinod.model.entidades.Tsgnombitacora</value>
+                <value>com.mbn.sinod.model.entidades.Tsgnomcabecera</value>
+                <value>com.mbn.sinod.model.entidades.Tsgnomcabeceraht</value>
+                <value>com.mbn.sinod.model.entidades.Tsgnomcalculo</value>
+                <value>com.mbn.sinod.model.entidades.Tsgnomcatincidencia</value>
+                <value>com.mbn.sinod.model.entidades.Tsgnomclasificador</value>
+                <value>com.mbn.sinod.model.entidades.Tsgnomcncptoquinc</value>
+                <value>com.mbn.sinod.model.entidades.Tsgnomcncptoquincht</value>
+                <value>com.mbn.sinod.model.entidades.Tsgnomconcepto</value>
+                <value>com.mbn.sinod.model.entidades.Tsgnomconceptosat</value>
+                <value>com.mbn.sinod.model.entidades.Tsgnomconfpago</value>
+                <value>com.mbn.sinod.model.entidades.Tsgnomejercicio</value>
+                <value>com.mbn.sinod.model.entidades.Tsgnomempleados</value>
+                <value>com.mbn.sinod.model.entidades.Tsgnomempquincena</value>
+                <value>com.mbn.sinod.model.entidades.Tsgnomempquincenaht</value>
+                <value>com.mbn.sinod.model.entidades.Tsgnomestatusnom</value>
+                <value>com.mbn.sinod.model.entidades.Tsgnomformula</value>
+                <value>com.mbn.sinod.model.entidades.Tsgnomfuncion</value>
+                <value>com.mbn.sinod.model.entidades.Tsgnomhisttabla</value>
+                <value>com.mbn.sinod.model.entidades.Tsgnomincidencia</value>
+                <value>com.mbn.sinod.model.entidades.Tsgnommanterceros</value>
+                <value>com.mbn.sinod.model.entidades.Tsgnomquincena</value>
+                <value>com.mbn.sinod.model.entidades.Tsgnomtipoconcepto</value>
+                <value>com.mbn.sinod.model.entidades.Tsgnomtiponomina</value>
+                <value>com.mbn.sinod.model.entidades.Tsgrhareas</value>
+                <value>com.mbn.sinod.model.entidades.Tsgrhpuestos</value>
+                <value>com.mbn.sinod.model.entidades.Tsgrhroles</value>
+                <value>com.mbn.sinod.model.entidades.Tsgrhempleados</value>
+                <value>com.mbn.sinod.model.entidades.Usuario</value>
+                
+            </list>
+        </property>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</prop>
+                <prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.connection.autocommit"> true</prop>
+            </props>
+        </property>
+    </bean>
+	
+    <!-- Enable the configuration of transactional behavior based on annotations -->
+    <tx:annotation-driven transaction-manager="txManager"/>
+
+    <!-- Transaction Manager is defined -->
+    <bean id="txManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+        <property name="sessionFactory" ref="SessionFactory"/>
+    </bean>
+</beans>

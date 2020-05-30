@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/template/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"> 
+    <ui:define name="body">
+        <main>
+            <div class="container ">
+                <!--Barra de navejación-->
+                <div align="left">
+                    <p:outputLabel value="#{messages['web.app.table.personal.consulta.menu']}" style="#{messages['web.app.style.menu']}" />    
+                    <p:separator style="width: 100%; height:5px" />
+                </div>
+
+                <center><h4>Consultar personal</h4></center>
+
+                    <h:form id="detallePersonal">
+                    <center><h5>Personal</h5></center>
+
+
+                    <div class="#{messages['web.app.table.tabla2']}">
+
+                        <p:dataTable var="dt" value="#{detalleEmpleadosMB.listaDetalleEmpleadosNom}" id="personalTable"
+                                     emptyMessage="#{messages['web.app.table.noData']}"
+                                     reflow="true" rows="#{messages['web.app.table.initialRows']}" paginator="true" rowIndexVar="numerador" style="font-size: small" paginatorPosition="bottom">
+
+                            <f:facet name="header">
+                                <p:spacer height="27"/>
+
+<!--                                <p:commandLink
+                                    title="Alta de Personal"
+                                    style="display:inline; 
+                                    float:right; 
+                                    padding: 2px;">
+                                    <a href='./AltaDePersonal.xhtml'><i class="fa fa-fw fa-plus-circle fa-2x" style="display:inline;color:blue;
+                                                                      float:right;font-size:x-large"></i></a>
+
+                                </p:commandLink>-->
+                                 <p:commandButton icon="#{messages['web.app.icon.agregar']}" 
+                                                 process="@this" 
+                                                 action="#{detalleEmpleadosMB.agregarEmpleado()}"
+                                                 title="Alta de Personal"
+                                                 style="display:inline;
+                                                 float:right;
+                                                 font-size: small;
+                                                 align-content: center;">
+                                </p:commandButton>
+                                <h:commandLink
+                                    id="reportePersonal"                                  
+                                    title="Detalles de Personal"
+                                    action="#{detalleEmpleadosMB.reportePersonal()}"
+                                    target="_blank"
+                                    style="display:inline; 
+                                    float:right; 
+                                    font-size:x-small;
+                                    padding: 2px;" >
+                                    <h:graphicImage library="imagenes" name="pdf-icon.png" width="10%;" />
+                                </h:commandLink>
+
+
+                            </f:facet>
+                            <p:column headerText="#{messages['web.app.table.id']}" width="5%" style="text-align:center">
+                                <h:outputText value="#{dt.codempleado}"/>
+                            </p:column>
+
+                            <p:column filterBy="#{dt.nomcompleto}" headerText="#{messages['web.app.table.empleado']}" width="10%"  filterMatchMode="contains" filterStyle="background: #FFFFFF; height: 40%; width:90%;">
+                                <h:outputText value="#{dt.nomcompleto}"/>
+                            </p:column>
+
+                            <p:column filterBy="#{dt.desrfc}" headerText="#{messages['web.app.table.rfc']}"  width="12%" filterMatchMode="contains" filterStyle="background: #FFFFFF; height: 40%; width:90%;">
+                                <h:outputText value="#{dt.desrfc}"/>
+                            </p:column>
+                            <p:column filterBy="#{dt.descurp}" headerText="#{messages['web.app.table.curp']}"  width="15%" filterMatchMode="contains" filterStyle="background: #FFFFFF; height: 40%; width:90%;">
+                                <h:outputText value="#{dt.descurp}"/>
+                            </p:column>
+
+                            <p:column width="10%" headerText="#{messages['web.app.table.area']}">
+                                <h:outputText value="#{dt.desnbarea}" />
+                            </p:column>
+
+                            <p:column width="10%" headerText="#{messages['web.app.table.puesto']}">
+                                <h:outputText value="#{dt.despuesto}"/>
+                            </p:column>
+
+                            <p:column headerText="Acciones" width="8%" style="text-align:center" >
+
+                                <p:menuButton icon="#{messages['web.app.icon.desplegar']}" >
+                                    <p:menuitem value=" Ver "  icon="#{messages['web.app.icon.ver']}" 
+                                                process="@this" actionListener="#{detalleEmpleadosMB.verEmpleado(dt.codempleado)}"
+                                                >
+                                    </p:menuitem>
+                                    <p:menuitem value="#{messages['web.app.button.editar']}"  icon="#{messages['web.app.icon.editar']}" 
+                                                process="@this" action="#{detalleEmpleadosMB.editarEmpleado(dt.codempleado)}"/>
+                                    <p:menuitem disabled="true" value="#{messages['web.app.button.baja']}"  icon="#{messages['web.app.icon.eliminar']}" url="bajasPersonal.xhtml"/>
+                                    <p:menuitem disabled="true" value="#{messages['web.app.table.manyTer']}" icon="#{messages['web.app.icon.manuales']}" url="ManualesTerceros.xhtml"/>
+                                    <p:menuitem value="#{messages['web.app.table.incidencia']}" icon="#{messages['web.app.icon.incidencias']}"
+                                                process="@this" actionListener="#{detalleEmpleadosMB.registrarIncidencias(dt.codempleado)}"/>
+                                    <p:menuitem value="#{messages['web.app.table.historial']}" icon="#{messages['web.app.icon.historial']}"
+                                                process="@this" actionListener="#{detalleEmpleadosMB.verHistorial(dt.codempleado)}"/>
+                                    <p:separator />
+
+                                </p:menuButton>
+
+
+
+                            </p:column>
+
+                        </p:dataTable> <!-- end table -->
+                    </div> 
+
+                </h:form>
+
+
+            </div> <!-- end container -->
+        </main>
+    </ui:define> 
+</ui:composition>

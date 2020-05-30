@@ -1,0 +1,249 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/template/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">   
+    <ui:define name="body">
+        <main>
+            <div class="container ">
+
+                <!--Barra de navegación-->
+                <div align="left">
+                    <p:outputLabel value="#{messages['web.app.table.nomina.valInc.menu']}" style="#{messages['web.app.style.menu']}" />    
+                    <p:separator style="width: 100%; height:5px" />
+                </div>
+                <center><h4><p:outputLabel value="#{incidenciasQuincenaMB.nompantalla}" /></h4></center>
+                <h:form id="validarIncidenciaForm">
+                    <div class="#{messages['web.app.table.tabla2']}">
+                        <p:growl id="msgs" showDetail="true" />
+
+                        <p:dataTable id="tablaIncidenciasQuincena" var="detIncidenciasQuincena" 
+                                     value="#{incidenciasQuincenaMB.listaIncidenciasQuincena}"
+                                     reflow="true" rows="#{messages['web.app.table.initialRows']}" paginator="true" paginatorPosition="bottom" 
+                                     rowIndexVar="rowIndex" style="font-size: small" >
+
+
+                            <f:facet name="header">
+                                <p:outputLabel value="QUINCENA ACTUAL: #{incidenciasQuincenaMB.desQuincenaActual}" />
+                                <p:spacer height="27"/>
+                                <p:commandButton action ="#{incidenciasQuincenaMB.dialogoValidarIncidencias()}" 
+                                                 icon="#{messages['web.app.icon.aprobar']}" 
+                                                 title ="Aprobar todos"
+                                                 style="display:inline; 
+                                                 float:right; 
+                                                 font-size: small;
+                                                 align-content: center"
+                                                 disabled="#{incidenciasQuincenaMB.listaIncidenciasQuincena.size()==0?true:false}" 
+                                                 update="validarIncidenciaForm:msgs,tablaIncidenciasQuincena">
+                                </p:commandButton>
+                                <p:commandButton action ="#{incidenciasQuincenaMB.dialogoRechazarIncidencias()}" 
+                                                 icon="#{messages['web.app.icon.cancelar']}" 
+                                                 disabled="#{incidenciasQuincenaMB.listaIncidenciasQuincena.size()==0?true:false}" 
+                                                 title ="Rechazar todos"
+                                                 style="display:inline; 
+                                                 float:right; 
+                                                 font-size: small;
+                                                 align-content: center"
+                                                 update="validarIncidenciaForm:msgs,validarIncidenciaForm:tablaIncidenciasQuincena">
+                                </p:commandButton>
+                                <p:spacer height="25"/>
+                            </f:facet>
+
+                            <p:column headerText="#{messages['web.app.table.nombre']}" width="12%" style="text-align:center" >
+                                <h:outputText value="#{detIncidenciasQuincena.nombre}" />
+                            </p:column>
+                            <p:column headerText="#{messages['web.app.table.clave']}" width="12%" style="text-align:center" >
+                                <h:outputText value="#{detIncidenciasQuincena.clave}" />
+                            </p:column>
+                            <p:column headerText="#{messages['web.app.table.incidencia']}" width="12%" style="text-align:center" >
+                                <h:outputText value="#{detIncidenciasQuincena.incidencia}" />
+                            </p:column>
+                            <p:column headerText="#{messages['web.app.table.tipo']}" width="12%" style="text-align:center" >
+                                <h:outputText value="#{detIncidenciasQuincena.desctipo}" /> 
+                            </p:column>
+                            <p:column headerText="#{messages['web.app.table.autorizar']}" width="10%" style="text-align:center" >
+                                <h:outputText id="txtAceptar" value="#{detIncidenciasQuincena.aceptacion==true?'AUTORIZADA':
+                                                                       detIncidenciasQuincena.aceptacion==false?'DENEGADA':'Pendiente'}"  />
+                            </p:column>
+                            <p:column  headerText="#{messages['web.app.table.validar']}" width="10%" style="text-align:center" >
+                                <h:outputText id="txtValidar" value="#{detIncidenciasQuincena.validacion==true?'VALIDADA':
+                                                                       detIncidenciasQuincena.validacion==false?'RECHAZADA':'Pendiente'}"  />
+                            </p:column>
+                            <!--ACCIONES-->
+                            <p:column headerText="#{messages['web.app.table.acciones']}" width="10%" style="text-align:center" >
+                                <p:menuButton icon="#{messages['web.app.icon.desplegar']}">
+                                    <p:menuitem value="#{messages['web.app.button.ver']}"  icon="#{messages['web.app.icon.ver']}"
+                                                action="#{incidenciasQuincenaMB.verDetalleIncidencia(detIncidenciasQuincena)}"
+                                                update="detalleIncidencia"/>
+                                    <p:menuitem rendered="#{incidenciasQuincenaMB.usuario.cod_rol==1?true:false}" value="#{messages['web.app.button.aceptar']}"  icon="#{messages['web.app.icon.aprobar']}"
+                                                action="#{incidenciasQuincenaMB.validarIncidencias(0,rowIndex,'v')}"
+                                                update="validarIncidenciaForm:tablaIncidenciasQuincena">
+                                    </p:menuitem>
+                                    <p:menuitem rendered="#{incidenciasQuincenaMB.usuario.cod_rol==1?true:false}" value="#{messages['web.app.button.rechazar']}"  icon="#{messages['web.app.icon.cerrar']}"
+                                                action="#{incidenciasQuincenaMB.validarIncidencias(1,rowIndex,'v')}"
+                                                update="validarIncidenciaForm:tablaIncidenciasQuincena">
+                                    </p:menuitem>
+                                    <p:menuitem rendered="#{incidenciasQuincenaMB.usuario.cod_rol==2 || incidenciasQuincenaMB.usuario.cod_rol==4?true:false}" value="#{messages['web.app.table.autorizar']}"  icon="#{messages['web.app.icon.aprobar']}"
+                                                action="#{incidenciasQuincenaMB.validarIncidencias(0,rowIndex,'a')}"
+                                                update="validarIncidenciaForm:tablaIncidenciasQuincena validarIncidenciaForm:msgs">
+                                    </p:menuitem>
+                                    <p:menuitem rendered="#{incidenciasQuincenaMB.usuario.cod_rol==2 || incidenciasQuincenaMB.usuario.cod_rol==4?true:false}" value="#{messages['web.app.label.denegar']}"  icon="#{messages['web.app.icon.cerrar']}"
+                                                action="#{incidenciasQuincenaMB.validarIncidencias(1,rowIndex,'a')}"
+                                                update="validarIncidenciaForm:tablaIncidenciasQuincena">
+                                    </p:menuitem>
+                                </p:menuButton>
+                            </p:column>
+                        </p:dataTable>
+
+                        <div class="#{messages['web.app.table.tabla2']}" align="right">
+                            <p:commandButton value="#{messages['web.app.button.guardar']}" id="btnGuardar" 
+                                             immediate="true"
+                                             process="@this" 
+                                             update="validarIncidenciaForm:msgs,validarIncidenciaForm:tablaIncidenciasQuincena"  
+                                             action="#{incidenciasQuincenaMB.guardarIncidencias()}" 
+                                             style="margin-right:2%;" 
+                                             disabled="#{incidenciasQuincenaMB.listaIncidenciasQuincena.size()==0?true:false}" 
+                                             styleClass="ui-priority-primary" />
+                            
+                            
+                             <p:commandButton value="#{messages['web.app.button.enviar']}" id="btnEnviar" 
+                                             immediate="true"
+                                             process="@this" 
+                                             update="validarIncidenciaForm:msgs"  
+                                             action="#{incidenciasQuincenaMB.enviarCorrreos()}" 
+                                             style="margin-right:2%;"
+                                             disabled="#{incidenciasQuincenaMB.listaIncidenciasQuincena.size()==0?true:false}" 
+                                             styleClass="ui-priority-primary" />
+                        </div>   
+                    </div>
+                </h:form>
+              
+                <!--DIALOGO VER DETALLE DE INCIDENCIA-->
+                <p:dialog id="detalleIncidencia" resizable="false" closable ='false'
+                          styleClass="disable-scroll" 
+                          draggable="false" header="Detalle incidencia" widgetVar="detalleIncidencia" 
+
+                          modal="true" height="50%" width="50%" style ="background: #FFFFFF;">
+                    <h:form id="detalle">
+                        <h:panelGrid columns="1"> 
+
+
+                            <p:column>  
+
+                                <div class="ui-g-12 ui-md-6 ui-lg-6">
+                                    <p:outputLabel value="#{messages['web.app.table.empleado']}" style="color:black;" />
+                                    <p:inputText id="nombreEmpleado" readonly="true"
+                                                 value = "#{incidenciasQuincenaMB.incidenciaSeleccionada.nombre}"
+                                                 class="materialize-textarea"/>
+
+                                </div>
+                                <div class="ui-g-12 ui-md-6 ui-lg-6">
+                                    <p:outputLabel value="#{messages['web.app.table.clave']}" style="color:black;"/>
+                                    <p:inputText id="claveIncidenciaQ" 
+                                                 readonly="true"
+                                                 value = "#{incidenciasQuincenaMB.incidenciaSeleccionada.clave}" 
+                                                 class="materialize-textarea"/>
+
+                                </div>
+                                <div class="ui-g-12 ui-md-6 ui-lg-6">
+                                    <p:outputLabel value="#{messages['web.app.table.incidencia']}" style="color:black;"/>
+                                    <p:inputText id="Incidencia" 
+                                                 readonly="true"
+                                                 value = "#{incidenciasQuincenaMB.incidenciaSeleccionada.incidencia}" 
+                                                 class="materialize-textarea"/>
+                                </div>
+
+                                <div  class="ui-g-12 ui-md-6 ui-lg-6"  >
+                                    <p:outputLabel value="#{messages['web.app.table.tipo']}" style="color:black;"/>
+                                    <p:inputText id="descripcionIncidencia"
+                                                 readonly="true"
+                                                 value = "#{incidenciasQuincenaMB.incidenciaSeleccionada.desctipo}" 
+                                                 class="materialize-textarea"/>
+                                </div>
+
+                                <div  class="ui-g-12 ui-md-6 ui-lg-6"  >
+                                    <p:outputLabel value="#{messages['web.app.table.perfil']}" style="color:black;"/>
+                                    <p:inputText id="perfil"  
+                                                 readonly="true"
+                                                 value = "#{incidenciasQuincenaMB.incidenciaSeleccionada.perfil}" 
+                                                 class="materialize-textarea"/>
+                                </div>
+                                <div  class="ui-g-12 ui-md-6 ui-lg-6"  >
+                                    <p:outputLabel value="#{messages['web.app.table.comentarios']}" style="color:black;"/>
+                                    <p:inputText id="comentarios"   
+                                                 readonly="true"
+                                                 value = "#{incidenciasQuincenaMB.incidenciaSeleccionada.comentarios}" 
+                                                 class="materialize-textarea"/>
+                                </div>
+                                <div  class="ui-g-12 ui-md-6 ui-lg-6"  >
+                                    <p:outputLabel value="#{messages['web.app.table.importe']}" style="color:black;"/>
+                                    <p:inputNumber id="importe"
+                                                   readonly="true"
+                                                   value = "#{incidenciasQuincenaMB.incidenciaSeleccionada.importe}" 
+                                                   class="materialize-textarea"/>
+                                </div>
+
+                                <div align="right"  class="#{messages['web.app.table.tabla']}" >
+                                    <p:commandButton process="@this" style="font-size:medium; margin-left: 10px;"
+                                                     onclick="PF('detalleIncidencia').hide();"
+                                                     value="#{messages['web.app.button.cerrar']}" 
+                                                     action="no-action">
+                                    </p:commandButton>
+                                </div>
+                            </p:column>
+
+                        </h:panelGrid>
+                    </h:form>
+
+
+                </p:dialog>
+
+                <!-- dialogo para validar todas las incidencias -->
+
+                <p:confirmDialog id="dialogValidarIncidencias" widgetVar="dialogValidarIncidencias" 
+                                 header="Aviso" closable="false"
+                                 message="#{incidenciasQuincenaMB.usuario.cod_rol==1?messages['web.app.msj.adver.validarIncidencias']:messages['web.app.msj.adver.autorizarIncidencias']}" 
+                                 showEffect="fade" hideEffect="fade" >
+                    <center>
+
+                        <p:commandButton value="#{messages['web.app.button.no']}" 
+                                         process="@this" 
+                                         onclick="PF('dialogValidarIncidencias').hide();" />
+                        <p:commandButton rendered="#{incidenciasQuincenaMB.usuario.cod_rol==1?true:false}" value="#{messages['web.app.button.si']}" process="@this" 
+                                         action="#{incidenciasQuincenaMB.validarTodas()}" 
+                                         update="dialogValidarIncidencias,validarIncidenciaForm:msgs,validarIncidenciaForm:tablaIncidenciasQuincena"/>
+                        <p:commandButton rendered="#{incidenciasQuincenaMB.usuario.cod_rol==2 || incidenciasQuincenaMB.usuario.cod_rol==4?true:false}" value="#{messages['web.app.button.si']}" process="@this" 
+                                         action="#{incidenciasQuincenaMB.autorizarTodas()}" 
+                                         update="dialogValidarIncidencias,validarIncidenciaForm:msgs,validarIncidenciaForm:tablaIncidenciasQuincena"/>
+                    </center>
+
+
+                </p:confirmDialog>
+
+                <!-- dialogo para rechazar todas las incidencias-->
+
+                <p:confirmDialog id="dialogRechazarIncidencias" widgetVar="dialogRechazarIncidencias" 
+                                 header="Aviso" closable="false"
+                                 message="#{incidenciasQuincenaMB.usuario.cod_rol==2?messages['web.app.msj.adver.rechazarIncidencias']:messages['web.app.msj.adver.denegarIncidencias']}" 
+                                 showEffect="fade" hideEffect="fade" >
+                    <center>
+
+                        <p:commandButton value="#{messages['web.app.button.no']}" 
+                                         process="@this" 
+                                         onclick="PF('dialogRechazarIncidencias').hide();" />
+                        <p:commandButton rendered="#{incidenciasQuincenaMB.usuario.cod_rol==2?true:false}" value="#{messages['web.app.button.si']}" process="@this" 
+                                         action="#{incidenciasQuincenaMB.rechazarTodas()}" 
+                                         update="dialogRechazarIncidencias,validarIncidenciaForm:msgs,validarIncidenciaForm:tablaIncidenciasQuincena"/>
+                        <p:commandButton rendered="#{incidenciasQuincenaMB.usuario.cod_rol==4?true:false}" value="#{messages['web.app.button.si']}" process="@this" 
+                                         action="#{incidenciasQuincenaMB.denegarTodas()}" 
+                                         update="dialogRechazarIncidencias,validarIncidenciaForm:msgs,validarIncidenciaForm:tablaIncidenciasQuincena"/>
+                    </center>
+                </p:confirmDialog>
+            </div> <!-- end container -->
+        </main>
+    </ui:define>
+</ui:composition>

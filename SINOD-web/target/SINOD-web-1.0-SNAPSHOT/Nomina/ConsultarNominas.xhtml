@@ -1,0 +1,216 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/template/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">   
+
+    <ui:define name="body">
+        <main>
+            <div class="container">
+                <!--Barra de navegación-->
+                <div align="left"><!--breadcrum-->
+                    <p:outputLabel value="#{messages['web.app.table.nomina.crear.menu']}" style="#{messages['web.app.style.menu']}" />    
+                    <p:separator style="width: 100%; height:5px" />
+                </div>
+                <center><h4>#{messages['web.app.table.nomina.crear.titulo']}</h4></center>
+                <h:form id="tablaNominaForm" >
+                    <!--No puede haber formularios anidados-->
+                    <p:growl id="mensajesDetalle" showDetail="true" sticky="true"/>
+                    <div class="#{messages['web.app.table.tabla']}">
+                        <!--Aqui el value se refiere a el objeto con que va a rellenar-->
+                        <p:dataTable id="tablaDetalleNomina" 
+                                     var="detalleNomina"
+                                     emptyMessage="No existen nóminas registradas" 
+                                     value="#{nominaAdminMB.listaCabecera}" 
+                                     reflow="true" 
+                                     rows="#{messages['web.app.table.initialRows']}" 
+                                     paginator="true" 
+                                     paginatorPosition="bottom" 
+                                     rowIndexVar="numerador" 
+                                     style="font-size: small;" 
+                                     sortBy="#{detalleNomina.codCabeceraid}"
+                                     sortOrder="DESCENDING">
+                            <f:facet name="header">
+                                <p:outputPanel>
+                                    <p:commandButton icon="#{messages['web.app.icon.agregar']}"
+                                                     title="Agregar nómina"
+                                                     style="float:right;
+                                                     font-size: small;
+                                                     align-content: center;">
+                                        <p:ajax process="@this"  resetValues="true" 
+                                                update="agregarNominaDialogo,
+                                                datosNominaForm:btnGuardar"
+                                                listener="#{nominaAdminMB.dialogoAgregarNomina()}"/>
+                                    </p:commandButton>
+                                    <p:spacer height="27"/>
+                                </p:outputPanel>
+                            </f:facet>
+                            <!-- va el face-->
+                            <!--Va rellenando la informacion con que se va ir llenando la tabla, cada fila es independiente-->
+                            <p:column class="titulosTabla" headerText="#{messages['web.app.table.nomina.consultar.nombre']}" 
+                                      style="width:15%; text-align: center;">
+                                <h:outputText value="#{detalleNomina.codNbnomina}" />
+                            </p:column>
+                            <p:column class="titulosTabla" 
+                                      style="width:14%; text-align: center;" 
+                                      headerText="#{messages['web.app.table.nomina.consultar.estatus']}" >
+                                <h:outputText value="#{detalleNomina.codEstatusnomidFk.codEstatusnomina}" />
+                            </p:column>
+                            <p:column class="titulosTabla" style="width:15%; text-align:center"
+                                      headerText="#{messages['web.app.table.fechaCrea']}" >
+                                <h:outputText value="#{detalleNomina.fecCreacion}" >
+                                    <f:convertDateTime pattern="#{messages['web.app.label.formatoFecha']}" />
+                                </h:outputText>
+                            </p:column>
+                            <p:column  class="titulosTabla" 
+                                       headerText="#{messages['web.app.table.nomina.consultar.totalPerc']}" 
+                                       style="width:16%; text-align: center;">
+                                <h:outputText value="#{detalleNomina.impTotpercepcion}">
+                                    <f:convertNumber currencySymbol="$" type="currency"/>
+                                </h:outputText>
+                            </p:column>
+                            <p:column  class="titulosTabla" 
+                                       headerText="#{messages['web.app.table.nomina.consultar.totalDeduc']}" 
+                                       style="width:15%; text-align: center;">
+                                <h:outputText value="#{detalleNomina.impTotdeduccion}">
+                                    <f:convertNumber currencySymbol="$" type="currency"/>
+                                </h:outputText>
+                            </p:column>
+                            <p:column  class="titulosTabla" 
+                                       headerText="#{messages['web.app.table.nomina.consultar.importeTotal']}"
+                                       style="width:15%; text-align: center;">
+                                <h:outputText value="#{detalleNomina.impTotalemp}">
+                                    <f:convertNumber currencySymbol="$" type="currency"/>
+                                </h:outputText>
+                            </p:column>
+                            <p:column  class="titulosTabla" 
+                                       headerText="#{messages['web.app.table.nomina.consultar.acciones']}" 
+                                       style="width: 10%; text-align:center;">
+                                <p:growl id="message" showDetail="true" />
+                                <p:menuButton value="" icon="#{messages['web.app.icon.desplegar']}" >  
+                                    <p:menuitem value="#{messages['web.app.button.detalle']}" 
+                                                action="#{nominaAdminMB.detalle(detalleNomina)}"
+                                                icon="#{messages['web.app.icon.detalle']}">
+                                    </p:menuitem>
+                                    <p:menuitem value="#{messages['web.app.button.eliminar']}" 
+                                                action="#{nominaAdminMB.dialogoEliminar(detalleNomina)}" 
+                                                icon="#{messages['web.app.icon.eliminar']}">
+                                    </p:menuitem>
+                                </p:menuButton>
+                            </p:column>
+                        </p:dataTable>
+                    </div>
+                </h:form>           
+                <p:dialog id="agregarNominaDialogo" 
+                          resizable="false" 
+                          header="Agregar nómina" 
+                          widgetVar="agregarNominaDialogo" 
+                          modal="true" 
+                          height="390" 
+                          width="700" 
+                          style="background:#FFFFFF;" 
+                          closable="false" draggable="false">
+                    <h:form id="datosNominaForm"> 
+                        <h:panelGrid columns="2">                          
+                            <p:column>  
+                                <div style="padding-left:10%">
+                                    <p:outputLabel value="#{messages['web.app.table.quin']}"/>
+                                </div>
+                            </p:column>   
+                            <p:column>  
+                                <div style="padding-left:10%">
+                                    <p:selectOneMenu id="quincenaDOC" class="materialize-textarea"  
+                                                     value="#{nominaAdminMB.quincenaSeleccionada}" style="width: 90%;"
+                                                     converter="omnifaces.SelectItemsConverter">
+                                        <f:selectItem itemLabel="Seleccione uno" itemValue="#{null}" noSelectionOption="true" />
+                                        <f:selectItems value="#{nominaAdminMB.listaQuincenas}" var="quincena"
+                                                       itemLabel="#{quincena.desQuincena}" itemValue="#{quincena}"  />
+                                        <p:ajax event="change" process="@this" 
+                                                update="subir,btnGuardar" listener="#{nominaAdminMB.validar()}"/>
+                                    </p:selectOneMenu>
+                                </div>
+                            </p:column>
+                            <p:column>  
+                                <div style="padding-left:10%">
+                                    <p:outputLabel value="#{messages['web.app.table.nomina.tipo']}:"/>
+                                </div>
+                            </p:column>   
+                            <p:column>  
+                                <div style="padding-left:10%">
+                                    <p:selectOneMenu id="TipoNominaDOC" class="materialize-textarea"  
+                                                     value="#{nominaAdminMB.tipoNominaSelecionado}" style="width: 90%;"
+                                                     converter="omnifaces.SelectItemsConverter">
+                                        <f:selectItem itemLabel="Seleccione uno" itemValue="#{null}" noSelectionOption="true" />
+                                        <f:selectItems value="#{nominaAdminMB.listaTipoNomina}" var="tiponomina"
+                                                       itemLabel="#{tiponomina.codNomina}" itemValue="#{tiponomina}"  />
+                                        <p:ajax event="change" process="@this" 
+                                                update="subir,btnGuardar" listener="#{nominaAdminMB.validar()}" />
+                                    </p:selectOneMenu>
+                                </div>
+                            </p:column>   
+                            <p:column> 
+                                <div style="padding-left: 12%; margin-top: 4%">
+                                    <p:outputLabel value="#{messages['web.app.label.archivo']}:"/>
+                                </div>
+                            </p:column> 
+                            <p:column> 
+                                <div style="padding-left:10%">
+                                    <p:fileUpload id="subir"
+                                                  value="#{nominaAdminMB.archivoCSV}" allowTypes="/(\.|\/)(csv)$/"
+                                                  fileUploadListener="#{nominaAdminMB.upload}"
+                                                  fileLimit="1" mode="advanced"
+                                                  disabled="#{nominaAdminMB.activo}"
+                                                  
+                                                  fileLimitMessage="Limite superado de archivos"
+                                                  update="tablaNominaForm:mensajesDetalle,btnGuardar"
+                                                  uploadLabel="Subir" cancelLabel="Cancelar subir archivo" label="Seleccionar"/>
+                                </div>
+                            </p:column> 
+                            <p:column> 
+                                <div style="padding-left: 12%; margin-top: 4%">
+                                </div>
+                            </p:column> 
+                            <p:column>  
+                                <div style="padding-left: 55%; margin-bottom: 10%">
+                                    <p:commandButton value="#{messages['web.app.button.cancelar']}"  
+                                                     action="#{nominaAdminMB.cerrarDialogo()}"
+                                                     update="subir"/>
+                                    <p:commandButton id="btnGuardar"
+                                                     value="#{messages['web.app.button.guardar']}" 
+                                                     action="#{nominaAdminMB.crearNomina()}"
+                                                     disabled="#{nominaAdminMB.activarGuardar}"
+                                                     update="datosNominaForm,
+                                                     tablaNominaForm:tablaDetalleNomina,
+                                                     tablaNominaForm:mensajesDetalle">
+                                        <f:setPropertyActionListener 
+                                            value="#{nominaAdminMB.activarBtn}" 
+                                            target="#{nominaAdminMB.activarGuardar}"/>
+                                    </p:commandButton>
+                                </div>
+                            </p:column> 
+                        </h:panelGrid>
+                    </h:form>
+                </p:dialog>  
+                <p:confirmDialog id="dialogEliminar" widgetVar="dialogEliminar" 
+                                 header="Eliminar" closable="false"
+                                 message="¿Desea eliminar la cabecera?" 
+                                 showEffect="fade" hideEffect="fade" >
+                    <center>
+                        <p:commandButton value="#{messages['web.app.button.no']}" 
+                                         process="@this" 
+                                         onclick="PF('dialogEliminar').hide();" />
+                        <p:commandButton value="#{messages['web.app.button.si']}" process="@this" 
+                                         action="#{nominaAdminMB.eliminarCabecera()}" 
+                                         update="dialogEliminar,
+                                         tablaNominaForm:tablaDetalleNomina,
+                                         tablaNominaForm:mensajesDetalle"/>
+                    </center>
+                </p:confirmDialog>
+            </div> <!-- end container -->
+        </main>
+    </ui:define>
+</ui:composition>

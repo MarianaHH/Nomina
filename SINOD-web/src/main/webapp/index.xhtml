@@ -1,0 +1,105 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/template/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:sec="http://www.springframework.org/security/tags">   
+
+    <ui:define name="body">         
+        <br/>
+        <div class="row center">
+            <h5 class="header col s12 light">Bienvenido #{inicioMB.nombrarEmpleado()}</h5>
+        </div>
+        <br/>
+        <div class="container">
+            <div class="row">
+                <div class="col s12">
+                    <ul class="collapsible">
+                        <ui:fragment rendered="#{inicioMB.usuario.cod_rol==1 and
+                                                 inicioMB.empleado.codPuesto.codArea.codArea==5?true:false}">
+                            <li class="active" >
+                                <div class="collapsible-header"><i class="material-icons">build</i>Configuración</div>
+                                <div class="collapsible-body">
+                                    <div class="collection">
+                                        <p:commandLink action="#{inicioMB.irRuta('/Configuracion/Argumentos/argumentos.xhtml')}" value="Argumentos" class="collection-item"/>
+                                        <p:commandLink action="#{inicioMB.irRuta('/Configuracion/Conceptos/ConfigConcepto.xhtml')}" value="Conceptos" class="collection-item"/>
+                                        <p:commandLink action="#{inicioMB.irRuta('/Configuracion/Incidencias/Incidencias.xhtml')}" value="Incidencias" class="collection-item"/>
+                                    </div>
+                                </div>
+                            </li>
+                        </ui:fragment>
+                        <ui:fragment rendered="#{inicioMB.usuario.cod_rol==1 and
+                                                 inicioMB.empleado.codPuesto.codArea.codArea==5?true:false}">
+                            <li class="active" >
+                                <div class="collapsible-header"><i class="material-icons">Nomina</i>Nómina</div>
+                                <div class="collapsible-body">
+                                    <div class="collection">
+                                        <p:commandLink action="#{inicioMB.irRuta('/Nomina/ConsultarNominas.xhtml')}" value="Nóminas" class="collection-item"/>
+                                        <p:commandLink action="#{inicioMB.irRuta('/Nomina/Calendario.xhtml')}" value="Calendario" class="collection-item"/>
+                                    </div>
+                                </div>
+                            </li>
+                        </ui:fragment>
+                        <ui:fragment rendered="true">
+                            <li class="active" >
+                                <div class="collapsible-header"><i class="material-icons">money</i>Aprobación de pagos</div>
+                                <div class="collapsible-body">
+                                    <div class="collection">
+                                        <p:commandLink rendered="#{inicioMB.usuario.cod_rol==2 and
+                                                                   inicioMB.empleado.codPuesto.codArea.codArea==6?true:false}" action="#{inicioMB.irRuta('/Autorizacion_RF/Autorizar_RF.xhtml')}" value="Recursos financieros" class="collection-item"/>
+                                        <p:commandLink rendered="#{inicioMB.usuario.cod_rol==1 and
+                                                                   inicioMB.empleado.codPuesto.codArea.codArea==5?true:false}" action="#{inicioMB.irRuta('/Autorizacion_RH/Autorizar_Rh.xhtml')}" value="RHDCyAT" class="collection-item"/>
+                                        <p:commandLink rendered="true" action="#{inicioMB.irRuta('/Autorizacion_RH/Autoriza_emp.xhtml')}" value="Personal" class="collection-item"/>
+                                        <p:commandLink rendered="true" action="#{inicioMB.irRuta('/Autorizacion_RH/desgloceNom.xhtml')}" value="Desglose" class="collection-item"/>
+                                    </div>
+                                </div>
+                            </li>
+                        </ui:fragment>                        
+                        <ui:fragment rendered="true">
+                            <li class="active" >
+                                <div class="collapsible-header"><i class="material-icons">assignment_late</i>Incidencias</div>
+                                <div class="collapsible-body">
+                                    <div class="collection">
+                                        <p:commandLink rendered="true" action="#{inicioMB.irRuta('/incidencias/registrar.xhtml')}" value="Registrar" class="collection-item"/>
+                                        <p:commandLink rendered="#{(inicioMB.usuario.cod_rol==1 and inicioMB.empleado.codPuesto.codArea.codArea==5) or
+                                                                   (inicioMB.usuario.cod_rol==4) or inicioMB.usuario.cod_rol==2?true:false}" 
+                                                       action="#{inicioMB.irRuta('/incidencias/validarIncidencias.xhtml')}" 
+                                                       value="#{(inicioMB.usuario.cod_rol==1 and inicioMB.empleado.codPuesto.codArea.codArea==5) ?'Validar':(inicioMB.usuario.cod_rol==4) or inicioMB.usuario.cod_rol==2?'Autorizar':''}" class="collection-item"/>
+                                        <p:commandLink rendered="true" action="#{inicioMB.irRuta('/incidencias/hstIncidencias.xhtml')}" value="Historial" class="collection-item"/>
+                                        <p:commandLink rendered="#{inicioMB.usuario.cod_rol==2 and
+                                                                   inicioMB.empleado.codPuesto.codArea.codArea==6?true:false}" action="#{inicioMB.irRuta('/incidencias/validarPagoIncidencias.xhtml')}" value="Autorización pagos" class="collection-item"/>
+                                    </div>
+                                </div>
+                            </li>
+                        </ui:fragment>                        
+                        <ui:fragment rendered="#{inicioMB.usuario.cod_rol==1 or inicioMB.usuario.cod_rol==2 or inicioMB.usuario.cod_rol==4?true:false}">
+                            <li class="active" >
+                                <div class="collapsible-header"><i class="material-icons">group</i>Personal</div>
+                                <div class="collapsible-body">
+                                    <div class="collection">
+                                        <p:commandLink rendered="#{inicioMB.empleado.codPuesto.codArea.codArea==5?true:false}" action="#{inicioMB.irRuta('/Personal/DetallePersonal.xhtml')}" value="Detalles de personal" class="collection-item"/>
+                                        <p:commandLink rendered="true" action="#{inicioMB.irRuta('/Personal/EmpleadosPorArea.xhtml')}" value="Empleados por área" class="collection-item"/>
+                                        <p:commandLink rendered="#{inicioMB.empleado.codPuesto.codArea.codArea==6?true:false}" action="#{inicioMB.irRuta('/Personal/ValidacionAltas.xhtml')}" value="Validacion de altas de personal" class="collection-item"/>
+                                        <p:commandLink rendered="#{inicioMB.empleado.codPuesto.codArea.codArea==6?true:false}" action="#{inicioMB.irRuta('/Personal/ValidacionBajas.xhtml')}" value="Validacion de bajas de personal" class="collection-item"/>
+                                        <p:commandLink rendered="#{inicioMB.empleado.codPuesto.codArea.codArea==5 or inicioMB.empleado.codPuesto.codArea.codArea==6?true:false}" action="#{inicioMB.irRuta('/Personal/ValidacionesNomina.xhtml')}" value="Historial de altas y bajas validadas" class="collection-item"/>
+                                        <a href="./Personal/AltaPersonal.xhtml" class="collection-item">Prueba Wizard</a>
+                                    </div>
+                                </div>
+                            </li>
+                        </ui:fragment>                        
+                    </ul>
+                </div>
+            </div>            
+
+            <script>
+                $(document).ready(function () {
+                    $('.collapsible').collapsible();
+                });
+            </script>
+        </div>
+    </ui:define>
+</ui:composition>

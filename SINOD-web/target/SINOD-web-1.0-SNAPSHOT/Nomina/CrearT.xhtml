@@ -1,0 +1,217 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/template/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">   
+
+    <ui:define name="body">
+        <main>
+            <div class="container ">
+
+                <!--Barra de navegación-->
+                <div align="left">
+                    <p:outputLabel value="#{messages['web.app.table.nomina.crear.menu']}"
+                                   style="#{messages['web.app.style.menu']}" />    
+                    <p:separator style="width: 100%; height:5px" />
+                </div>
+
+                <center><h4>Crear nómina</h4></center>
+                <!-- Datatable FUNCIONA-->
+                <h:form id="Crear">
+                    <div class="#{messages['web.app.table.tabla']}" align="centered">
+                        <p:dataTable id="datosNomTabla" var="datosNom" 
+                                     emptyMessage="#{messages['web.app.table.noData']}" 
+                                     value="#{creaNomMB.listaCabeceras}" 
+                                     reflow="true" paginator="true"
+                                     widgetVar="datosNomTab" 
+                                     filteredValue="#{creaNomMB.listaCabeceras}" 
+                                     rows="#{messages['web.app.table.initialRows']}"  
+                                     paginatorPosition="bottom" 
+                                     style="font-size: small"
+                                     >
+                            <f:facet name="header">
+                                <!--Busqueda inicio-->
+
+                                <!--                                <p:outputPanel>
+                                                                    Resultados Consulta<br></br>
+                                                                    <h:outputText value="Buscar:" />
+                                                                    <p:inputText id="globalFilter" 
+                                                                                 onkeyup="PF('crearNomTab').filter()" 
+                                                                                 style="width:230px" 
+                                                                                 placeholder="     Ingresa criterio de busqueda" 
+                                                                                 />
+                                                                </p:outputPanel>-->
+                                <!--Busqueda inicio-->
+
+                                <!--boton agregar nomina-->
+                                <p:commandButton icon="#{messages['web.app.icon.agregar']}" 
+                                                 process="@this" 
+                                                 action="#{creaNomMB.dialogoCrear()}"
+                                                 title="Agregar nómina"
+                                                 style="display:inline;
+                                                 float:right;
+                                                 font-size: small;
+                                                 align-content: center;"
+                                                 update="dlgCrear"
+                                                 >
+                                </p:commandButton>
+                                <p:spacer height="27"/>
+                            </f:facet>
+
+                            <p:column headerText="Nombre nómina">
+                                <h:outputText value="#{datosNom.codNbnomina}" />
+                            </p:column>
+
+                            <p:column filterBy="#{datosNom.codQuincenaidFk.codEjercicioidFk.cnuValorejercicio}" 
+                                      headerText="Ejercicio fiscal" 
+                                      filterMatchMode="exact">
+                                <f:facet name="filter">
+                                    <p:selectOneMenu onchange="PF('crearNom.ejerFisc').filter()" 
+                                                     styleClass="custom-filter">
+                                        <f:selectItem itemLabel="Ejercicio fiscal" 
+                                                      itemValue="#{null}" 
+                                                      noSelectionOption="true" />
+                                        <f:selectItems value="#{dtFilterView.ejerFisc}" />
+                                    </p:selectOneMenu>
+                                </f:facet>
+                                <h:outputText value="#{datosNom.codQuincenaidFk.codEjercicioidFk.cnuValorejercicio}" />
+                            </p:column>
+
+                            <p:column filterBy="#{datosNom.codQuincenaidFk.cnuNumquincena}" 
+                                      headerText="Quincena" 
+                                      filterMatchMode="exact">
+                                <f:facet name="filter">
+                                    <p:selectOneMenu onchange="PF('crearNom.quin').filter()" 
+                                                     styleClass="custom-filter">
+                                        <f:selectItem itemLabel="Quincena" itemValue="#{null}" 
+                                                      noSelectionOption="true" />
+                                        <f:selectItems value="#{dtFilterView.quin}" />
+                                    </p:selectOneMenu>
+                                </f:facet>
+                                <h:outputText value="#{datosNom.codQuincenaidFk.cnuNumquincena}" />
+                            </p:column>
+
+                            <p:column filterBy="#{crearNom.tipoNom}" 
+                                      headerText="Tipo nómina" 
+                                      filterMatchMode="exact"> 
+                                <f:facet name="filter">
+                                    <p:selectOneMenu onchange="PF('crearNom.quin').filter()" 
+                                                     styleClass="custom-filter">
+                                        <f:selectItem itemLabel="Tipo nómina" 
+                                                      itemValue="#{null}" 
+                                                      noSelectionOption="true" />
+                                        <f:selectItems value="#{dtFilterView.tipoNom}" />
+                                    </p:selectOneMenu>
+                                </f:facet>
+                                <h:outputText value="#{datosNom.codTiponominaidFk.codNomina}" />
+                            </p:column>
+
+                            <f:facet name="paginatorTopLeft">
+                                <p:commandButton type="button" icon="pi pi-refresh" />
+                            </f:facet>
+
+                            <f:facet name="paginatorBottomRight">
+                                <p:commandButton type="button" icon="pi pi-cloud-upload" />
+                            </f:facet>
+
+                        </p:dataTable>
+
+                    </div>
+                    <!--Datatable fin--> 
+                </h:form>
+
+                <p:confirmDialog id="crearNom" widgetVar="crearNom" 
+                                 header="Eliminar" closable="false"
+                                 message="¿Desea eliminar  el argumento?" 
+                                 showEffect="fade" hideEffect="fade" >
+                    <center>
+                        <p:growl id="mensaje" showDetail="true" />
+                        <p:commandButton value="#{messages['web.app.button.no']}" 
+                                         process="@this" 
+                                         onclick="PF('crearNom').hide();" />
+                        <p:commandButton value="#{messages['web.app.button.si']}" process="@this" 
+                                         onclick="PF('crearNom').hide();" />
+                    </center>
+                </p:confirmDialog>
+
+                <!--Dialogos inicio-->
+                <p:dialog id="dlgCrear" 
+                          resizable="false" 
+                          closable ='false' 
+                          styleClass="disable-scroll" 
+                          draggable="false" 
+                          header="Crear nómina" 
+                          widgetVar="dlgCrear" 
+                          position="center center" 
+                          modal="true" 
+                          height="4%" 
+                          width="50%" 
+                          style ="background: #FFFFFF;" >
+
+                    <h:form id="FormCrear">
+                        <p:panel class="#{messages['web.app.table.tabla']}" 
+                                 style="background: #FFFFFF; border: none;" id="detallePane1s">
+                            <p:growl id="growl1" showDetail="true" sticky="false" /> 
+                            <div class="ui-g-5 ui-md-4 ui-lg-5" >
+                                <div class="row" align="center">
+                                    <p:outputLabel value="Nombre de la nómina: " />
+                                    <p:inputText id="ClaveDO" maxlength="20" size="20" value="#{creaNomMB.cabeceraSelecionada.codNbnomina}"
+                                                 class="materialize-textarea" required="true">
+                                         <p:ajax process="@this" />
+                                    </p:inputText>
+                                </div>
+                                <div class="row" align="center">
+                                    <p:outputLabel for="ejerFis" value="Ejercicio fiscal:" />
+                                    <br></br> <br></br>
+
+                                    <p:selectOneMenu id="ejerFis" 
+                                                     value="#{selectOneMenuView.console}" 
+                                                     style="width:90%">
+                                        <f:selectItem itemLabel="Ejercicio fiscal" itemValue="Ejercicio fiscal" />
+                                        <f:selectItem itemLabel="2017" itemValue="2017" />
+                                        <f:selectItem itemLabel="2018" itemValue="2018" />
+                                        <f:selectItem itemLabel="2019" itemValue="2019" />
+                                    </p:selectOneMenu>
+                                </div>
+                            </div>
+
+                            <div class="ui-g-1 ui-md-1 ui-lg-1" >
+                            </div>
+
+                            <div class="ui-g-5 ui-md-4 ui-lg-5" >
+                                <div>
+                                    <p:outputLabel for="inicioQuin1" value="Inicio quincena:" />
+                                    <p:calendar id="inicioQuin1" value="#{calendarView.date}" mindate="1/7/19" maxdate="15/8/19" />
+                                    <p:outputLabel for="finQuin1" value="Fin quincena:" />
+                                    <p:calendar id="finQuin1" value="#{calendarView.date}" mindate="1/8/19" maxdate="15/8/19" />
+                                </div>
+                            </div>
+                        </p:panel>
+
+                        <div style="padding-left: 60%">
+                            <p:commandButton value="#{messages['web.app.button.cancelar']}" 
+                                             onclick="PF('dlgCrear').hide();" 
+                                             id="btnCancelar" 
+                                             style="margin-right:2%;" 
+                                             styleClass="ui-priority-primary" />
+                            <p:commandButton value="#{messages['web.app.button.crear']}"
+                                             action="#{creaNomMB.guardar()}"
+                                             process="@this"
+                                             id="btnCrear" 
+                                             style="margin-right:2%;" 
+                                             styleClass="ui-priority-primary"
+                                             update="crearNom"/>
+                        </div>
+                    </h:form>
+                </p:dialog>
+                <!--Dialogos fin-->
+
+            </div> <!-- end container -->
+        </main>
+
+    </ui:define>
+</ui:composition>

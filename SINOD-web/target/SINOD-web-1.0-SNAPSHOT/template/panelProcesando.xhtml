@@ -1,0 +1,21 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:ajaxStatus onstart="PF('statusDialog').show();"
+                  onsuccess="PF('statusDialog').hide();" />
+
+    <style>
+        #modalProcesando{
+            top: 30% !important;
+        }
+    </style>
+    <p:dialog id="modalProcesando" modal="true" widgetVar="statusDialog" header="Procesando"
+              draggable="false" closable="false" resizable="false" >
+        <center> <p:graphicImage library="imagenes" name="procesando.gif"/>
+            <br/>
+            Espere por favor...
+        </center>
+    </p:dialog>
+</ui:composition>

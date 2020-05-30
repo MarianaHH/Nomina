@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/template/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"> 
+    <ui:define name="body">
+        <main>
+            <div class="container ">
+                 <!--Barra de navejación-->
+                <div align="left">
+                    <p:outputLabel value="#{messages['web.app.table.personal.info.menu']}" style="#{messages['web.app.style.menu']}" />    
+                    <p:separator style="width: 100%; height:5px" />
+                </div>
+                 
+                 <center><h4>Información de personal</h4></center>
+
+                 <h:form id="personal">
+                     <center><h5>Información</h5></center>
+                     <div class="#{messages['web.app.table.tabla2']}">
+         
+ 
+                         <p:panel id="infoPersonal" header="Area: #{verInformacionDePersonalMB.detalleSeleccionado.des_nbarea}"
+                          footer="Detalles del Personal" style="margin-bottom:5%;background:white">
+                    
+                    <h:panelGrid columns="3" >
+                            <p:column>  
+                                
+                                    
+                                
+                               <div  class="ui-g-10 ui-md-6 ui-lg-10" >
+                                   <p:outputLabel value="#{messages['web.app.table.nomina.consultar.nombre']}:" style="color:black"/>
+                                    <p:inputText id="NombreDOC" class="materialize-textarea"  readonly="true" style="color:black;"
+                                                 value="#{verInformacionDePersonalMB.detalleSeleccionado.des_nombre}"/>
+                                    
+                                </div>
+                               
+                            </p:column>
+                            
+                            <p:column>
+                                
+                               <div  class="ui-g-10 ui-md-6 ui-lg-10">
+                                   <p:outputLabel value="#{messages['web.app.table.aPaterno']}:" style="color:black"/>
+                                    <p:inputText id="ApellidoPDOC" class="materialize-textarea"  value="#{verInformacionDePersonalMB.detalleSeleccionado.des_apepaterno}" style="color:black;" readonly="true"/>
+                                </div >
+                                 
+                            </p:column>
+                            <p:column>
+                                
+                                 <div class="ui-g-10 ui-md-6 ui-lg-10" >
+                                     <p:outputLabel value="#{messages['web.app.table.aMaterno']}:" style="color:black"/>
+                                    <p:inputText id="ApellidoMDOC" class="materialize-textarea"  readonly="true" style="color:black;"  value="#{verInformacionDePersonalMB.detalleSeleccionado.des_apematerno}"/>
+                                </div>
+                                
+                            </p:column>
+                            <p:column>  
+                               
+                                  
+                                  <div class="ui-g-8 ui-md-6 ui-lg-8"  >
+                                    <p:outputLabel value="#{messages['web.app.table.fNac']}:" style="color:black"/>
+                                    <p:inputText  id="FechaNac" class="materialize-textarea" style="color:black;" readonly="true" value="#{verInformacionDePersonalMB.detalleSeleccionado.fec_nacimiento}">
+                                    <f:convertDateTime pattern="#{messages['web.app.label.formatoFecha']}" />
+                                    </p:inputText>  
+                                </div>
+                                
+                            </p:column>
+                            
+                             
+                            <p:column>
+                                
+                                 <div class="ui-g-6 ui-md-6 ui-lg-6"  >
+                                    <p:outputLabel value="#{messages['web.app.table.quin']}:" style="color:black"/>
+                                    <p:inputText id="QuincenaNac" class="materialize-textarea"  style="color:black;" readonly="true" value="#{verInformacionDePersonalMB.detalleSeleccionado.quincena}">
+                                    </p:inputText>
+                                </div>
+                
+                            </p:column>
+                          <p:column>
+                                  <div class="ui-g-6 ui-md-6 ui-lg-6"  >
+                                      <p:outputLabel value="#{messages['web.app.table.correopersonal']}:" style="color:black"/>
+                                      <p:inputNumber  id="CorreoPersonal" class="materialize-textarea"  style="color:black;" readonly="true" value="#{verInformacionDePersonalMB.detalleSeleccionado.correo_personal}"/>
+                                </div>
+                                
+                            </p:column>
+
+                              <p:column>
+                               
+                               
+                                  <div class="ui-g-6 ui-md-6 ui-lg-6" >
+                                    <p:outputLabel value="#{messages['web.app.table.fIngreso']}:" style="color:black"/>
+                                    <p:inputText id="FechaDOC"  class="materialize-textarea"  style="color:black;" readonly="true" value="#{verInformacionDePersonalMB.detalleSeleccionado.fec_ingreso}" >
+                                    <f:convertDateTime pattern="#{messages['web.app.label.formatoFecha']}" />
+                                    </p:inputText>
+                                   </div>
+                             </p:column>
+                            <p:column>
+                              
+                                <div class="ui-g-10 ui-md-6 ui-lg-10"  >
+                                    <p:outputLabel value="#{messages['web.app.table.direccion']}:" style="color:black"/>
+                                    <p:inputText id="DireccionDOC" class="materialize-textarea"  style="color:black;" readonly="true" value="#{verInformacionDePersonalMB.detalleSeleccionado.des_direccion}"/>
+                                </div>
+                            </p:column>
+                            <p:column>
+                               
+                                <div class="ui-g-10 ui-md-6 ui-lg-10"  >
+                                    <p:outputLabel value="#{messages['web.app.table.correoMBN']}:" style="color:black"/>
+                                    <p:inputText id="CorreoDOC" class="materialize-textarea"  style="color:black;" readonly="true" value="#{verInformacionDePersonalMB.detalleSeleccionado.des_correo}"/>
+                                </div>
+                            </p:column>
+                             <p:column>
+                                
+                                 <div class="ui-g-10 ui-md-6 ui-lg-10"  >
+                                     <p:outputLabel value="#{messages['web.app.table.curp']}:" style="color:black"/>
+                                     <p:inputText id="CurpDOC" class="materialize-textarea"  style="color:black;" readonly="true" value="#{verInformacionDePersonalMB.detalleSeleccionado.cod_curp}"/>
+                                </div>
+                                
+                            </p:column>
+                             <p:column>
+                                
+                                 <div class="ui-g-10 ui-md-6 ui-lg-10" >
+                                    <p:outputLabel value="#{messages['web.app.table.rfc']}:" style="color:black"/>
+                                    <p:inputText id="RFCDOC" class="materialize-textarea"   style="color:black;" readonly="true" value="#{verInformacionDePersonalMB.detalleSeleccionado.cod_rfc}"/>
+                                   </div>
+                                
+                            </p:column>
+                            <p:column>
+                                
+                                <div class="ui-g-10 ui-md-6 ui-lg-10"  >
+                                    <p:outputLabel value="#{messages['web.app.table.nss']}:" style="color:black"/>
+                                    <p:inputNumber decimalPlaces="0" id="NSS" class="materialize-textarea"  style="color:black;" readonly="true" value="#{verInformacionDePersonalMB.detalleSeleccionado.cod_nss}" />
+                                </div>
+                            </p:column>
+
+                      </h:panelGrid>
+                        
+                             <h:panelGrid style="background: #FFFFFF;">
+                                 <p:column>
+                                 <div class="#{messages['web.app.table.tabla']}"  >
+                                    <p:outputLabel value="#{messages['web.app.table.puesto']}:" style="color:black"/>
+                                    <p:inputText id="PuestoDOC" class="materialize-textarea" style="color:black;align-content:left" readonly="true" value="#{verInformacionDePersonalMB.detalleSeleccionado.des_puesto}"/>
+                                </div>
+                            </p:column>
+                             </h:panelGrid>     
+
+                </p:panel>  
+                
+                         
+                         
+                     </div>
+                 </h:form> 
+                  
+
+                              
+            </div> <!-- end container -->
+        </main>
+    </ui:define> 
+</ui:composition>

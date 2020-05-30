@@ -1,0 +1,244 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/template/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">   
+    <ui:define name="body">
+        <main>
+            <div class="container ">
+                <!--Barra de navegación-->
+                <div align="left">
+                    <p:outputLabel value="#{messages['web.app.table.nomina.consultar.menu']}" style="#{messages['web.app.style.menu']}" />    
+                    <!--<p:separator style="width: 100%; height:5px" />-->
+                </div>
+                <center><h4>Consultar nómina</h4></center>
+                <!-- Botones -->
+                <div align="right">
+                    <!--visible, mostrar validar, deshabilitar calcular--> 
+                    <!--PDF PF pag 117-->
+                    <p:panel id="botones" style="background: #FFFFFF; border: none;" >
+                        <h:panelGroup id="Calcular" >
+                            <p:commandButton 
+                                id="btnCalcNom"
+                                rendered="#{detalleNominaMB.visible==1?true:false}"
+                                value="#{messages['web.app.button.nomina.calcular']}" 
+                                action="#{detalleNominaMB.mostrarCalcular()}"
+                                update="botones,detalles,btnCalcNom,btnValNom,btnCerNom,Calcular,Validar,Cerrar,dlg" />
+                        </h:panelGroup>
+                        <!--render hide-->
+                        <h:panelGroup id="Validar" >
+                            <p:commandButton 
+                                id="btnValNom"
+                                rendered="#{detalleNominaMB.visible==2?true:false}"
+                                value="#{messages['web.app.button.nomina.validar']}"
+                                action="#{detalleNominaMB.mostrarValidar()}"
+                                update="botones,btnCalcNom,btnValNom,btnCerNom,Calcular,Validar,Cerrar,dlg" />
+                        </h:panelGroup>
+                        <!--render hide-->
+                        <h:panelGroup id="Cerrar">
+                            <p:commandButton 
+                                id="btnCerNom"
+                                value="#{messages['web.app.button.nomina.cerrar']}"  
+                                rendered="#{detalleNominaMB.visible==3?true:false}" 
+                                action="#{detalleNominaMB.cerrarNom()}" 
+                                update="botones,btnCalcNom,btnValNom,btnCerNom,Calcular,Validar,Cerrar,dlg" />
+                        </h:panelGroup>
+                    </p:panel>
+                </div>
+                <!--Fin botones-->
+                <!--Dialogos-->
+                <!--unificar dialogos reutilizar--> 
+                <p:confirmDialog id="dlg" widgetVar="dlg"  
+                                 header="#{detalleNominaMB.titulo}" closable="false"
+                                 message="#{detalleNominaMB.mensaje}" 
+                                 showEffect="fade" hideEffect="fade">
+                    <center>
+                        <p:commandButton value="#{messages['web.app.button.no']}" process="@this" 
+                                         onclick="PF('dlg').hide();"/>
+
+                        <p:commandButton id="btnSiCal" value="#{messages['web.app.button.si']}" process="@this" 
+                                         action="#{detalleNominaMB.calcular()}"
+                                         rendered="#{detalleNominaMB.visible==1?true:false}"
+                                         update="detalles,botones,btnCalcNom,btnValNom,btnCerNom,Calcular,Validar,Cerrar"/>
+
+                        <p:commandButton id="btnSiVal" value="#{messages['web.app.button.si']}" process="@this" 
+                                         action="#{detalleNominaMB.validar()}"
+                                         rendered="#{detalleNominaMB.visible==2?true:false}"
+                                         update="detalles,botones,btnCalcNom,btnValNom,btnCerNom,Calcular,Validar,Cerrar"/>
+
+                        <p:commandButton id="btnSiCer" value="#{messages['web.app.button.si']}" process="@this" 
+                                         action="#{detalleNominaMB.cerrar()}"
+                                         rendered="#{detalleNominaMB.visible==3?true:false}"
+                                         update="detalles,botones,btnCalcNom,btnValNom,btnCerNom,Calcular,Validar,Cerrar"/>
+                    </center>
+                </p:confirmDialog>
+                <!--Fin Dialogos-->
+                <!--Tabla datos--> 
+                <div class="row">
+                    <div class="#{messages['web.app.table.tabla']}" align="left">
+                        <h:form id="detalles">
+                            <p:growl id="datosNom" showDetail="true" sticky="true"/>
+                            <p:fieldset legend="#{messages['web.app.header.nominaDatos']}" collapsed="false" 
+                                        toggleable="true" toggleSpeed="500">
+                                <p:ajax event="toggle" />
+                                <h:panelGrid columns="6"  cellpadding="5">
+                                    <h:outputText value="#{messages['web.app.table.nomina.nombre']}:" />
+                                    <h:outputText value="#{detalleNominaMB.cabeceraSelecionada.codNbnomina}" />
+
+                                    <h:outputText value="#{messages['web.app.table.nomina.tipo']}:" />
+                                    <h:outputText value="#{detalleNominaMB.cabeceraSelecionada.codTiponominaidFk.codNomina}" />
+
+                                    <h:outputText value="#{messages['web.app.table.totalEmpleados']}:" />
+                                    <h:outputText value="#{detalleNominaMB.cabeceraSelecionada.cnuTotalemp}" />
+
+                                    <h:outputText value="#{messages['web.app.table.fechaInicio']}:" />
+                                    <h:outputText value="#{detalleNominaMB.cabeceraSelecionada.codQuincenaidFk.fecInicio}" >
+                                        <f:convertDateTime pattern="#{messages['web.app.label.formatoFecha']}" />
+                                    </h:outputText>
+
+                                    <h:outputText value="#{messages['web.app.table.fechaFin']}:" />
+                                    <h:outputText value="#{detalleNominaMB.cabeceraSelecionada.codQuincenaidFk.fecFin}" >
+                                        <f:convertDateTime pattern="#{messages['web.app.label.formatoFecha']}" />
+                                    </h:outputText>
+
+                                    <h:outputText value="#{messages['web.app.table.fechaPago']}:" />
+                                    <h:outputText value="#{detalleNominaMB.cabeceraSelecionada.codQuincenaidFk.fecPago}" >
+                                        <f:convertDateTime pattern="#{messages['web.app.label.formatoFecha']}" />
+                                    </h:outputText>
+
+                                    <h:outputText value="#{messages['web.app.table.nomina.consultar.totalPerc']}:" />
+                                    <h:outputText value="#{detalleNominaMB.cabeceraSelecionada.impTotpercepcion}" />
+
+                                    <h:outputText value="#{messages['web.app.table.nomina.consultar.totalDeduc']}:" />
+                                    <h:outputText value="#{detalleNominaMB.cabeceraSelecionada.impTotdeduccion}" />
+
+                                    <h:outputText value="#{messages['web.app.table.nomina.consultar.importeTotal']}:" />
+                                    <h:outputText value="#{detalleNominaMB.cabeceraSelecionada.impTotalemp}" />
+                                </h:panelGrid>
+                            </p:fieldset>
+                        </h:form>
+                    </div>
+                </div>
+                <!--Fin tabla datos-->
+                <div class="#{messages['web.app.table.tabla']}" align="centered"></div>
+                <!--Tabla resultados--> 
+                <div class="row">
+                    <h:form id="desgloseNomina">
+                        <div class="#{messages['web.app.table.tabla']}" align="centered">
+                            <p:dataTable id="datosNomTabla" var="datosNomTab"
+                                         emptyMessage="#{messages['web.app.table.noData']}" 
+                                         value="#{detalleNominaMB.listaEmpleadosCabecera}"  
+                                         sortBy="#{datosNomTab.nombre}"
+                                         reflow="true" rows="#{messages['web.app.table.initialRows']}" 
+                                         paginator="true" paginatorPosition="bottom" 
+                                         style="font-size: small;"> 
+                                
+                                <f:facet name="header">
+                                    <p:spacer height="27"/>
+                                    <h:commandLink
+                                        id="reporteEmpDesglose"                                  
+                                        title="Nónima general"
+                                        action="#{detalleNominaMB.reporteNomina()}"
+                                        target="_blank"
+                                        style="display:inline; 
+                                        float:right; 
+                                        font-size:x-small;
+                                        padding: 2px;" >
+                                        <h:graphicImage library="imagenes" name="pdf-icon.png" width="20px" />
+                                    </h:commandLink>
+                                </f:facet>
+                                
+                                <p:column headerText="#{messages['web.app.table.nombre']}" 
+                                          style="text-align: center;" width="18%">
+                                    <h:outputText value="#{datosNomTab.nombre}" />
+                                </p:column> 
+                                <p:column filterBy="#{datosNomTab.area}" headerText="#{messages['web.app.table.area']}" 
+                                          style="text-align: center;" width="12%"
+                                          filterMatchMode="contains" filterStyle="background: #FFFFFF; height: 3%; width:100%;">
+                                    <h:outputText value="#{datosNomTab.area}" />
+                                </p:column>
+                                <p:column filterBy="#{datosNomTab.puesto}" headerText="#{messages['web.app.table.puesto']}" 
+                                          style="text-align: center;" width="29%"
+                                          filterMatchMode="contains" filterStyle="background: #FFFFFF; height: 3%; width:100%;">
+                                    <h:outputText value="#{datosNomTab.puesto}" />
+                                </p:column>
+                                <p:ajax event="rowToggle" listener="#{detalleNominaMB.detalleEmpleado(datosNomTab)}" />
+                                <p:column headerText="#{messages['web.app.table.acciones']}" width="6%" 
+                                          style="text-align: center;"
+                                          rendered="#{detalleNominaMB.visible>=2?true:false}">
+                                    <p:rowToggler />
+                                </p:column>
+                                <p:rowExpansion>
+                                    <p:panelGrid  columns="2" columnClasses="label,value" 
+                                                  style="width:100%; border: none; background: #FFFFFF;">
+                                        <p:dataTable id="percep" var="concepP" 
+                                                     emptyMessage="No existen datos para esta consulta."
+                                                     value="#{detalleNominaMB.listaDetallePerc}"  
+                                                     style="width:100%; ">  
+                                            <f:facet name="header">  
+                                                <h:outputText value="#{messages['web.app.table.percepciones']}"></h:outputText>  
+                                            </f:facet>
+                                            <p:column headerText="#{messages['web.app.table.clave']}">  
+                                                <h:outputText value="#{concepP.clave}" />  
+                                            </p:column>  
+                                            <p:column headerText="#{messages['web.app.table.tipoConcepto']}">  
+                                                <h:outputText value="#{concepP.nombreConcepto}" />  
+                                            </p:column>  
+                                            <p:column headerText="#{messages['web.app.table.importe']}">  
+                                                <h:outputText value="$#{concepP.importe}" />  
+                                            </p:column>  
+                                        </p:dataTable>
+                                        <p:dataTable id="dedu" var="concepD"
+                                                     emptyMessage="No existen datos para esta consulta."
+                                                     value="#{detalleNominaMB.listaDetalleDeduc}" 
+                                                     style="width:100%; ">  
+                                            <f:facet name="header">  
+                                                <h:outputText value="#{messages['web.app.table.deducciones']}"></h:outputText>  
+                                            </f:facet>  
+                                            <p:column headerText="#{messages['web.app.table.clave']}">  
+                                                <h:outputText value="#{concepD.clave}" />  
+                                            </p:column>  
+                                            <p:column headerText="#{messages['web.app.table.tipoConcepto']}">  
+                                                <h:outputText value="#{concepD.nombreConcepto}" />  
+                                            </p:column>  
+                                            <p:column headerText="#{messages['web.app.table.importe']}">  
+                                                <h:outputText value="$#{concepD.importe}" />  
+                                            </p:column> 
+                                        </p:dataTable>
+                                    </p:panelGrid>
+                                    <p:panelGrid  columns="1" columnClasses="label,value" 
+                                                  style="width:100%; border: none; background: #FFFFFF;">
+                                        <p:dataTable id="total" value="#{detalleNominaMB.totales}"
+                                                     var="total"
+                                                     emptyMessage=""
+                                                     style="width:100%; border: none; ">  
+                                            <p:column style="width: 33%; border: none; color: #000; background: #FFFFFF;">   
+                                                <h:outputText value="Total" />
+                                            </p:column>  
+                                            <p:column style="border: none; color: #000; background: #FFFFFF;"> 
+                                                <h:outputText value="$#{total.impTotpercepcion}" /> 
+                                            </p:column>  
+                                            <p:column style="width: 33%; border: none; color: #000; background: #FFFFFF;">  
+                                                <h:outputText value="Total" />
+                                            </p:column>  
+                                            <p:column style="border: none; color: #000; background: #FFFFFF;">   
+                                                <h:outputText value="$#{total.impTotdeduccion}" /> 
+                                            </p:column>  
+                                        </p:dataTable>
+                                        <h:outputText value="Sueldo bruto $#{detalleNominaMB.sueldoBruto}" 
+                                                      style="float: right; padding: 12px 10px" />
+                                    </p:panelGrid>
+                                </p:rowExpansion>
+                            </p:dataTable>
+                        </div>
+                    </h:form>
+                </div>
+                <!--Fin tabla datos-->
+            </div> <!-- end container -->
+        </main>
+    </ui:define>
+</ui:composition>

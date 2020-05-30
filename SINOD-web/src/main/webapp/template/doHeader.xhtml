@@ -1,0 +1,57 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <style>
+            .pulse::before {
+                content: '';
+                display: block;
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                top: 0;
+                left: 0;
+                background-color: inherit;
+                border-radius: inherit;
+                -webkit-transition: opacity .3s, -webkit-transform .3s;
+                transition: opacity .3s, -webkit-transform .3s;
+                transition: opacity .3s, transform .3s;
+                transition: opacity .3s, transform .3s, -webkit-transform .3s;
+                webkit-animation: pulse-animation 1s cubic-bezier(0.24, 0, 0.38, 1) infinite;
+                animation: pulse-animation 1s cubic-bezier(0.24, 0, 0.38, 1) infinite;
+                animation-duration: 5000ms;
+                z-index: -1;
+            }
+        </style>
+
+        <div class="navbar-fixed">
+            <nav class=" orange lighten-1" role="navigation">
+                <div class="nav-wrapper container"><p:commandLink action="#{inicioMB.irInicio()}" class="brand-logo" >
+
+                        <p:graphicImage library="imagenes" name="MBN1.png"  style="height: 60px;width: 130px" 
+                                        class="square responsive-img valign" /></p:commandLink>
+
+                    <div class="valing">
+                        <a id="iconMenu" data-position="left" data-delay="50" 
+                           data-tooltip="Menú" href="#" data-activates="slide-out" 
+                           class="tooltipped button-collapse show-on-large right btn pulse orange">
+                            <i class="large material-icons">dehaze</i></a>
+                    </div>
+                    <!--a id="logo"  href="" class="brand-logo hide-on-med-and-down center"><h4> Reuniones</h4> </a-->
+
+                    <h:form>
+                        <p:commandLink action="#{inicioMB.irInicio()}" class="brand-logo hide-on-med-and-down center" >
+                            <h:outputText value="NÓMINA" />
+                        </p:commandLink>
+                    </h:form>
+
+                </div>    
+            </nav>
+        </div>
+        <ui:include src="rightMenu.xhtml" /> 
+
+    </ui:composition>
+</html>

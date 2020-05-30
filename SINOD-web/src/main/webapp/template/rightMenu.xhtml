@@ -1,0 +1,40 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>    
+
+        <ul id="slide-out" class="side-nav" style="overflow: scroll; height: 93%;">
+            <li><div class="userView">
+                    <div class="background">
+                        <p:graphicImage library="imagenes" name="fondo_lateral.jpg"/>
+                    </div>
+<!--                    <a href="#"><p:graphicImage class="circle" library="imagenes"  value="{perfilMB.obtenerImagenPerfil()}" cache="false"
+                                                style="height: 80px;width: 80px"/></a>
+                    <a href="#"><span class="black-text name">{inicioMB.nombrarEmpleado()}</span></a>
+                    <a href="#"><span class="black-text email">{inicioMB.empleado.desCorreo}</span></a>-->
+                </div></li>
+            <li>
+                <p:commandLink action="#{inicioMB.irMenuSuite()}">
+                    <i class="material-icons center light-blue-text">home</i>Menú Suite
+                </p:commandLink>
+            </li>
+
+            <li><div class="divider"></div></li>
+            <li>
+                <p:commandLink action="#{inicioMB.irInicio()}">
+                    <i class="material-icons center light-blue-text">dashboard</i>Menú SINOD
+                </p:commandLink>
+            </li>
+            
+            <li><div class="divider"></div></li>
+            <li>
+                <p:commandLink action="#{iniciarSesionMB.cerrarSesion()}">
+                    <i class="material-icons center light-blue-text">power_settings_new</i>Salir
+                </p:commandLink>
+            </li>
+        </ul>
+
+    </ui:composition>
+</html>

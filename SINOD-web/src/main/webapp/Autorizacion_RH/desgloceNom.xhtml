@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/template/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <ui:define name="body">
+        <main>
+            <div class="container ">
+                <style>
+                    .ui-datatable-tablewrapper{
+                        overflow-x: hidden !important;
+                        /*                        border: none;*/
+                    }
+                    .ui-widget-header{
+                        background: #FFFFFF; 
+                        border: #FFFFFF;
+                        text-align: center;
+                    }
+                    .ui-panel .ui-panel-titlebar{
+                        padding: 0px;
+                    }
+                    Total .ui-widget-header{
+                        color: black;
+                    }
+                    .ui-panel .ui-panel-content{
+                        padding: 0px;
+                    }
+                </style>
+                <!--Barra de navejación-->
+                <div align="left">
+                    <p:outputLabel value="#{messages['web.app.table.nomina.desglose.menu']}" 
+                                   style="#{messages['web.app.style.menu']}"/>    
+                    <p:separator style="width: 100%; height:5px" />
+                </div>
+
+                <center><h4>Desglose de nómina</h4></center>
+
+                <div>
+                    <h:form>
+                        <!--Prueba para la caja de busqueda -->
+
+                        <div class="#{messages['web.app.table.tabla1']}">
+                            <p:outputLabel for="cabeceras" value="#{messages['web.app.table.quin']}" 
+                                           style="color: black;" /> 
+                            <br></br> 
+                            <p:selectOneMenu id="cabeceras" value="#{desgloceMB.cabece}" 
+                                             style="width: 90%;" 
+                                             converter="omnifaces.SelectItemsConverter" >
+
+                                <f:selectItem itemLabel="Seleccione un periodo" 
+                                              itemValue="#{null}" 
+                                              noSelectionOption="true" />
+
+                                <f:selectItems value="#{desgloceMB.todasCabece}" 
+                                               var="cabeceras" itemLabel="#{cabeceras.codNbnomina}" 
+                                               itemValue="#{cabecera}" />
+
+                                <p:ajax event="change"  process="@this"
+                                        listener="#{desgloceMB.busqueda()}"
+                                        update="desgloseP,desgloseD,liqui"
+                                        />
+                            </p:selectOneMenu>
+                        </div>
+                        <br></br>
+                        <br></br>
+                        <br></br>
+
+                        <!-- Fin de la caja de busqueda -->
+
+                        <div class="#{messages['web.app.table.tabla']}">
+                            <p:panel id="desgloseP"  
+                                     style="background: #FFFFFF; "> 
+                                
+<!--                                <center><h5>Nómina</h5></center>-->
+                                   
+                                    <h:commandLink
+                                        id="reporteEmpDesglose"                                  
+                                        title="Desglose"
+                                        action="#{desgloceMB.reporteDesglose()}"
+                                        target="_blank"
+                                        style="display:inline;
+                                        float:right; 
+                                        font-size:x-small;
+                                        padding: 2px;" >
+                                        <h:graphicImage library="imagenes" name="pdf-icon.png" width="25px"/>
+                                    </h:commandLink>
+                                    <br>
+                                    </br>
+
+
+                                <div class="ui-g-6 ui-md-6 ui-lg-6" style="padding: 0px; margin: 0px;">                                   
+                                    <br></br>
+                                    <!--rendered="{desgloceMB.desgloceconcepto.size()>0?true:false}">-->
+                                    <p:panel header="Percepciones" style="background: #FFFFFF; ">
+                                        <!--<style> border-style none </style>-->
+                                        <p:dataTable id="persepcion" var="percepcion" value="#{desgloceMB.perceciones2}"
+                                                     emptyMessage="No hay autorización " 
+                                                     reflow="true" rows="#{messages['web.app.table.initialRows']}" paginatorPosition="bottom" 
+                                                     rowIndexVar="numerador">
+                                            <p:row>
+                                                <p:column colspan="" headerText="#{messages['web.app.table.percepciones']}" />
+                                            </p:row>
+                                            <p:column headerText="#{messages['web.app.table.clave']}" width="20%">
+                                                <h:outputText value="#{percepcion.clave}" />
+                                            </p:column>
+                                            <p:column headerText="#{messages['web.app.table.descripcion']}">
+                                                <h:outputText value="#{percepcion.nombre}"/>
+                                            </p:column>
+                                            <p:column headerText="#{messages['web.app.table.importe']}" width="20%">
+                                                <h:outputText value="$ #{percepcion.imp_concepto}">
+                                                    <!--<f:convertNumber type="currency" currencySymbol="$" />-->
+                                                </h:outputText>
+                                            </p:column>
+                                        </p:dataTable>
+                                    </p:panel>
+                                </div>
+
+                                <div class="ui-g-6 ui-md-6 ui-lg-6" style="padding: 0px; margin: 0px;">
+                                    <br></br>
+                                    <p:panel id="desgloseD" header="Deducciones" style="background: #FFFFFF; ">
+                                        <!--rendered="{desgloceMB.desgloceconcepto.size()>0?true:false}">-->
+                                        <p:dataTable id="deduccion" var="deduccion" value="#{desgloceMB.deducciones2}"
+                                                     emptyMessage="No hay autorización " 
+                                                     reflow="true" rows="#{messages['web.app.table.initialRows']}" paginatorPosition="bottom" 
+                                                     rowIndexVar="numerador"
+                                                     style="width:100%;"
+                                                     >
+                                            <p:column headerText="#{messages['web.app.table.clave']}" width="20%">
+                                                <h:outputText value="#{deduccion.clave}" />
+                                            </p:column>
+                                            <p:column headerText="#{messages['web.app.table.descripcion']}">
+                                                <h:outputText value="#{deduccion.nombre}" />
+                                            </p:column>
+                                            <p:column headerText="#{messages['web.app.table.importe']}" width="20%">
+                                                <h:outputText value="$ #{deduccion.imp_concepto}" />
+                                            </p:column>
+                                        </p:dataTable>
+                                    </p:panel>
+                                </div>
+                            </p:panel>
+                            <br></br>
+                            <br></br>
+                            <br></br>
+                            <div class="#{messages['web.app.table.tabla']}">
+                                <p:panel header="Sueldo total" style="background: #FFFFFF;" id="liqui" >
+                                    <p:dataTable id="liquidacion" var="liquidacion" value="#{desgloceMB.sumaDesglose.get(0)}"
+                                                 emptyMessage="No hay autorización " 
+                                                 reflow="true" rows="#{messages['web.app.table.initialRows']}" paginatorPosition="bottom" 
+                                                 rowIndexVar="numerador" 
+                                                 >
+                                        <p:column headerText="#{messages['web.app.table.totalPercepciones']}" >
+                                            <h:outputText value="$ #{liquidacion.impTotpercepcion}" style="text-align:right"/>
+                                        </p:column>
+                                        <p:column headerText="#{messages['web.app.table.totalDeducciones']}">
+                                            <h:outputText value="$ #{liquidacion.impTotdeduccion}" style="text-align:right"/>
+                                        </p:column>
+                                        
+                                        <p:column headerText="#{messages['web.app.table.sueldoBruto']}">
+                                            <h:outputText value="$ #{liquidacion.impTotalemp}"  style="text-align:right"/>
+                                        </p:column>
+                                       
+                                    </p:dataTable>
+                                </p:panel>
+                            </div>
+                        </div>
+                    </h:form>
+                </div>
+            </div> <!-- Container -->
+        </main>
+    </ui:define>
+</ui:composition>
+
+
+
+

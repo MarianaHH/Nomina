@@ -1,0 +1,351 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/template/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">   
+
+<ui:define name="body">
+    <main>
+    <div class="container ">
+        <!--Barra de navegación-->
+        <div align="left">
+            <p:outputLabel value="Nómina -> Registrar incidencias" style="font-weight: bold; color: black;" />    
+            <p:separator style="width: 100%; height:5px" />
+        </div>
+        <center><h4>Registro de incidencias</h4></center>
+        <style>
+            td, th {
+                padding: 0px;
+            }
+            #dialogoAgregar {
+                top: 5% !important;
+            }
+        </style>
+        <script type="text/javascript">
+            function disabledDomingo(date)
+            {
+                var day = date.getDay();
+                return [(day != 0), ''];
+            }
+        </script>
+        <h:form id="incidenciasUsuario">
+            <p:growl id="messageAgregar" showDetail="true" sticky="false" />
+            <div class="#{messages['web.app.table.tabla2']}">
+                    <p:dataTable id="tablaRegistroIncidencias" var="tblIncidenciasEmp"    
+                                 emptyMessage="#{messages['web.app.table.noData']}"
+                                 value="#{registrarMB.listaDetalleIncidenciasEmpleado}"
+                                 reflow="true" rows="#{messages['web.app.table.initialRows']}" paginatorPosition="bottom" paginator="true" rowIndexVar="numerador" style="font-size: small" >
+                        <f:facet name="header">
+                            <p:outputLabel value="QUINCENA ACTUAL: #{registrarMB.desQuincenaActual}" />
+                            <p:commandButton style="display:inline; float:right; font-size:x-small; background-color: #FFFFFF;"
+                                             action="#{registrarMB.dialogoAgregar()}"
+                                             icon="#{messages['web.app.icon.agregar']}" title="Agregar"
+                                             update="agregarForm">
+                            </p:commandButton>
+                        </f:facet>
+                        <p:column headerText="#{messages['web.app.table.fecharegistro']}" filterMatchMode="contains"
+                                  style="text-align:center" width="90">
+                            <h:outputText value="#{tblIncidenciasEmp.fechaalta}" >
+                                <f:convertDateTime pattern="#{messages['web.app.label.formatoFecha']}" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="#{messages['web.app.table.clave']}" filterMatchMode="contains"
+                                  style="text-align:center" width="80">
+                            <h:outputText value="#{tblIncidenciasEmp.clave}" />
+                        </p:column>
+                        <p:column headerText="#{messages['web.app.table.incidencia']}" filterMatchMode="contains"
+                                  style="text-align:center" width="100">
+                            <h:outputText value="#{tblIncidenciasEmp.incidencia}" />
+                        </p:column>
+                        <p:column headerText="#{messages['web.app.table.perfil']}" filterMatchMode="contains"
+                                  style="text-align:center" width="100">
+                            <h:outputText value="#{tblIncidenciasEmp.perfil}" />
+                        </p:column>
+                        <p:column headerText="#{messages['web.app.table.tipo']}" filterMatchMode="contains"
+                                  style="text-align:center" width="110" >
+                            <h:outputText value="#{tblIncidenciasEmp.desctipo}" />
+                        </p:column>
+                        <p:column headerText="#{messages['web.app.table.cantidad']}" filterMatchMode="contains"
+                                  style="text-align:center" width="65">
+                            <h:outputText value="#{tblIncidenciasEmp.cantidad == '0'?' ':tblIncidenciasEmp.cantidad}" />
+                        </p:column>
+                        <!--Acciones incidencia-->
+                        <p:column headerText="#{messages['web.app.table.acciones']}" width="100" style="text-align:center" >
+                            <p:menuButton value="" icon="#{messages['web.app.icon.desplegar']}" >
+                                <p:menuitem value="#{messages['web.app.button.ver']}" action="#{registrarMB.dialogoVer(tblIncidenciasEmp)}" process="@this" icon="#{messages['web.app.icon.ver']}" update="diagVerDetalleIncidencia" />
+                                <p:menuitem value="#{messages['web.app.button.editar']}" action="#{registrarMB.dialogoEditar(tblIncidenciasEmp)}" process="@this" icon="#{messages['web.app.icon.editar']}" update="diagVerDetalleIncidencia" />
+                                <p:menuitem value="#{messages['web.app.button.eliminar']}" action="#{registrarMB.dialogoEliminar(tblIncidenciasEmp)}" icon="#{messages['web.app.icon.eliminar']}"/>
+                            </p:menuButton>
+                        </p:column>
+                    </p:dataTable>
+            </div>
+    </h:form>
+    
+    <!--DIALOGO AGREGAR NUEVA INCIDENCIA DEL EMPLEADO-->
+    <p:dialog id="dialogoAgregar" resizable="false" header="Registrar Incidencia." style="background: #FFFFFF;" 
+              widgetVar="dialogoAgregar" modal="true" height="35%" width="70%" closable="false" draggable="false">
+        <h:form id="agregarForm" style=" align-content: center;">
+            <h:panelGrid columns="1" style=" height: 15%;" id="panelComboIncidencia">
+                <p:column>
+                    <div class="ui-g-12 ui-md-6 ui-lg-4"  >
+                        <p:outputLabel for="incidencia" value="#{messages['web.app.table.incidencia']}: " />
+                        <br></br>
+                        <p:selectOneMenu id="incidencia" value="#{registrarMB.catIncidenciaSeleccionada}" style="width:125px" converter="omnifaces.SelectItemsConverter">
+                            <f:selectItem itemLabel="Incidencia" itemValue="#{null}" itemDisabled="#{registrarMB.itemIncidencia}"/>
+                            <f:selectItems value="#{registrarMB.listaIncidencias}" var="incidencia" 
+                                           itemLabel="#{incidencia.codNbincidencia}" itemValue="#{incidencia}" />
+                            <p:ajax event="change" listener="#{registrarMB.asignarFormulario(incidencia)}" 
+                                    update="agregarForm" process="@this" />
+                        </p:selectOneMenu>
+                    </div>
+                </p:column>
+            </h:panelGrid>
+            <h:panelGrid columns="3" style=" height: 27%;" id="panel2">
+                <p:column rendered="#{registrarMB.catIncidenciaSeleccionada.codClaveincidencia == null?false:true}">  
+                    <div class="ui-g-12 ui-md-6 ui-lg-12" >
+                        <p:outputLabel value="#{messages['web.app.table.clave']}:" />
+                        <p:inputText id="clave" value="#{registrarMB.catIncidenciaSeleccionada.codClaveincidencia}" class="materialize-textarea" readonly="true"/>
+                    </div>
+                </p:column>
+                <p:column rendered="#{registrarMB.catIncidenciaSeleccionada.codPerfilincidencia == null?false:true}">  
+                    <div class="ui-g-12 ui-md-6 ui-lg-12" >
+                        <p:outputLabel value="#{messages['web.app.table.perfil']}:"/>
+                        <p:inputText id="perfil" value="#{registrarMB.catIncidenciaSeleccionada.codPerfilincidencia}" class="materialize-textarea" readonly="true"/>
+                    </div>
+                </p:column>
+                <p:column >
+                    <div class="ui-g-12 ui-md-6 ui-lg-12">
+                        <h:panelGrid id="tipoDiag"  rendered="#{registrarMB.catIncidenciaSeleccionada.codClaveincidencia == null?false:true}">
+                            <p:outputLabel for="tipo" value="#{messages['web.app.table.tipo']}:" />
+                            <p:inputText id="tipo" label="#{registrarMB.tipoIncidencia}" value="#{registrarMB.catIncidenciaSeleccionada.codTipoincidencia == '1'?'HORAS':registrarMB.catIncidenciaSeleccionada.codTipoincidencia == '2'?'DIAS':'ACTIVIDAD'}" class="materialize-textarea" readonly="true"/>
+                        </h:panelGrid>
+                    </div>
+                </p:column>
+            </h:panelGrid>
+            <h:panelGrid columns="4" style="height: 27%;" id="panel3" rendered="#{registrarMB.catIncidenciaSeleccionada.codPerfilincidencia == null?false:true}">
+                <p:column>
+                    <div class="ui-g-6 ui-md-6 ui-lg-12"  >
+                        <h:panelGrid id="cantidadDiag" rendered="#{registrarMB.catIncidenciaSeleccionada.codTipoincidencia =='1' || registrarMB.catIncidenciaSeleccionada.codTipoincidencia =='2'?true:false}" >
+                            <p:outputLabel value="#{messages['web.app.table.cantidad']}:"/>
+                            <p:inputNumber id="cantidad" class="materialize-textarea"  
+                                         value="#{registrarMB.cantidad}" 
+                                          decimalPlaces="0"
+                                          minValue="0"
+                                          maxValue="99" >
+                                <p:ajax process="@this" />
+                            </p:inputNumber>
+                        </h:panelGrid>
+                        <h:panelGrid id="actividadDiag" rendered="#{registrarMB.catIncidenciaSeleccionada.codTipoincidencia == '3'?true:false}">
+                            <p:outputLabel value="#{messages['web.app.table.descripcion']}:"/>
+                            <p:inputTextarea rows="2" value="#{registrarMB.actividad}" counter="display" maxlength="100" counterTemplate="{0} caracteres." autoResize="false" style="resize: none;" >
+                                <p:ajax process="@this" />
+                            </p:inputTextarea>
+                            <h:outputText id="display" />
+                        </h:panelGrid>
+                    </div>
+                </p:column>
+                <p:column id="columnFechas">  
+                    <div class="ui-g-6 ui-md-6 ui-lg-12"  >
+                        <div class="ui-g-12 ui-md-6 ui-lg-8" >
+                            <p:outputLabel for="calendarioAgregar" value="#{messages['web.app.label.fecha']}:" />
+                            <p:calendar id="calendarioAgregar"  value="#{registrarMB.fecha}" 
+                                        mindate="#{registrarMB.quincenaActual.fecInicio}" 
+                                        maxdate="#{registrarMB.quincenaActual.fecFin}" 
+                                        beforeShowDay="disabledDomingo" >
+                                <p:ajax event="dateSelect" listener="#{registrarMB.agregarFecha}" update="lblFechas incidenciasUsuario:messageAgregar" />
+                            </p:calendar>
+                        </div>
+                        <div class="ui-g-12 ui-md-6 ui-lg-6" >
+                            <p:outputLabel value="Fechas seleccionadas:" style=" font-style: italic; color: #515443; font-size: 16px; height: 20px; margin-bottom: 4px; "/>
+                            <p:inputTextarea  id="lblFechas" widgetVar="lblFechas" value="#{registrarMB.fechas}"
+                                             autoResize="true"
+                                             disabled="true"
+                                             style="resize: none; color: #000000;"
+                                             class="materialize-textarea">
+                                <p:ajax process="@this" />
+                            </p:inputTextarea>
+                        </div>
+                        <div class="ui-g-12 ui-md-6 ui-lg-4" >
+                            <p:commandButton process="@this" style="display:inline;  font-size:medium; margin-left: 10px;"
+                                             icon="#{messages['web.app.icon.eliminar']}" 
+                                             action="#{registrarMB.limpiarFechas()}"
+                                             update="agregarForm">
+                            </p:commandButton>
+                        </div>
+                    </div>
+                </p:column>
+                <p:column>
+                    <div class="ui-g-12 ui-md-6 ui-lg-12"  >
+                        <p:outputLabel value="#{messages['web.app.table.comentarios']}:"/>
+                        <p:inputTextarea  value="#{registrarMB.comentarios}" 
+                                         counter="comentariosDisplay" maxlength="200" 
+                                         counterTemplate="{0} caracteres." 
+                                         autoResize="false"
+                                         style="resize: none;"
+                                         class="materialize-textarea">
+                            <p:ajax process="@this" />
+                        </p:inputTextarea>
+                        <h:outputText id="comentariosDisplay" />
+                    </div>
+                </p:column>
+            </h:panelGrid>
+            <h:panelGrid columns="1" id="panelBtns" style=" vertical-align: bottom;">
+            <p:growl id="growl" showDetail="true" sticky="true" />
+                <h:column>
+                    <div align="right"  class="#{messages['web.app.table.tabla']}">
+                        <p:commandButton process="@this" style="display:inline;  font-size:medium;"
+                                         action="#{registrarMB.dialogoAgregarCerrar()}"
+                                         value="#{messages['web.app.button.cancelar']}" >
+                        </p:commandButton>
+                        <p:commandButton style="display:inline;  font-size:medium; margin-left: 10px;"
+                                         value="#{messages['web.app.button.agregar']}" 
+                                         action="#{registrarMB.registrarIncidencia()}"
+                                         disabled="#{registrarMB.catIncidenciaSeleccionada.codClaveincidencia == null?true:false}" 
+                                         update="incidenciasUsuario:tablaRegistroIncidencias incidenciasUsuario:messageAgregar">
+                        </p:commandButton>
+                    </div>
+                </h:column>
+            </h:panelGrid>
+        </h:form>
+    </p:dialog>
+    <!--DIALOGO VER DETALLE-->
+    <p:dialog id="diagVerDetalleIncidencia" resizable="false" closable ="false" styleClass="disable-scroll" 
+              draggable="false" header="Detalle incidencia" widgetVar="diagVerDetalleIncidencia" 
+              modal="true" height="35%" width="65%" style ="background: #FFFFFF;">
+        <h:form id="verDetalle">
+            <h:panelGrid columns="3">
+                <p:column>  
+                    <div class="#{messages['web.app.table.tabla2']}">
+                        <p:outputLabel value="#{messages['web.app.label.fechaalta']}:" style="color:black; padding: 0%;" />
+                        <p:inputText id="detIncidenciaFechaalta" readonly="true"
+                                     value = "#{registrarMB.detalleIncidenciaSeleccionada.fechaalta}"
+                                     class="materialize-textarea">
+                            <f:convertDateTime pattern="#{messages['web.app.label.formatoFecha']}" />
+                        </p:inputText>
+                    </div>
+                </p:column>
+                <p:column>  
+                    <div class="#{messages['web.app.table.tabla2']}">
+                        <p:outputLabel value="#{messages['web.app.table.clave']}:" style="color:black; padding: 0%;" />
+                        <p:inputText id="detIncidenciaClave" readonly="true"
+                                    value = "#{registrarMB.detalleIncidenciaSeleccionada.clave}"
+                                    class="materialize-textarea"/>
+                    </div>
+                </p:column>
+                <p:column>
+                    <div class="#{messages['web.app.table.tabla2']}">
+                        <p:outputLabel value="#{messages['web.app.table.incidencia']}:" style="color:black;"/>
+                        <p:inputText id="detIncidenciaIncidencia" 
+                                    readonly="true"
+                                    value = "#{registrarMB.detalleIncidenciaSeleccionada.incidencia}" 
+                                    class="materialize-textarea"/>
+                    </div>
+                </p:column>
+                <p:column>
+                    <div  class="#{messages['web.app.table.tabla2']}"  >
+                            <p:outputLabel value="#{messages['web.app.table.perfil']}:" style="color:black;"/>
+                            <p:inputText id="detIncidenciaPerfil"  
+                                        readonly="true"
+                                        value = "#{registrarMB.detalleIncidenciaSeleccionada.perfil}" 
+                                        class="materialize-textarea"/>
+                    </div>
+                </p:column>
+                <p:column>
+                    <div class="#{messages['web.app.table.tabla2']}">
+                        <p:outputLabel value="#{messages['web.app.table.tipo']}:" style="color:black;"/>
+                        <p:inputText id="detIncidenciaTipo"
+                                    readonly="true"
+                                    value = "#{registrarMB.detalleIncidenciaSeleccionada.desctipo}" 
+                                    class="materialize-textarea"/>
+                    </div>
+                </p:column>
+                <p:column>
+                    <div  class="#{messages['web.app.table.tabla2']}"  >
+                        <h:panelGrid id="panelCantidad" rendered="#{registrarMB.detalleIncidenciaSeleccionada.idtipo == '1' || registrarMB.detalleIncidenciaSeleccionada.idtipo == '2'?true:false}" >
+                            <p:outputLabel value="#{messages['web.app.table.cantidad']}:" style="color:black;"/>
+                            <p:inputText id="detIncidenciaCantidad"
+                                    readonly="true"
+                                    value = "#{registrarMB.detalleIncidenciaSeleccionada.cantidad}" 
+                                    class="materialize-textarea"/>
+                        </h:panelGrid>
+                        <h:panelGrid id="panelActividad" rendered="#{registrarMB.detalleIncidenciaSeleccionada.idtipo == '3'?true:false}" >
+                            <p:outputLabel value="#{messages['web.app.table.actividad']}:" style="color:black;"/>
+                            <p:inputText id="detIncidenciaActividad"
+                                    readonly="true"
+                                    value = "#{registrarMB.detalleIncidenciaSeleccionada.actividad}" 
+                                    class="materialize-textarea"/>
+                        </h:panelGrid>
+                    </div>
+                </p:column>
+                <p:column>
+                    <div  class="#{messages['web.app.table.tabla2']}"  >
+                        <p:outputLabel value="#{messages['web.app.label.fechas']}:" />
+                        <p:inputTextarea id="detIncidenciaFechasxml" 
+                                         value="#{registrarMB.detallefechasxml}"
+                                         autoResize="false"
+                                         readonly="true" 
+                                         style="resize: none;"
+                                         class="materialize-textarea">
+                        </p:inputTextarea>
+                    </div>
+                </p:column>
+                <p:column>
+                    <div  class="#{messages['web.app.table.tabla2']}"  >
+                        <p:outputLabel value="#{messages['web.app.table.comentarios']}:"/>
+                        <p:inputTextarea id="detIncidenciaComentarios"   
+                                    readonly="#{registrarMB.editar?false:true}"
+                                    value = "#{registrarMB.detalleIncidenciaSeleccionada.comentarios}" 
+                                    class="materialize-textarea"
+                                    style="resize: none;"
+                                    autoResize="false">
+                            <p:ajax process="@this" event="change" />
+                        </p:inputTextarea>
+                    </div>
+                </p:column>
+                <p:column >
+                    <div  class="ui-g-12 ui-md-6 ui-lg-12"  >
+                        <p:outputLabel value="#{messages['web.app.table.estatus']}" 
+                                       style="color:black; padding: 0px; margin: 0px;"/>
+                        <p:inputText value="#{messages['web.app.label.validacion']}: #{registrarMB.detalleIncidenciaSeleccionada.validacion?'Validada':'Pendiente'}" 
+                                     style="color:black; padding: 0px; margin: 0px;"
+                                     readonly="true"/>
+                    </div>
+                </p:column>
+                <f:facet name = "footer">
+                    <div align="right"  class="#{messages['web.app.table.tabla']}" >
+                        <p:commandButton process="@this" style="display:inline;  font-size:medium; margin-left: 10px;"
+                                         value="#{messages['web.app.button.cerrar']}" 
+                                         action="#{registrarMB.dialogoEditarCerrar()}">
+                        </p:commandButton>
+                        <p:commandButton process="@this" style="display:inline;  font-size:medium; margin-left: 10px;"
+                                         rendered ="#{registrarMB.editar}"
+                                         value="#{messages['web.app.button.guardar']}" 
+                                         action="#{registrarMB.editarIncidencia()}"
+                                         update="incidenciasUsuario:messageAgregar">
+                        </p:commandButton>
+                    </div>
+                </f:facet>
+            </h:panelGrid>
+        </h:form>
+    </p:dialog>
+    <!--DIALOGO ELIMINAR-->
+    <p:confirmDialog id="diagEliminarIncidencia" widgetVar="diagEliminarIncidencia" global="true" closable="false" showEffect="fade" hideEffect="fade" 
+                                    header="Eliminar incidencia" message="¿Está seguro de eliminar la incidencia?">
+        <center>
+            <p:growl id="mensajeEliminar" showDetail="true" />
+            <p:commandButton value="#{messages['web.app.button.no']}" process="@this" onclick="PF('diagEliminarIncidencia').hide();" />
+            <p:commandButton value="#{messages['web.app.button.si']}" process="@this" 
+                             action="#{registrarMB.eliminarIncidencia()}"
+                             update="incidenciasUsuario:tablaRegistroIncidencias, diagEliminarIncidencia" />
+        </center>
+    </p:confirmDialog>
+                    
+    <!-- end container -->
+    </div>
+    </main>
+</ui:define>
+</ui:composition>

@@ -1,0 +1,195 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/template/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">   
+
+    <ui:define name="body">
+        <main>
+            <div class="container ">
+
+                <!--Barra de navegación-->
+                <div align="left">
+                    <p:outputLabel value="#{messages['web.app.table.nomina.consultar.crear.calendario.menu']}"
+                                   style="#{messages['web.app.style.menu']}" /> 
+                </div>
+                <center><h4>#{messages['web.app.table.nomina.consultar.crear.calendario.titulo']}</h4></center>
+                <h:form id="Crear">
+                    <p:growl id="mensaje" showDetail="true" sticky="true" />
+                    <div class="#{messages['web.app.table.tabla']}" align="centered">
+                        <p:dataTable id="datosQuincena" var="datosQuincena" 
+                                     emptyMessage="#{messages['web.app.table.noData']}" 
+                                     value="#{calendarioMB.listaQuincenas}" 
+                                     widgetVar="datosNomCalTabla" 
+                                     sortBy="#{datosQuincena.codQuincenaid}"
+                                     sortOrder="DESCENDING"
+                                     rows="#{messages['web.app.table.initialRows']}" paginator="true" 
+                                     rowsPerPageTemplate="5,10,15" paginatorPosition="bottom" 
+                                     style="font-size: small">
+                            <f:facet name="header">
+                                <!--boton agregar nomina-->
+                                <p:commandButton icon="#{messages['web.app.icon.agregar']}" 
+                                                 process="@this" 
+                                                 action="#{calendarioMB.dialogoCrearConfig()}"
+                                                 update="dlgCalen"
+                                                 title="Agregar calendario nómina"
+                                                 style="display:inline;
+                                                 float:right;
+                                                 font-size: small;
+                                                 align-content: center;">
+                                    <p:ajax update="CalendarioForm" resetValues="true" />
+                                </p:commandButton>
+                                <p:spacer height="27"/>
+                            </f:facet>
+                            <p:column headerText="Ejercicio" >
+                                <h:outputText value="#{datosQuincena.desQuincena}" />
+                            </p:column>
+                            <p:column headerText="Periodo">
+                                <h:outputText value="#{datosQuincena.codEjercicioidFk.cnuValorejercicio}" />
+                            </p:column>
+                            <p:column headerText="Fecha inicial">
+                                <h:outputText value="#{datosQuincena.fecInicio}" >
+                                    <f:convertDateTime pattern="#{messages['web.app.label.formatoFecha']}" />
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="Fecha final">
+                                <h:outputText value="#{datosQuincena.fecFin}">
+                                    <f:convertDateTime pattern="#{messages['web.app.label.formatoFecha']}" />
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="Fecha de pago">
+                                <h:outputText value="#{datosQuincena.fecPago}">
+                                    <f:convertDateTime pattern="#{messages['web.app.label.formatoFecha']}" />
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="Fecha de dispersión">
+                                <h:outputText value="#{datosQuincena.fecDispersion}">
+                                    <f:convertDateTime pattern="#{messages['web.app.label.formatoFecha']}" />
+                                </h:outputText>                                
+                            </p:column>
+                            <!--                            <f:facet name="paginatorTopLeft">
+                                                            <p:commandButton type="button" icon="pi pi-refresh" />
+                                                        </f:facet>
+                                                        <f:facet name="paginatorBottomRight">
+                                                            <p:commandButton type="button" icon="pi pi-cloud-upload" />
+                                                        </f:facet>-->
+                        </p:dataTable>
+                    </div>
+                    <!--Datatable fin--> 
+                </h:form>
+                <!--inicio dialogo-->
+                <p:dialog id="dlgCalen" resizable="false" closable ='false' 
+                          styleClass="disable-scroll" draggable="false" 
+                          widgetVar="dlgCalen" position="center center" 
+                          header="#{messages['web.app.header.crearCalendarioNomina']}"
+                          modal="true" height="4%" width="50%" style ="background: #FFFFFF;" >
+                    <h:form id="CalendarioForm"> 
+                        <h:outputText value="" />
+                        <div class="#{messages['web.app.table.tabla']}"> 
+                            <!--izq-->
+                            <div class="ui-g-4 ui-md-4 ui-lg-4" style="padding: 0px; margin: 0px;">
+                                <div class="row" style="padding-left: 5%;">
+                                    <p:outputLabel value="#{messages['web.app.table.descripcion']}" title="Descripción de la quincena"/>
+                                    <p:inputText maxlength="30" value="#{calendarioMB.calendarioSeleccionado.desQuincena}" 
+                                                 required="true" requiredMessage="#{messages['web.app.required.calendario.descripcion']}">
+                                        <p:ajax process="@this"/>
+                                    </p:inputText>
+                                </div>
+                                <div class="row" style="padding-left: 5%;">
+                                    <p:outputLabel value="#{messages['web.app.table.nomina.consultar.ejercicioF']}" 
+                                                   style="color: black;" /> 
+                                </div>
+                                <div class="row" style="padding-left: 5%;">
+                                    <p:selectOneMenu id="ejercicioF" value="#{calendarioMB.calendarioSeleccionado.codEjercicioidFk}" 
+                                                     style="width: 90%;" 
+                                                     converter="omnifaces.SelectItemsConverter" required="true" 
+                                                     requiredMessage="#{messages['web.app.required.calendario.ejercicio']}">
+                                        <f:selectItem itemLabel="Ejercicio fiscal" 
+                                                      itemValue="#{null}"
+                                                      noSelectionOption="true" />
+                                        <f:selectItems value="#{calendarioMB.listaEjercicios}"  
+                                                       var="ejercicioF" itemLabel="#{ejercicioF.cnuValorejercicio}" 
+                                                       itemValue="#{null}" />
+                                        <p:ajax event="change"  process="@this"/>
+                                    </p:selectOneMenu>
+                                </div>
+                                <div class="row" style="padding-left: 5%;">
+                                    <p:outputLabel value="#{messages['web.app.table.numQuin']}" />
+                                    <p:inputText maxlength="2" value="#{calendarioMB.calendarioSeleccionado.cnuNumquincena}"
+                                                 required="true" requiredMessage="#{messages['web.app.required.calendario.descripcion']}">
+                                        <p:ajax process="@this"/>
+                                    </p:inputText>
+                                </div>
+
+                            </div>
+                            <div class="ui-g-2 ui-md-2 ui-lg-2"><!--nada--></div>
+                            <div class="ui-g-4 ui-md-4 ui-lg-4" style="padding: 0px; margin: 0px;">
+                                <!--der-->
+                                <p:outputLabel for="inicial" value="#{messages['web.app.table.fechaInicio']}" />
+
+                                <p:calendar id="inicial" value="#{calendarioMB.calendarioSeleccionado.fecInicio}" 
+                                            inputStyleClass="dateTimeField" disabled="true"
+                                            pattern="dd-MM-yyyy" mask="true" required="true" 
+                                            requiredMessage="#{messages['web.app.required.calendario.fechainicio']}">
+                                    <p:ajax event="dateSelect" />
+                                </p:calendar>
+                                <p:outputLabel for="final" value="#{messages['web.app.table.fechaFin']}" />
+                                <p:calendar id="final" value="#{calendarioMB.calendarioSeleccionado.fecFin}" 
+                                            inputStyleClass="dateTimeField" disabled="true"
+                                            pattern="dd-MM-yyyy" mask="true" required="true" 
+                                            requiredMessage="#{messages['web.app.required.calendario.fechafin']}">
+                                    <p:ajax event="dateSelect" />
+                                </p:calendar>
+                                <p:outputLabel for="pago" value="#{messages['web.app.table.fechaPago']}" />
+                                <p:calendar id="pago" value="#{calendarioMB.calendarioSeleccionado.fecPago}" 
+                                            disabledWeekends="true"
+                                            pattern="dd-MM-yyyy" mask="true" required="true" 
+                                            requiredMessage="#{messages['web.app.required.calendario.fechapago']}">
+                                    <p:ajax event="dateSelect" />
+                                </p:calendar>
+                                <p:outputLabel for="dispersion" value="#{messages['web.app.table.fechaDisp']}" />
+                                <p:calendar id="dispersion" value="#{calendarioMB.calendarioSeleccionado.fecDispersion}" 
+                                            disabledWeekends="true"
+                                            pattern="dd-MM-yyyy" mask="true" 
+                                            required="true" requiredMessage="#{messages['web.app.required.calendario.fechadispercion']}">
+                                    <p:ajax event="dateSelect" />
+                                </p:calendar>
+                            </div>
+                        </div>
+                        <!-- Botones dialogo-->
+                        <div align="right">
+                            <!--visible, mostrar validar, deshabilitar calcular--> 
+                            <!--PDF PF pag 117-->
+                            <p:panel style="background: #FFFFFF; border: none;" id="botones">
+                                <h:panelGroup id="Cancelar" >
+                                    <p:commandButton 
+                                        id="btnCancelarar"
+                                        value="#{messages['web.app.button.cancelar']}"
+                                        onclick="PF('dlgCalen').hide();"/>
+                                </h:panelGroup>
+                                <!--render hide-->
+                                <h:panelGroup id="Guardar" >
+                                    <p:commandButton id="btnGuardar"
+                                                     value="#{messages['web.app.button.guardar']}"
+                                                     update="CalendarioForm,Crear:mensaje,Crear:datosQuincena"
+                                                     action="#{calendarioMB.guardarQuincena()}"
+                                                     disabled="#{calendarioMB.disable}"
+                                                     ajax="true" >
+                                        <f:setPropertyActionListener value="#{calendarioMB.active}" target="#{calendarioMB.disable}"/>
+                                    </p:commandButton>
+                                </h:panelGroup>
+                            </p:panel>
+                        </div>
+                        <!--</h:panelGrid>-->
+                    </h:form>
+                </p:dialog> 
+                <!--Fin botones-->
+                <!--fin dialogo-->
+            </div>
+        </main>
+    </ui:define>
+</ui:composition>
